@@ -44,7 +44,7 @@ public class PtimeHandler extends PerksCommandHandler {
     
     @Override
     public String getUsageDescription(String cmd) {
-        return "Set your time to the realtime of the server. /perk ptime [RealTime,reset] ";
+        return "[RealTime,reset]: Set your time to the realtime of the server ";
     }
    
     

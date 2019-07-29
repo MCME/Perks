@@ -28,12 +28,13 @@ import org.bukkit.event.vehicle.VehicleExitEvent;
  * @author Fraspace5
  */
 public class BoatListener implements Listener {
+   
     
       
     // Checks if user getting on the horse has permission, and that the horse is
     // his. Otherwise removes horse.
     @EventHandler
-    public void BoatMount(VehicleEnterEvent event) {
+    public void BoatMount1(VehicleEnterEvent event) {
         if (event.getEntered() instanceof Player) {
             if (BoatPerk.isBoatPerk(event.getVehicle())) {
                 Player p = (Player) event.getEntered();
@@ -47,12 +48,15 @@ public class BoatListener implements Listener {
             }
         }
     }
-
+ 
     // Remove horse when rider dismounts
-    @EventHandler
-    public void BoatDismount(VehicleExitEvent event) {
+    
+      @EventHandler
+    public void Boat1Dismount1(VehicleExitEvent event) {
 //Logger.getGlobal().info("dismount1111111");
-        if (BoatPerk.isBoatPerk(event.getVehicle())) {
+       EntityType vehicle = event.getVehicle().getType();
+       EntityType boat = vehicle.BOAT;
+        if (vehicle == boat) {
 //Logger.getGlobal().info("dismount21111111");
             event.getVehicle().remove();
         }
@@ -60,38 +64,38 @@ public class BoatListener implements Listener {
 
     // Remove horse if rider dies
     @EventHandler
-    public void riderDie(EntityDeathEvent event) {
+    public void riderDie1(EntityDeathEvent event) {
+        
         if (event.getEntity() instanceof Player) {
-            if (event.getEntity().isInsideVehicle() 
-                    && BoatPerk.isBoatPerk(event.getEntity().getVehicle())) {
-                event.getEntity().getVehicle().remove();
-            }
+            event.getEntity().leaveVehicle();
         }
     }
 
     // Remove horse if rider quits
     @EventHandler
-    public void riderQuit(PlayerQuitEvent event) {
-        if (event.getPlayer().isInsideVehicle()) {
-            if(BoatPerk.isBoatPerk(event.getPlayer().getVehicle())){
-                event.getPlayer().getVehicle().remove();
+    public void riderQuit1(PlayerQuitEvent event) {
+        Player player = event.getPlayer();
+        
+ if (player.isInsideVehicle()) {
+           event.getPlayer().leaveVehicle();
             }
         }
-    }
+    
 
     // Remove horse if rider is kicked
     @EventHandler
-    public void riderKick(PlayerKickEvent event) {
-        if (event.getPlayer().isInsideVehicle()) {
-            if(BoatPerk.isBoatPerk(event.getPlayer().getVehicle())){
-                event.getPlayer().getVehicle().remove();
+    public void riderKick1(PlayerKickEvent event) {
+        Player player = event.getPlayer();
+        
+        if (player.isInsideVehicle()) {
+            event.getPlayer().leaveVehicle();
             }
         }
-    }
+    
 
     // Cancel damage to horses
     @EventHandler
-    void horseDamage(EntityDamageEvent event) {
+    void BoatDamage1(EntityDamageEvent event) {
         if (BoatPerk.isBoatPerk(event.getEntity())) {
             event.setCancelled(true);
         }
@@ -101,7 +105,7 @@ public class BoatListener implements Listener {
     // seen in CommandMethods.giveHorse()])
     // NEW: Allow spawning by plugins only.
     @EventHandler(priority = EventPriority.HIGH)
-    public void mobSpawn(CreatureSpawnEvent event) {
+    public void mobSpawn1(CreatureSpawnEvent event) {
         if((event.getEntityType().equals(EntityType.BOAT))
             && !event.getSpawnReason().equals(CreatureSpawnEvent.SpawnReason.CUSTOM)) {
             event.setCancelled(true);

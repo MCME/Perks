@@ -46,10 +46,10 @@ public class ParrotPerkHandler extends PerksCommandHandler {
     
     @Override
     public String getUsageDescription(String cmd) {
-        return "[color] [pattern]: Put a parrot on your shoulder. Without arguments it will have a random color and default position(left). "
+        return "[color] [pattern]: Put a parrot on your shoulder. Without arguments it will have a random color and default position(left)"
                 +"Possible colors are: "+PerksPlugin.getMessageUtil().HIGHLIGHT_STRESSED
-                +"blue, cyan, gray, green, red "+PerksPlugin.getMessageUtil().HIGHLIGHT
-                +"Possible patterns are: "+PerksPlugin.getMessageUtil().HIGHLIGHT_STRESSED;
+                +"blue, cyan, gray, green, red "+PerksPlugin.getMessageUtil().HIGHLIGHT;
+                
     }
     
     @Override
@@ -71,7 +71,7 @@ public class ParrotPerkHandler extends PerksCommandHandler {
             return;
         }
     
-        
+         if (player.isInsideVehicle() == false){
         
         if (args.length>0 && args[0].equalsIgnoreCase("red")){
           
@@ -396,6 +396,7 @@ public class ParrotPerkHandler extends PerksCommandHandler {
                         + ParrotPerk.parrot_perk_custom_Name);
         ParrotPerk.allowSpawn(false);
         PerksPlugin.getMessageUtil().sendInfoMessage(player, "Enjoy your parrot!");
+    }else { PerksPlugin.getMessageUtil().sendInfoMessage(player, "Sorry, you can't spawn a parrot when you are in a vehicle");}
     }
     
 }

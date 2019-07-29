@@ -35,13 +35,13 @@ public class WeatherHandler extends PerksCommandHandler {
     
     @Override
     public String getShortDescription(String cmd) {
-        return ": "+PerksPlugin.getMessageUtil().INFO+"Change your Minecraft Weather";
+        return ": "+PerksPlugin.getMessageUtil().INFO+" Change your Minecraft Weather";
     }
     
     @Override
     public String getUsageDescription(String cmd) {
-        return "Set your weather with /perk weather [weathertype] | [info] "
-                +"[WeatherType] "+"Clean | Downfall";
+        return "[weathertype]: Set your weather "
+                +"[WeatherType]: "+"Clean,Downfall";
     }
    
     
@@ -49,7 +49,7 @@ public class WeatherHandler extends PerksCommandHandler {
     protected void execute(CommandSender cs, String cmd, String... args) {
         
         if (args.length>0 && args[0].equalsIgnoreCase("info")){
-        PerksPlugin.getMessageUtil().sendInfoMessage(cs, "Set your weather [Clean|Downfall] ");
+        PerksPlugin.getMessageUtil().sendInfoMessage(cs, "Set your weather [Clean,Downfall] ");
         return;
         }
         

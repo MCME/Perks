@@ -48,15 +48,10 @@ public class CompassHandler extends PerksCommandHandler {
     
     @Override
     public String getUsageDescription(String cmd) {
-        return "Set your compass target with /perk compass [north,south,west,east,reset] "
+        return "[north,south,west,east]: Set your compass target "
                 +"To restore write /perk compass reset";
     }
-  
-    
-
-
-
-    
+ 
     @Override
     protected void execute(CommandSender cs, String cmd, String... args) {
         
@@ -78,11 +73,12 @@ item.setItemMeta(meta);
         if  (cs instanceof Player ){
         PerksPlugin.getMessageUtil().sendInfoMessage(pl,"You will never get lost again!");
             String input = args[0].toLowerCase();
+            
             switch (input){
                 case "reset":
                     
                   pl.setCompassTarget(pl.getBedSpawnLocation());
-                    
+                  pl.updateInventory();
                     
                     
                     break;
@@ -93,7 +89,7 @@ item.setItemMeta(meta);
               Location loc = new Location(w,x,y,z);
                     
               pl.setCompassTarget(loc);
-                    
+              pl.updateInventory();      
                     
                     break;
                 case "south":
@@ -103,7 +99,7 @@ item.setItemMeta(meta);
               Location loc1 = new Location(w,x1,y,z1);
                     
               pl.setCompassTarget(loc1);
-                    
+              pl.updateInventory();      
                     break;
                 case "west":
               Double x2 = - 40000.00;
@@ -112,7 +108,7 @@ item.setItemMeta(meta);
               Location loc2 = new Location(w,x2,y,z2);
                     
               pl.setCompassTarget(loc2);
-                    
+              pl.updateInventory();      
                     
                     break;
                 case "east":
@@ -122,7 +118,7 @@ item.setItemMeta(meta);
               Location loc3 = new Location(w,x3,y,z3);
                     
               pl.setCompassTarget(loc3);
-                    
+              pl.updateInventory();      
                     
                     break;
                 
@@ -133,7 +129,7 @@ item.setItemMeta(meta);
               Location loc4 = new Location(w,x4,y,z4);
                     
               pl.setCompassTarget(loc4);
-                    
+              pl.updateInventory();      
                     break;
                     
             }

@@ -68,6 +68,7 @@ public class HorseHandler extends PerksCommandHandler {
             PerksPlugin.getMessageUtil().sendIndentedInfoMessage(cs, ChatColor.GREEN+"                 dark_brown, gray");
             PerksPlugin.getMessageUtil().sendInfoMessage(cs, "[style] -> "+ChatColor.GREEN+"none, black_dots, white, white_dots, whitefield");
         }
+        if (player.getShoulderEntityLeft().isEmpty() == true && player.getShoulderEntityRight().isEmpty() == true ){
         Horse.Color color = null;
         Horse.Style style = null;
         for(String arg: args) {
@@ -124,6 +125,7 @@ public class HorseHandler extends PerksCommandHandler {
         horsey.addPassenger(player);
         HorsePerk.allowSpawn(false);
         PerksPlugin.getMessageUtil().sendInfoMessage(player, "Enjoy your ride!");
-    }
+        }else {PerksPlugin.getMessageUtil().sendInfoMessage(player, "You can't spawn an horse when you have a parrot on your shoulder!");}
+        }
     
 }

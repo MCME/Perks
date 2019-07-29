@@ -25,6 +25,7 @@ package com.mcmiddleearth.perks.listeners;
 
 import com.mcmiddleearth.perks.PerkManager;
 import com.mcmiddleearth.perks.PerksPlugin;
+import com.mcmiddleearth.perks.perks.BoatPerk;
 import com.mcmiddleearth.perks.perks.HorsePerk;
 import com.mcmiddleearth.perks.permissions.PermissionData;
 
@@ -42,6 +43,7 @@ import org.bukkit.event.vehicle.VehicleExitEvent;
 
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Vehicle;
 import org.bukkit.event.entity.CreatureSpawnEvent.SpawnReason;
 
 /**
@@ -55,7 +57,7 @@ public class HorseListener implements Listener {
     // Checks if user getting on the horse has permission, and that the horse is
     // his. Otherwise removes horse.
     @EventHandler
-    public void horseMount(VehicleEnterEvent event) {
+    public void horseMount1(VehicleEnterEvent event) {
         if (event.getEntered() instanceof Player) {
             if (HorsePerk.isHorsePerk(event.getVehicle())) {
                 Player p = (Player) event.getEntered();
@@ -71,8 +73,8 @@ public class HorseListener implements Listener {
     }
 
     // Remove horse when rider dismounts
-    @EventHandler
-    public void horseDismount(VehicleExitEvent event) {
+  @EventHandler
+    public void HorseDismount(VehicleExitEvent event) {
 //Logger.getGlobal().info("dismount1111111");
         if (HorsePerk.isHorsePerk(event.getVehicle())) {
 //Logger.getGlobal().info("dismount21111111");
