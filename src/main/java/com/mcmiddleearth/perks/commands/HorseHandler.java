@@ -17,15 +17,16 @@
 package com.mcmiddleearth.perks.commands;
 
 import com.mcmiddleearth.perks.PerksPlugin;
+import com.mcmiddleearth.perks.perks.BoatPerk;
 import com.mcmiddleearth.perks.perks.HorsePerk;
 import com.mcmiddleearth.perks.perks.Perk;
-import com.mcmiddleearth.perks.perks.SetOnFirePerk;
 import com.mcmiddleearth.pluginutil.NumericUtil;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Boat;
 import org.bukkit.entity.Horse;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -67,6 +68,7 @@ public class HorseHandler extends PerksCommandHandler {
             PerksPlugin.getMessageUtil().sendIndentedInfoMessage(cs, ChatColor.GREEN+"                 dark_brown, gray");
             PerksPlugin.getMessageUtil().sendInfoMessage(cs, "[style] -> "+ChatColor.GREEN+"none, black_dots, white, white_dots, whitefield");
         }
+        if (player.getShoulderEntityLeft().isEmpty() == true && player.getShoulderEntityRight().isEmpty() == true ){
         Horse.Color color = null;
         Horse.Style style = null;
         for(String arg: args) {
@@ -110,7 +112,7 @@ public class HorseHandler extends PerksCommandHandler {
         Location l = player.getLocation();
         World w = player.getWorld();
 
-        HorsePerk.allowSpawn(true);
+        BoatPerk.allowSpawn(true);
         Horse horsey = w.spawn(l, Horse.class);
         horsey.setAdult();
         horsey.setColor(color);
@@ -123,6 +125,7 @@ public class HorseHandler extends PerksCommandHandler {
         horsey.addPassenger(player);
         HorsePerk.allowSpawn(false);
         PerksPlugin.getMessageUtil().sendInfoMessage(player, "Enjoy your ride!");
-    }
+        }else {PerksPlugin.getMessageUtil().sendInfoMessage(player, "You can't spawn an horse when you have a parrot on your shoulder!");}
+        }
     
 }

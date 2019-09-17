@@ -19,6 +19,8 @@ package com.mcmiddleearth.perks;
 import com.mcmiddleearth.perks.permissions.PermissionUpdater;
 import com.mcmiddleearth.perks.commands.PerksCommandExecutor;
 import com.mcmiddleearth.perks.listeners.PermissionListener;
+import com.mcmiddleearth.perks.perks.BoatPerk;
+import com.mcmiddleearth.perks.perks.CompassPerk;
 import com.mcmiddleearth.perks.perks.HorsePerk;
 import com.mcmiddleearth.perks.perks.ItemPerk;
 import com.mcmiddleearth.perks.perks.JockeyPerk;
@@ -27,9 +29,12 @@ import com.mcmiddleearth.perks.perks.Perk;
 import com.mcmiddleearth.perks.perks.PotionEffectPerk;
 import com.mcmiddleearth.perks.perks.SetOnFirePerk;
 import com.mcmiddleearth.perks.perks.SitPerk;
+import com.mcmiddleearth.perks.perks.Weatherperk;
 import com.mcmiddleearth.perks.perks.WizardLightPerk;
 import com.mcmiddleearth.perks.permissions.PermissionData;
 import com.mcmiddleearth.pluginutil.message.MessageUtil;
+import com.mcmiddleearth.perks.perks.ParrotPerk;
+import com.mcmiddleearth.perks.perks.PtimePerk;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import lombok.Getter;
@@ -74,7 +79,7 @@ public class PerksPlugin extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new PermissionListener(), this);
         permissionUpdater = new PermissionUpdater();
         permissionUpdater.runTaskTimer(this, 500, 2000);
-        
+        instance = this;
         perksExecutor = new PerksCommandExecutor();
         getCommand("perk").setExecutor(perksExecutor);
 
@@ -84,6 +89,15 @@ public class PerksPlugin extends JavaPlugin {
         PerkManager.addPerk(new WizardLightPerk());
         PerkManager.addPerk(new SitPerk());
         PerkManager.addPerk(new JockeyPerk());
+        PerkManager.addPerk(new ParrotPerk());
+        PerkManager.addPerk(new PtimePerk());
+        PerkManager.addPerk(new Weatherperk());
+        PerkManager.addPerk(new BoatPerk());
+        PerkManager.addPerk(new CompassPerk());
+        PerkManager.addPerk(new PotionEffectPerk("slown",
+                                                 new ItemStack(Material.LEATHER_BOOTS),
+                                                 "Boots of Slowness",
+                                                 new PotionEffectPerk.PotionEffectData("slown",PotionEffectType.SLOW,null)));
         PerkManager.addPerk(new PotionEffectPerk("speed",
                                                  new ItemStack(Material.DIAMOND_BOOTS),
                                                  "Boots of Speed",
@@ -186,5 +200,9 @@ public class PerksPlugin extends JavaPlugin {
             return def;
         }
         return perkSettings.getConfigurationSection(perk).getDouble(key);
+    }
+    public static PerksPlugin getInstance(){
+    
+        return instance;
     }
 }
