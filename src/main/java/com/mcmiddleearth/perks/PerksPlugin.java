@@ -23,6 +23,7 @@ import com.mcmiddleearth.perks.perks.HorsePerk;
 import com.mcmiddleearth.perks.perks.ItemPerk;
 import com.mcmiddleearth.perks.perks.JockeyPerk;
 import com.mcmiddleearth.perks.perks.NameTagPerk;
+import com.mcmiddleearth.perks.perks.ParrotPerk;
 import com.mcmiddleearth.perks.perks.Perk;
 import com.mcmiddleearth.perks.perks.PotionEffectPerk;
 import com.mcmiddleearth.perks.perks.SetOnFirePerk;
@@ -84,6 +85,7 @@ public class PerksPlugin extends JavaPlugin {
         PerkManager.addPerk(new WizardLightPerk());
         PerkManager.addPerk(new SitPerk());
         PerkManager.addPerk(new JockeyPerk());
+        PerkManager.addPerk(new ParrotPerk());
         PerkManager.addPerk(new PotionEffectPerk("speed",
                                                  new ItemStack(Material.DIAMOND_BOOTS),
                                                  "Boots of Speed",
