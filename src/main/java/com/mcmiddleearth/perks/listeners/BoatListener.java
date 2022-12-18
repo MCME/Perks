@@ -29,8 +29,8 @@ import org.bukkit.event.vehicle.VehicleExitEvent;
  * @author Fraspace5
  */
 public class BoatListener implements Listener {
-    
-      
+
+    /*
     // Checks if user getting on the boat has permission, and that the boat is
     // his. Otherwise removes boat when empty.
     @EventHandler
@@ -50,6 +50,7 @@ public class BoatListener implements Listener {
             }
         }
     }
+     */
 
     // Remove boat when rider dismounts
     @EventHandler
