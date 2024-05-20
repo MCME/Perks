@@ -18,15 +18,14 @@ package com.mcmiddleearth.perks.permissions;
 
 import com.mcmiddleearth.perks.PerksPlugin;
 import com.mcmiddleearth.perks.utils.HttpTextInputHandler;
+import org.bukkit.Bukkit;
+import org.bukkit.configuration.MemoryConfiguration;
+
 import java.io.BufferedReader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 import java.util.UUID;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import org.bukkit.Bukkit;
-import org.bukkit.configuration.MemoryConfiguration;
 
 /**
  *
