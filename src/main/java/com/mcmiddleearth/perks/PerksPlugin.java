@@ -77,6 +77,7 @@ public class PerksPlugin extends JavaPlugin {
         PerkManager.addPerk(new JockeyPerk());
         PerkManager.addPerk(new GallopPerk());
         PerkManager.addPerk(new ParrotPerk());
+        PerkManager.addPerk(new CompanionPerk());
         PerkManager.addPerk(new BoatPerk());
         PerkManager.addPerk(new CompassPerk());
         PerkManager.addPerk(new PotionEffectPerk("speed",
