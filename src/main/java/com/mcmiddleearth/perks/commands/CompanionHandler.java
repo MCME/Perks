@@ -31,7 +31,7 @@ import org.bukkit.entity.Parrot.Variant;
 
 /**
  *
- * @author Fraspace5
+ * @author Fraspace5, Eriol_Eandur
  */
 public class CompanionHandler extends PerksCommandHandler {
 
@@ -47,10 +47,11 @@ public class CompanionHandler extends PerksCommandHandler {
     
     @Override
     public String getUsageDescription(String cmd) {
-        return "[color] [pattern]: Put a parrot on your shoulder. Without arguments it will have a random color and default position(left). "
-                +"Possible colors are: "+PerksPlugin.getMessageUtil().HIGHLIGHT_STRESSED
-                +"blue, cyan, gray, green, red "+PerksPlugin.getMessageUtil().HIGHLIGHT
-                +"Possible patterns are: "+PerksPlugin.getMessageUtil().HIGHLIGHT_STRESSED;
+        return "cat|dog|dismiss [name] [collar color] [type]: Summons a pet. "
+                +"Possible collar colors are: "+PerksPlugin.getMessageUtil().HIGHLIGHT_STRESSED
+                +"black, blue, brown, cyan, gray, green, light_blue, light_gray, lime, magenta, orange, pink, purple, red, white and yellow"+PerksPlugin.getMessageUtil().HIGHLIGHT
+                +"So far types are implemented for cats only: "+PerksPlugin.getMessageUtil().HIGHLIGHT_STRESSED
+                +"all_black, black, british_shorthair, calico, jellie, persian, ragdoll, red, siamese, tabby and white";
     }
     
     @Override
@@ -59,59 +60,59 @@ public class CompanionHandler extends PerksCommandHandler {
         Player player = (Player)cs;
         
              
-        if(args.length>0 && args[0].equalsIgnoreCase("info")) {
-            PerksPlugin.getMessageUtil().sendInfoMessage(cs, "Get a companion: /perk companion [remove] [color] [position] ");
-            PerksPlugin.getMessageUtil().sendInfoMessage(cs, "[color] -> "+ChatColor.GREEN+"blue, cyan, gray, green, red,");
-            PerksPlugin.getMessageUtil().sendInfoMessage(cs, "[position] -> "+ChatColor.GREEN+"left, right");
+        if(args.length<1 || args[0].equalsIgnoreCase("info")) {
+            PerksPlugin.getMessageUtil().sendInfoMessage(cs, "Summon a pet: /perk pet cat|dog|dismiss [name] [collar color] [type] ");
+            PerksPlugin.getMessageUtil().sendInfoMessage(cs, "[collar color] -> "+ChatColor.GREEN+"black, blue, brown, cyan, gray, green, light_blue, light_gray, lime, magenta, orange, pink, purple, red, white, yellow,");
+            PerksPlugin.getMessageUtil().sendInfoMessage(cs, "[type] -> "+ChatColor.GREEN+"all_black, black, british_shorthair, calico, jellie, persian, ragdoll, red, siamese, tabby, white");
          
             return;
         }
         if (player.isFlying()) {
            
-            PerksPlugin.getMessageUtil().sendErrorMessage(cs, "Parrots are not supported while flying!");
+            PerksPlugin.getMessageUtil().sendErrorMessage(cs, "Companions are not supported while flying!");
             return;
         } 
         Location location = player.getLocation();
         World world = player.getWorld();
         CompanionPerk.allowSpawn(true);
-        /*Animals companion = switch (args[0]) {
-            case "wolf" -> world.spawn(location, Wolf.class);
-            case "cat" -> world.spawn(location, Cat.class);
-            case "fox" -> world.spawn(location, Fox.class);
-            case "ocelot" -> world.spawn(location, Ocelot.class);
-            case "parrot" -> world.spawn(location, Parrot.class);
-            default -> null;
-                };
-        companion.setAdult();
-        //companion.setVariant(variant);
-        if(companion instanceof Ocelot ocelot) {
-            ocelot.setTrusting(true);
-        } else if(companion instanceof Fox fox) {
-            fox.setFirstTrustedPlayer(player);
-        } else {
-            Tameable tameable =  (Tameable) companion;
-            tameable.setTamed(true);
-            tameable.setOwner(player);
-            if(args.length>1) {
-                if(tameable instanceof Wolf wolf) {
-                    wolf.setCollarColor(DyeColor.valueOf(args[1].toUpperCase()));
-                    wolf.setInterested(true);
-                } else if(tameable instanceof Cat cat) {
-                    cat.setCollarColor(DyeColor.valueOf(args[1].toUpperCase()));
-                    cat.setHeadUp(true);
-                };
-            }
-            if(args.length>2) {
-                if(tameable instanceof Cat cat) {
-                    cat.setCatType(Cat.Type.valueOf(args[2].toUpperCase()));
-                    cat.setLyingDown(true);
+        String name = player.getName()+"'s pet";
+        if(args.length>1) {
+            name = args[1];
+        }
+        DyeColor collarColor = DyeColor.values()[NumericUtil.getRandom(0,DyeColor.values().length-1)];
+        if(args.length>2) {
+            for(DyeColor color: DyeColor.values()) {
+                if(args[2].toUpperCase().equals(color.name())) {
+                    collarColor = color;
+                    break;
                 }
             }
         }
-        companion.setCustomName(ChatColor.DARK_AQUA + player.getName()
-                        + CompanionPerk.companion_perk_custom_Name);
-        CompanionPerk.allowSpawn(false);*/
-        PerksPlugin.getMessageUtil().sendInfoMessage(player, "Enjoy your companion!");
+        Cat.Type catType = Cat.Type.values()[NumericUtil.getRandom(0,Cat.Type.values().length-1)];
+        if(args.length>3) {
+            for(Cat.Type type: Cat.Type.values()) {
+                if(args[3].toUpperCase().equals(type.name())) {
+                    catType = type;
+                    break;
+                }
+            }
+        }
+        if(args[0].equalsIgnoreCase("cat")) {
+            CompanionPerk.spawnCat(player, name, collarColor, catType);
+            PerksPlugin.getMessageUtil().sendInfoMessage(player, "Enjoy your cat!");
+        } else if(args[0].equalsIgnoreCase("dog")) {
+            CompanionPerk.spawnDog(player, name, collarColor);
+            PerksPlugin.getMessageUtil().sendInfoMessage(player, "Enjoy your dog!");
+        } else if(args[0].equalsIgnoreCase("dismiss")) {
+            if(args.length<2) {
+                name = null;
+            }
+            CompanionPerk.dismissCompanions(player, name);
+            PerksPlugin.getMessageUtil().sendInfoMessage(player, "You dismissed your pet!");
+        } else {
+            PerksPlugin.getMessageUtil().sendErrorMessage(cs, "Valid subcommands: dog | cat | dismiss");
+        }
+        CompanionPerk.allowSpawn(false);
     }
     
 }
