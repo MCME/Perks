@@ -26,6 +26,8 @@ import org.bukkit.block.BlockFace;
 import org.bukkit.block.data.Bisected;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.block.data.type.Cake;
+import org.bukkit.block.data.type.Slab;
+import org.bukkit.block.data.type.Snow;
 import org.bukkit.block.data.type.Stairs;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
@@ -71,7 +73,7 @@ public class SitPerk extends Perk {
     public static void sitDown(Player player, Block clicked) {
         double xshift = 0.5;
         double zshift = 0.5;
-        double yshift = -0.75;
+        double yshift = -0.92;
         xshift = xshift + (hasSpecialXAdjust(clicked)?getSpecialXAdjust(clicked):getXBlockAdjust(clicked));
         yshift = yshift + (hasSpecialYAdjust(clicked)?getSpecialYAdjust(clicked):getYBlockAdjust(clicked));
         zshift = zshift + (hasSpecialZAdjust(clicked)?getSpecialZAdjust(clicked):getZBlockAdjust(clicked));
@@ -147,22 +149,29 @@ public class SitPerk extends Perk {
     }
     
     private static double getYBlockAdjust(Block clicked) {
+Logger.getGlobal().info("getYAdjust: "+clicked);
         if(clicked.getType().equals(Material.SNOW)) {
-            return -0.875+(1/8.0)*clicked.getData();
+Logger.getGlobal().info("Snow");
+            return -1+(1/8.0)*((Snow)clicked.getBlockData()).getLayers();
         }
         if(isHalfBlock(clicked) || isStairBlock(clicked)) {
-            return -0.44;
+Logger.getGlobal().info("Half block");
+            return -0.5;
         }
         if(isQuarterBlock(clicked)) {
+Logger.getGlobal().info("Quarter block");
             return -0.68;
         }
         if(isCarpet(clicked)) {
+Logger.getGlobal().info("Carpet");
             return -0.9;
         }
         if(isUnsolid(clicked)) {
+Logger.getGlobal().info("unsolid");
             return -1;
         }
         if(isThreeQuarterBlock(clicked)){
+Logger.getGlobal().info("three quarter block");
             return -0.22;
         }
         return 0;
@@ -171,49 +180,18 @@ public class SitPerk extends Perk {
     private static boolean isUnsolid(Block clicked) {
         String name = clicked.getType().name();
         if(name.contains("SAPLING")
-                || name.contains("SAPLING")
                 || name.contains("WALL_BANNER")
                 || name.contains("BUTTON")) {
             return true;
         }
-        switch(clicked.getType()) {
-            case GRASS:
-            case RED_DYE:
-            case RED_MUSHROOM:
-            case BROWN_MUSHROOM:
-            case WHEAT:
-            case POTATO:
-            case CARROT:
-            case REDSTONE_WIRE:
-            case TRIPWIRE_HOOK:
-            case NETHER_WART:
-            case MELON_STEM:
-            case PUMPKIN_STEM:
-            case STRING:
-            case FLOWER_POT:
-            case ACACIA_WALL_SIGN:
-            case BIRCH_WALL_SIGN:
-            case DARK_OAK_WALL_SIGN:
-            case JUNGLE_WALL_SIGN:
-            case OAK_WALL_SIGN:
-            case SPRUCE_WALL_SIGN:
-            case COBWEB:
-            case DEAD_BUSH:
-            case TORCH:
-            case REDSTONE_TORCH:
-            case LEVER:
-            case VINE:
-            case TALL_GRASS:
-            case LADDER:
-            case RAIL:
-            case POWERED_RAIL:
-            case ACTIVATOR_RAIL:
-            case DETECTOR_RAIL:
-            case CAKE:
-            case BEETROOT:
-                return true;
-        }
-        return false;
+        return switch (clicked.getType()) {
+            case SHORT_GRASS, RED_DYE, RED_MUSHROOM, BROWN_MUSHROOM, WHEAT, POTATO, CARROT, REDSTONE_WIRE,
+                 TRIPWIRE_HOOK, NETHER_WART, MELON_STEM, PUMPKIN_STEM, STRING, FLOWER_POT, ACACIA_WALL_SIGN,
+                 BIRCH_WALL_SIGN, DARK_OAK_WALL_SIGN, JUNGLE_WALL_SIGN, OAK_WALL_SIGN, SPRUCE_WALL_SIGN, COBWEB,
+                 DEAD_BUSH, TORCH, REDSTONE_TORCH, LEVER, VINE, TALL_GRASS, LADDER, RAIL, POWERED_RAIL, ACTIVATOR_RAIL,
+                 DETECTOR_RAIL, CAKE, BEETROOT -> true;
+            default -> false;
+        };
     }
     
     private static boolean isThreeQuarterBlock(Block clicked) {
@@ -221,12 +199,10 @@ public class SitPerk extends Perk {
         if(name.contains("WALL_HEAD")) {
             return true;
         }
-        switch(clicked.getType()) {
-            case ENCHANTING_TABLE:
-            case END_PORTAL_FRAME:
-                return true;
-        }
-        return false;
+        return switch (clicked.getType()) {
+            case ENCHANTING_TABLE, END_PORTAL_FRAME -> true;
+            default -> false;
+        };
     }
     
     private static boolean isCarpet(Block clicked) {
@@ -260,16 +236,14 @@ public class SitPerk extends Perk {
             return true;
         }
         BlockData data = clicked.getBlockData();
-        if(((data instanceof Cake) && (((Cake)data).getBites()<5))
-            || (data instanceof Bisected) && (((Bisected)data).getHalf().equals(Bisected.Half.BOTTOM))) {
-            return true;
-        }
-        return false;
+Logger.getGlobal().info("BlockData: "+data+" "+(data instanceof Slab) );
+        return ((data instanceof Cake) && (((Cake) data).getBites() < 5))
+                || (data instanceof Slab slab) && (slab.getType().equals(Slab.Type.BOTTOM));
     }
     private static boolean isStairBlock(Block clicked) {
         BlockData data = clicked.getBlockData();
-        return (data instanceof Stairs) 
-                && ((Stairs)data).getHalf().equals(Bisected.Half.BOTTOM);
+        return (data instanceof Stairs stairs)
+                && (stairs.getHalf().equals(Stairs.Half.BOTTOM));
         }
 
     private static float getStairYaw(Block clicked) {
