@@ -54,3 +54,6 @@ perks:
     enabled: true
   horse:
     enabled: true
+  companion:
+    enabled: true
+    maxAllowedNumber: 3

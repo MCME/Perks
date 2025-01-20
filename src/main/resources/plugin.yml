@@ -4,7 +4,7 @@ version: ${project.version}
 authors: [daggs, meggawatts, Eriol_Eandur, Jubo]
 softdepend: [bukkit, worldedit, spigot-api]
 depend: [PluginUtils]
-api-version: 1.18
+api-version: 1.21
 
 commands:
    perk:
