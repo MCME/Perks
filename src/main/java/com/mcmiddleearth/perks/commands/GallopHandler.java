@@ -49,8 +49,10 @@ public class GallopHandler extends PerksCommandHandler {
         new BukkitRunnable() {
             @Override
             public void run() {
-                AttributeInstance attrib = ((Horse)player.getVehicle()).getAttribute(Attribute.GENERIC_MOVEMENT_SPEED);
-                AttributeModifier mod = new AttributeModifier(player.getUniqueId(),"Perks Gallop",speedFactor,AttributeModifier.Operation.MULTIPLY_SCALAR_1);
+                AttributeInstance attrib = ((Horse)player.getVehicle()).getAttribute(Attribute.MOVEMENT_SPEED);
+                AttributeModifier mod = new AttributeModifier(player.getUniqueId(),
+                                                            "Perks Gallop",speedFactor,
+                                                            AttributeModifier.Operation.MULTIPLY_SCALAR_1);
                 if(cmd.equals("gallop")) {
                     if(!attrib.getModifiers().contains(mod)) {
                         attrib.addModifier(mod);

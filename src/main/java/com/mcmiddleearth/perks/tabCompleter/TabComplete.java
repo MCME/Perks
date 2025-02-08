@@ -22,6 +22,7 @@ public class TabComplete implements TabCompleter {
         if(PermissionData.isAllowed((Player)commandSender, PerkManager.forName("ring"))) completions.add("ring");
         if(PermissionData.isAllowed((Player)commandSender, PerkManager.forName("light"))) completions.add("light");
         if(PermissionData.isAllowed((Player)commandSender,PerkManager.forName("boat"))) completions.add("boat");
+        if(PermissionData.isAllowed((Player)commandSender,PerkManager.forName("pet"))) completions.add("pet");
         if(PermissionData.isAllowed((Player)commandSender,PerkManager.forName("horse"))) completions.add("horse");
         if(PermissionData.isAllowed((Player)commandSender,PerkManager.forName("firework"))) completions.add("firework");
         if(PermissionData.isAllowed((Player)commandSender,PerkManager.forName("elytra"))) completions.add("elytra");

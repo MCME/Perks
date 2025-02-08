@@ -29,25 +29,27 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import java.util.logging.Logger;
+
 /**
  *
  * @author Eriol_Eandur
  */
 public class ItemPerk extends Perk {
-    
+
     private String itemName = PerksPlugin.getPerkString(this.getName(),
-                                                             "itemName", null);
+            "itemName", null);
     private int itemQuantity = PerksPlugin.getPerkInt(this.getName(),
-                                                             "itemAmount", -1);
-    
+            "itemQuantity", -1);
+
     private final Material itemMaterial;
-    
+
     public ItemPerk(String name, Material itemMaterial, String itemName, int quantity) {
         super(name);
         if(this.itemName==null) {
             this.itemName = itemName;
         }
-        if(itemQuantity==-1) {
+        if(itemQuantity == -1) {
             itemQuantity = quantity;
         }
         setListener(new ItemListener(this));
@@ -57,12 +59,12 @@ public class ItemPerk extends Perk {
         } else {
             this.itemMaterial = Material.valueOf(mat);
         }
-        
+
         setCommandHandler(new ItemHandler(this, Permissions.USER.getPermissionNode()),name);
     }
-      
+
     public boolean hasItem(Player player) {
-       return player.getInventory().contains(itemMaterial);
+        return player.getInventory().contains(itemMaterial);
     }
 
     public void giveItem(Player player) {
@@ -72,9 +74,10 @@ public class ItemPerk extends Perk {
         meta.setDisplayName(player.getDisplayName()+"'s "+name);
         meta.setUnbreakable(true);
         item.setItemMeta(meta);
+        item.setAmount(itemQuantity);
         player.getInventory().addItem(item);
     }
-    
+
     @Override
     public void check() {
         //check items of all players
@@ -85,7 +88,7 @@ public class ItemPerk extends Perk {
 
     @Override
     public void disable() {
-        //remoe elytras of all players
+        //remove elytras of all players
         for(Player p:Bukkit.getOnlinePlayers()) {
             removeItems(p);
         }
@@ -96,7 +99,7 @@ public class ItemPerk extends Perk {
             removeItems(p);
         }
     }
-    
+
     public void removeItems(Player p) {
         PlayerInventory inv = p.getInventory();
         inv.remove(itemMaterial);
@@ -118,7 +121,7 @@ public class ItemPerk extends Perk {
             inv.setItemInOffHand(new ItemStack(Material.AIR));
         }
     }
-    
+
     @Override
     public void writeDefaultConfig(ConfigurationSection config) {
         config.set("itemName", itemName);

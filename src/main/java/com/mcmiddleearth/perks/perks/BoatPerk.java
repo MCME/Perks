@@ -22,10 +22,7 @@ import com.mcmiddleearth.perks.permissions.PermissionData;
 import com.mcmiddleearth.perks.permissions.Permissions;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.EntityType;
-import org.bukkit.entity.Player;
-import org.bukkit.entity.Vehicle;
+import org.bukkit.entity.*;
 
 /**
  *
@@ -70,7 +67,7 @@ public class BoatPerk extends Perk {
     public static boolean isBoatPerk(Entity entity) {
         return entity.getCustomName()!=null
                 && entity.getCustomName().contains(boat_perk_custom_Name)
-                && entity.getType().equals(EntityType.BOAT);
+                && entity instanceof Boat;
     }
 
     public static void allowSpawn(boolean allow) {

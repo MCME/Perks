@@ -39,13 +39,13 @@ import java.util.Arrays;
  * @author Eriol_Eandur
  */
 public class PotionEffectPerk extends Perk {
-    
+
     private String itemName = PerksPlugin.getPerkString(this.getName(),
-                                                             "itemName",null);
-    
+            "itemName",null);
+
     private final ItemStack item;
     private final PotionEffectData[] effectData;
-    
+
     public PotionEffectPerk(String name, ItemStack item, String itemName, PotionEffectData... effectData) {
         super(name);
         String mat = PerksPlugin.getPerkString(this.getName(),"item",null);
@@ -58,11 +58,11 @@ public class PotionEffectPerk extends Perk {
             this.itemName = itemName;
         }
         this.effectData = effectData;
-        
+
         setListener(new PotionEffectListener(name));
         setCommandHandler(new PotionEffectHandler(this, Permissions.USER.getPermissionNode()),name);
     }
-      
+
     public void giveItem(Player player) {
         ItemStack resultItem = new ItemStack(item);
         ItemMeta meta = resultItem.getItemMeta();
@@ -72,7 +72,7 @@ public class PotionEffectPerk extends Perk {
         resultItem.setItemMeta(meta);
         player.getInventory().addItem(resultItem);
     }
-    
+
     public void giveEffect(final Player player) {
         for(PotionEffectData data:effectData) {
             player.addPotionEffect(data.getPotionEffect(), true);
@@ -89,7 +89,7 @@ public class PotionEffectPerk extends Perk {
             }
         }
     }
-    
+
     public boolean isActive(Player player) {
         for(PotionEffectData data:effectData) {
             if(!player.hasPotionEffect(data.type)) {
@@ -98,7 +98,7 @@ public class PotionEffectPerk extends Perk {
         }
         return true;
     }
-    
+
     public void removeEffect(Player player) {
         for(PotionEffectData data:effectData) {
             if(player.hasPotionEffect(data.type)) {
@@ -107,23 +107,23 @@ public class PotionEffectPerk extends Perk {
             }
         }
     }
-    
+
     public static class PotionEffectData {
         private final int duration, amplifier;
         private final PotionEffectType type;
 
         private final Sound worldSound;
         private final Sound[] playerSounds;
-        
+
         public PotionEffectData(String name, PotionEffectType type, //int duration, int amplifier,
                                 Sound worldSound, Sound... sounds) {
             this.worldSound = worldSound;
             this.playerSounds = sounds;
-            this.duration = PerksPlugin.getPerkInt(name, "duration",1200);
+            this.duration = PerksPlugin.getPerkInt(name, "duration",-1);
             this.amplifier = PerksPlugin.getPerkInt(name, "amplifier",1);
             this.type = type;
         }
-        
+
         public PotionEffect getPotionEffect() {
             return new PotionEffect(type, duration, amplifier);
         }
@@ -136,7 +136,7 @@ public class PotionEffectPerk extends Perk {
             return playerSounds;
         }
     }
-    
+
     @Override
     public void check() {
         for(Player player: Bukkit.getOnlinePlayers()) {
@@ -150,11 +150,11 @@ public class PotionEffectPerk extends Perk {
     public void disable() {
         check();
     }
-    
+
     @Override
     public void writeDefaultConfig(ConfigurationSection config) {
         config.set("itemName", itemName);
-        config.set("duration", 1200);
+        config.set("duration", -1);
         config.set("amplifier", 1);
         config.set("item", item.getType().name());
     }

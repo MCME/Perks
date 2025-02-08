@@ -1,7 +1,7 @@
 settings:
-    enabled: true
+  enabled: true
 update:
-    donor: https://www.mcmiddleearth.com/tools/printdonations.php
+  donor: https://www.mcmiddleearth.com/tools/printdonations.php
 perks:
   sit:
     item: GHAST_TEAR
@@ -44,11 +44,16 @@ perks:
     itemName: Boots of Speed
     item: DIAMOND_BOOTS
     amplifier: 4
+    duration: -1
     enabled: true
   jump:
     itemName: Leggings of Jumping
     item: DIAMOND_LEGGINGS
     amplifier: 50
+    duration: -1
     enabled: true
   horse:
     enabled: true
+  companion:
+    enabled: true
+    maxAllowedNumber: 3
