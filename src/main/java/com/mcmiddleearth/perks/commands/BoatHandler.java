@@ -21,17 +21,18 @@ import com.mcmiddleearth.perks.perks.BoatPerk;
 import com.mcmiddleearth.perks.perks.Perk;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
-import org.bukkit.TreeSpecies;
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Boat;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.boat.OakBoat;
 
 
 /**
  *
- * @author Fraspace5
+ * @author Fraspace5, Eriol_Eandur
  */
+@SuppressWarnings("unchecked")
 public class BoatHandler extends PerksCommandHandler {
     
     public BoatHandler(Perk perk, String... permissionNodes) {
@@ -62,119 +63,36 @@ public class BoatHandler extends PerksCommandHandler {
             PerksPlugin.getMessageUtil().sendInfoMessage(cs, "[woodType] -> "+ChatColor.GREEN+"acacia, birch, dark_oak, generic, jungle, redwood");
            return;
         }
-        
-        if (args.length>0 && args[0].equalsIgnoreCase("acacia")){
-        
-        Location l = player.getLocation();
-        World w = player.getWorld();
 
+
+        Location location = player.getLocation();
+        World world = player.getWorld();
+        Class<? extends Boat> boatClass = OakBoat.class;
+        if(args.length>0) {
+            try {
+                boatClass = (Class<? extends Boat>) Class.forName("org.bukkit.entity.boat."
+                        +getBoatType(args)+"Boat");
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+                PerksPlugin.getMessageUtil().sendErrorMessage(cs, "Boat type not found! Using oak boat.");
+            }
+        }
         BoatPerk.allowSpawn(true);
-        Boat boat = w.spawn(l, Boat.class);
-        boat.setWoodType(TreeSpecies.ACACIA);
+        Boat boat = world.spawn(location,boatClass);
         boat.setCustomName(ChatColor.DARK_AQUA + player.getName()
-                        + BoatPerk.boat_perk_custom_Name);
+                + BoatPerk.boat_perk_custom_Name);
         boat.addPassenger(player);
         BoatPerk.allowSpawn(false);
         PerksPlugin.getMessageUtil().sendInfoMessage(player, "Enjoy your boat!");
-        
-        }
-         
-        else if (args.length>0 && args[0].equalsIgnoreCase("birch")){
-        
-        Location l = player.getLocation();
-        World w = player.getWorld();
 
-        BoatPerk.allowSpawn(true);
-        Boat horsey = w.spawn(l, Boat.class);
-        horsey.setWoodType(TreeSpecies.BIRCH);
-        horsey.setCustomName(ChatColor.DARK_AQUA + player.getName()
-                        + BoatPerk.boat_perk_custom_Name);
-        horsey.addPassenger(player);
-        BoatPerk.allowSpawn(false);
-        PerksPlugin.getMessageUtil().sendInfoMessage(player, "Enjoy your boat!");
-        
-        }
-         
-        else if (args.length>0 && args[0].equalsIgnoreCase("dark_oak")){
-        
-        Location l = player.getLocation();
-        World w = player.getWorld();
+    }
 
-        BoatPerk.allowSpawn(true);
-        Boat horsey = w.spawn(l, Boat.class);
-        horsey.setWoodType(TreeSpecies.DARK_OAK);
-        horsey.setCustomName(ChatColor.DARK_AQUA + player.getName()
-                        + BoatPerk.boat_perk_custom_Name);
-        horsey.addPassenger(player);
-        BoatPerk.allowSpawn(false);
-        PerksPlugin.getMessageUtil().sendInfoMessage(player, "Enjoy your boat!");
-        
+    private String getBoatType(String[] args) {
+        StringBuilder result = new StringBuilder();
+        for (String arg : args) {
+            result.append(arg.substring(0, 1).toUpperCase()).append(arg.substring(1));
         }
-         
-        else if (args.length>0 && args[0].equalsIgnoreCase("generic")){
-        
-        Location l = player.getLocation();
-        World w = player.getWorld();
-
-        BoatPerk.allowSpawn(true);
-        Boat horsey = w.spawn(l, Boat.class);
-        horsey.setWoodType(TreeSpecies.GENERIC);
-        horsey.setCustomName(ChatColor.DARK_AQUA + player.getName()
-                        + BoatPerk.boat_perk_custom_Name);
-        horsey.addPassenger(player);
-        BoatPerk.allowSpawn(false);
-        PerksPlugin.getMessageUtil().sendInfoMessage(player, "Enjoy your boat!");
-        
-        }
-         
-        else if (args.length>0 && args[0].equalsIgnoreCase("jungle")){
-        
-        Location l = player.getLocation();
-        World w = player.getWorld();
-
-        BoatPerk.allowSpawn(true);
-        Boat horsey = w.spawn(l, Boat.class);
-        horsey.setWoodType(TreeSpecies.JUNGLE);
-        horsey.setCustomName(ChatColor.DARK_AQUA + player.getName()
-                        + BoatPerk.boat_perk_custom_Name);
-        horsey.addPassenger(player);
-        BoatPerk.allowSpawn(false);
-        PerksPlugin.getMessageUtil().sendInfoMessage(player, "Enjoy your boat!");
-        
-        }
-         
-        else if (args.length>0 && args[0].equalsIgnoreCase("redwood")){
-        
-        Location l = player.getLocation();
-        World w = player.getWorld();
-
-        BoatPerk.allowSpawn(true);
-        Boat horsey = w.spawn(l, Boat.class);
-        horsey.setWoodType(TreeSpecies.REDWOOD);
-        horsey.setCustomName(ChatColor.DARK_AQUA + player.getName()
-                        + BoatPerk.boat_perk_custom_Name);
-        horsey.addPassenger(player);
-        BoatPerk.allowSpawn(false);
-        PerksPlugin.getMessageUtil().sendInfoMessage(player, "Enjoy your boat!");
-        
-        } else {
-          
-        Location l = player.getLocation();
-        World w = player.getWorld();
-
-        BoatPerk.allowSpawn(true);
-        Boat horsey = w.spawn(l, Boat.class);
-        horsey.setWoodType(TreeSpecies.GENERIC);
-        horsey.setCustomName(ChatColor.DARK_AQUA + player.getName()
-                        + BoatPerk.boat_perk_custom_Name);
-        horsey.addPassenger(player);
-        BoatPerk.allowSpawn(false);
-        PerksPlugin.getMessageUtil().sendInfoMessage(player, "Enjoy your boat!");
-        }
-        
-        
-        
-        
-        }
+        return result.toString();
+    }
 
 }
