@@ -9,31 +9,13 @@ fan:
 veteran:
     perks:
         - name
+        - horse
+        - jockey
     patreon: 10
 owl:
     perks:
         - sit
+        - ring
+        - light
         - elytra
     total: 100
-Donor:
-    5:
-        - name
-    10:
-        - sit
-    20:
-        - ring
-    30:
-        - jump
-    40:
-        - fire
-    50:
-        - horse
-    60:
-        - light
-    70:
-        - jockey
-    80:
-        - elytra
-    100:
-        - firework 
-    

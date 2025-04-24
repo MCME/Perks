@@ -149,29 +149,29 @@ public class SitPerk extends Perk {
     }
     
     private static double getYBlockAdjust(Block clicked) {
-Logger.getGlobal().info("getYAdjust: "+clicked);
+//Logger.getGlobal().info("getYAdjust: "+clicked);
         if(clicked.getType().equals(Material.SNOW)) {
-Logger.getGlobal().info("Snow");
+//Logger.getGlobal().info("Snow");
             return -1+(1/8.0)*((Snow)clicked.getBlockData()).getLayers();
         }
         if(isHalfBlock(clicked) || isStairBlock(clicked)) {
-Logger.getGlobal().info("Half block");
+//Logger.getGlobal().info("Half block");
             return -0.5;
         }
         if(isQuarterBlock(clicked)) {
-Logger.getGlobal().info("Quarter block");
+//Logger.getGlobal().info("Quarter block");
             return -0.68;
         }
         if(isCarpet(clicked)) {
-Logger.getGlobal().info("Carpet");
+//Logger.getGlobal().info("Carpet");
             return -0.9;
         }
         if(isUnsolid(clicked)) {
-Logger.getGlobal().info("unsolid");
+//Logger.getGlobal().info("unsolid");
             return -1;
         }
         if(isThreeQuarterBlock(clicked)){
-Logger.getGlobal().info("three quarter block");
+//Logger.getGlobal().info("three quarter block");
             return -0.22;
         }
         return 0;

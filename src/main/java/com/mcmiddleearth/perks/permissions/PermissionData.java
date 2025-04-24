@@ -47,6 +47,7 @@ public class PermissionData {
     private static final YamlConfiguration creditDefinitionConfig = new YamlConfiguration();
     
     private static final Map<UUID, List<String>> creditEntries = new HashMap<>();
+    private static Map<UUID, CreditData> creditDatas = new HashMap<>();
     
     private static final Set<Perk> freePerks = new HashSet<>();
     
@@ -93,17 +94,25 @@ Logger.getGlobal().info("Giving permission to "+ playerID+" for credit "+credit)
         }
     }
     
-    public static void updatePerkPermissions(Player player) {
+    public static CreditData updatePerkPermissions(Player player) {
         PermissionAttachment attachment = getPermissionAttachment(player);
         player.removeAttachment(attachment);
         List<String> credits = creditEntries.get(player.getUniqueId());
         if(credits==null) {
-            return;
+            return null;
         }
         CreditData creditData = new CreditData(credits);
 //Logger.getGlobal().info("Set perk perms for: "+player.getName()+" - "+creditKey);
         setPermissions(player.getUniqueId(), creditData);
         player.recalculatePermissions();
+        return creditData;
+    }
+
+    public static void setCredits(HashMap<UUID, CreditData> creditDatas) {
+        PermissionData.creditDatas = creditDatas;
+    }
+    public static CreditData getCredits(Player player) {
+        return creditDatas.get(player.getUniqueId());
     }
     
     private static void setPermissions(UUID playerId, CreditData creditData) {
@@ -131,6 +140,7 @@ Logger.getGlobal().info("Giving permission to "+ playerID+" for credit "+credit)
                     for(String perkName:perks) {
                         Perk perk = PerkManager.forName(perkName);
                         if(perk!=null) {
+Logger.getGlobal().info("Perk: "+player.getName()+" "+perk.getName());
                             attachment.setPermission(perk.getPermissionNode(), true);
                         }
                     }
@@ -154,7 +164,11 @@ Logger.getGlobal().info("Giving permission to "+ playerID+" for credit "+credit)
         return player.hasPermission(Permissions.USER.getPermissionNode()) 
                 && (player.hasPermission(perk.getPermissionNode()) || freePerks.contains(perk));
     }
-    
+
+    public static ConfigurationSection getPerkDefinitions() {
+        return creditDefinitionConfig;
+    }
+
     /**
      * Makes a perk available for everyone with Permission.USER.
      * @param perk

@@ -141,7 +141,7 @@ Logger.getGlobal().info(PATREON_URI+"/token"+params);
         }
 
         String response = new String(conn.getInputStream().readAllBytes());
-Logger.getGlobal().info(response);
+//Logger.getGlobal().info(response);
         JsonObject json = JsonParser.parseString(response).getAsJsonObject();
         return json.get("data").getAsJsonArray().get(0).getAsJsonObject()
                    .get("id").getAsString();
@@ -153,7 +153,7 @@ Logger.getGlobal().info(response);
         }
 Logger.getGlobal().info("Campaign ID: "+campaignId);
         HttpURLConnection conn = (HttpURLConnection) new URL(PATREON_URI+"/v2/campaigns/"+campaignId
-                +"/members?include=currently_entitled_tiers,user&fields[member]=lifetime_support_cents&fields[user]=social_connections")
+                +"/members?include=currently_entitled_tiers,user&fields[member]=lifetime_support_cents&fields[user]=social_connections&fields[tier]=title")
                 .openConnection();
         /*String includeParams = URLEncoder.encode("include=currently_entitled_tiers,user", StandardCharsets.UTF_8);
         String fieldsMemberParams = URLEncoder.encode("fields[member]=full_name,lifetime_support_cents,currently_entitled_tiers", StandardCharsets.UTF_8);
@@ -183,9 +183,10 @@ Logger.getGlobal().info(response);
         JsonObject jsonObject = JsonParser.parseString(json).getAsJsonObject();
         JsonArray data = jsonObject.get("data").getAsJsonArray();
         for (JsonElement jsonMember : data.asList()) {
-
+Logger.getGlobal().info("member: "+jsonMember.toString());
             int lifetimeSupport = jsonMember.getAsJsonObject().get("attributes").getAsJsonObject()
                     .get("lifetime_support_cents").getAsInt();
+Logger.getGlobal().info("lifetime: "+lifetimeSupport);
             JsonObject relationships = jsonMember.getAsJsonObject().get("relationships").getAsJsonObject();
             JsonArray tiers = relationships.get("currently_entitled_tiers").getAsJsonObject()
                     .get("data").getAsJsonArray();
@@ -197,6 +198,7 @@ Logger.getGlobal().info(response);
             int userId = relationships.get("user").getAsJsonObject()
                     .get("data").getAsJsonObject()
                     .get("id").getAsInt();
+Logger.getGlobal().info("userId: "+userId);
             String discordId = "";
             JsonArray included = jsonObject.get("included").getAsJsonArray();
             for (JsonElement additionalData : included.asList()) {
@@ -205,21 +207,24 @@ Logger.getGlobal().info(response);
                     JsonElement socialConnections = additionalData.getAsJsonObject()
                                                         .get("attributes").getAsJsonObject()
                                                         .get("social_connections");
+Logger.getGlobal().info("Found user: "+socialConnections);
                     if(socialConnections != null && socialConnections.isJsonObject()) {
                         JsonElement discord = socialConnections.getAsJsonObject().get("discord");
                         if (discord != null && discord.isJsonObject()) {
                             discordId = discord.getAsJsonObject().get("user_id").getAsString();
                         }
                     }
-                    break;
                 } else if(additionalData.getAsJsonObject().get("type").getAsString().equals("tier")
                         && tierIdList.contains(additionalData.getAsJsonObject().get("id").getAsString())) {
-                    tierTitleList.add(additionalData.getAsJsonObject().get("attributes").getAsJsonObject()
+Logger.getGlobal().info("Found tier: "+additionalData.getAsJsonObject().get("attributes").getAsJsonObject()
+        .get("title").getAsString());
+                    tierTitleList.add("tier_"+additionalData.getAsJsonObject().get("attributes").getAsJsonObject()
                                                                       .get("title").getAsString());
                 }
             }
+Logger.getGlobal().info("discordId: "+discordId);
             if(!discordId.isEmpty()) {
-                Member member = new Member(discordId, lifetimeSupport, tierTitleList);
+                Member member = new Member(discordId, lifetimeSupport/100, tierTitleList);
                 result.add(member);
             }
         }
@@ -229,12 +234,19 @@ Logger.getGlobal().info(response);
     public static void updateCredits(PermissionUpdater updater) {
         Bukkit.getScheduler().runTaskAsynchronously(PerksPlugin.getInstance(), ()  -> {
             Configuration config = new YamlConfiguration();
-            //todo: get Member tiers and donation sum, write into config
             try {
                 List<Member> members = fetchMembers(true);
+Logger.getGlobal().info("members found: "+ members.size());
                 for(Member member: members) {
-                    UUID uuid = DiscordUtil.getUniqueId(""+member.discordId);
+Logger.getGlobal().info("discordId: "+ member.discordId);
+                    UUID uuid = DiscordUtil.getUniqueId(member.discordId);
+                    if(member.discordId.equals("1257826230561149069")) {
+Logger.getGlobal().info("discordId replacement Eriol");
+                        uuid = DiscordUtil.getUniqueId("258267590516801536");
+                    }
+Logger.getGlobal().info("uuid: "+ uuid);
                     if(uuid != null) {
+                        member.tiers.add("patreon_"+member.sum);
                         config.set(uuid.toString(), member.tiers);
                     }
                 }
@@ -269,6 +281,7 @@ Logger.getGlobal().info(response);
         public Member(String discordId, int sum, List<String> tiers) {
             this.sum = sum;
             this.tiers = tiers;
+            this.discordId = discordId;
         }
 
         public String toString() {

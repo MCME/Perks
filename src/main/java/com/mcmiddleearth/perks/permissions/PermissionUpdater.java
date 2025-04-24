@@ -26,6 +26,10 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import java.util.HashMap;
+import java.util.UUID;
+import java.util.logging.Logger;
+
 /**
  *
  * @author Eriol_Eandur
@@ -44,6 +48,7 @@ public class PermissionUpdater extends BukkitRunnable{
     }
 
     public synchronized void updatePermissions() {
+Logger.getGlobal().info("updatePermissions "+sourcesFinished);
         sourcesFinished++;
         if(sourcesFinished<2) {
             return;
@@ -52,12 +57,17 @@ public class PermissionUpdater extends BukkitRunnable{
         new BukkitRunnable() {
             @Override
             public void run() {
-            for(Player player: Bukkit.getOnlinePlayers()) {
-                PermissionData.updatePerkPermissions(player);
-            }
-            for(Perk perk: PerkManager.getPerks()) {
-                perk.check();
-            }
+                HashMap<UUID, CreditData> creditData = new HashMap<>();
+                for(Player player: Bukkit.getOnlinePlayers()) {
+                    CreditData data = PermissionData.updatePerkPermissions(player);
+                    if(data!=null) {
+                        creditData.put(player.getUniqueId(), data);
+                    }
+                }
+                PermissionData.setCredits(creditData);
+                for(Perk perk: PerkManager.getPerks()) {
+                    perk.check();
+                }
             }
         }.runTask(PerksPlugin.getInstance());
     }
