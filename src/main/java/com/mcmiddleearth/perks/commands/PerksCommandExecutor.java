@@ -42,6 +42,7 @@ public class PerksCommandExecutor implements CommandExecutor {
         addCommandHandler("info", new EnableHandler(Permissions.ADMIN.getPermissionNode()));
         addCommandHandler("open", new OpenHandler(Permissions.ADMIN.getPermissionNode()));
         addCommandHandler("close", new OpenHandler(Permissions.ADMIN.getPermissionNode()));
+        addCommandHandler("patreon", new PatreonTestHandler(Permissions.ADMIN.getPermissionNode()));
     }
     
     @Override

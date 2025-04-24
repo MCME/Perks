@@ -2,6 +2,10 @@ settings:
   enabled: true
 update:
   donor: https://www.mcmiddleearth.com/tools/printdonations.php
+patreon:
+  client_id: xxx
+  client_secret: xxx
+  redirect_uri: https://build.mcmiddleearth.com
 perks:
   sit:
     item: GHAST_TEAR

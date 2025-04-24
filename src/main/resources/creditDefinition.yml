@@ -1,3 +1,20 @@
+fan:
+    perks:
+        - name
+        - sit
+    forum: 5
+    tiers:
+    - fan
+    - supporter
+veteran:
+    perks:
+        - name
+    patreon: 10
+owl:
+    perks:
+        - sit
+        - elytra
+    total: 100
 Donor:
     5:
         - name

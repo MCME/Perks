@@ -23,12 +23,7 @@ import com.mcmiddleearth.pluginutil.NumericUtil;
 import org.bukkit.configuration.file.YamlConfiguration;
 import java.io.File;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.bukkit.Bukkit;
@@ -51,7 +46,7 @@ public class PermissionData {
     
     private static final YamlConfiguration creditDefinitionConfig = new YamlConfiguration();
     
-    private static final Map<UUID, List<String>> creditData = new HashMap<>();
+    private static final Map<UUID, List<String>> creditEntries = new HashMap<>();
     
     private static final Set<Perk> freePerks = new HashSet<>();
     
@@ -70,84 +65,73 @@ public class PermissionData {
         }
     }
     
-    private static void saveCreditData() {
+    public static void saveCreditData() {
         try {
             YamlConfiguration creditDataConfig = new YamlConfiguration();
-            for(UUID playerID: creditData.keySet()) {
-                creditDataConfig.set(playerID.toString(), creditData.get(playerID));
+            for(UUID playerID: creditEntries.keySet()) {
+                creditDataConfig.set(playerID.toString(), creditEntries.get(playerID));
             }
             creditDataConfig.save(creditDataFile);
         } catch (IOException ex) {
             Logger.getLogger(PermissionData.class.getName()).log(Level.SEVERE, "Error while saving credit Data.");
         }
     }
-    
+
+    public static void clearCredits() {
+        creditEntries.clear();
+    }
+
     public static synchronized void updateCredits(Configuration newCredits) {
-        creditData.clear();
         for(String playerID:newCredits.getKeys(false)) {
+            UUID playerUuid = UUID.fromString(playerID);
             List<String> credits = newCredits.getStringList(playerID);
-            creditData.put(UUID.fromString(playerID), credits);
+            List<String> entry = creditEntries.computeIfAbsent(playerUuid, k -> new ArrayList<>());
+            entry.addAll(credits);
 /*for(String credit: credits) {
 Logger.getGlobal().info("Giving permission to "+ playerID+" for credit "+credit);
 }*/
         }
-        saveCreditData();
-        new BukkitRunnable() {
-            @Override
-            public void run() {
-                for(Player player: Bukkit.getOnlinePlayers()) {
-                    updatePerkPermissions(player);
-                }
-                for(Perk perk: PerkManager.getPerks()) {
-                    perk.check();
-                }
-            }
-        }.runTask(PerksPlugin.getInstance());
     }
     
     public static void updatePerkPermissions(Player player) {
         PermissionAttachment attachment = getPermissionAttachment(player);
         player.removeAttachment(attachment);
-        List<String> credits = creditData.get(player.getUniqueId());
+        List<String> credits = creditEntries.get(player.getUniqueId());
         if(credits==null) {
             return;
         }
-        for(String creditKey: credits) {
+        CreditData creditData = new CreditData(credits);
 //Logger.getGlobal().info("Set perk perms for: "+player.getName()+" - "+creditKey);
-            setPermissions(player.getUniqueId(), creditKey, true);
-        }
+        setPermissions(player.getUniqueId(), creditData);
         player.recalculatePermissions();
     }
     
-    private static void setPermissions(UUID playerId, String creditKey, boolean give) {
+    private static void setPermissions(UUID playerId, CreditData creditData) {
         Player player = Bukkit.getPlayer(playerId);
         if(player==null) {
             return;
         }
-//Logger.getGlobal().info("1");
         PermissionAttachment attachment = getPermissionAttachment(player);
-        String[] data = creditKey.split("_");
-//Logger.getGlobal().info(data[0]+ " "+ data[1]);
-//Logger.getGlobal().info("Definition: "+creditDefinitionConfig.getName());
-        ConfigurationSection section = creditDefinitionConfig.getConfigurationSection(data[0]);
-//Logger.getGlobal().info(""+section);
-        if(section==null || data.length<2 || !NumericUtil.isInt(data[1])) {
-            return;
-        }
-//Logger.getGlobal().info(data[0]+ " "+ data[1]);
-        for(String value: section.getKeys(false)) {
-//Logger.getGlobal().info("section key: "+value);
-            if(NumericUtil.isInt(value) 
-                    && NumericUtil.getInt(value)<=NumericUtil.getInt(data[1])) {
-                List<String> perks = section.getStringList(value);
-//Logger.getGlobal().info(perks.toString());
-                if(perks!=null) {
+        for(String perkKey: creditDefinitionConfig.getKeys(false)) {
+            ConfigurationSection perkSection = creditDefinitionConfig.getConfigurationSection(perkKey);
+            double forum = perkSection.getDouble("forum",0);
+            double patreon = perkSection.getDouble("patreon", 0);
+            double total = perkSection.getDouble("total", 0);
+            List<String> tiers = perkSection.getStringList("tiers");
+            if(creditData.getForum() >= forum && creditData.getPatreon() >= patreon && creditData.getTotal() >= total) {
+                boolean hasAllTiers = true;
+                for(String tier: tiers) {
+                    if(!creditData.getTiers().contains(tier)) {
+                        hasAllTiers = false;
+                        break;
+                    }
+                }
+                if(hasAllTiers) {
+                    List<String> perks = perkSection.getStringList("perks");
                     for(String perkName:perks) {
                         Perk perk = PerkManager.forName(perkName);
-//Logger.getGlobal().info(perk.getName());
                         if(perk!=null) {
-//Logger.getGlobal().info("         Set perm: "+perk.getPermissionNode());
-                            attachment.setPermission(perk.getPermissionNode(), give);
+                            attachment.setPermission(perk.getPermissionNode(), true);
                         }
                     }
                 }

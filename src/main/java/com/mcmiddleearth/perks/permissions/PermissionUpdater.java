@@ -16,8 +16,14 @@
  */
 package com.mcmiddleearth.perks.permissions;
 
+import com.mcmiddleearth.perks.PerkManager;
 import com.mcmiddleearth.perks.PerksPlugin;
+import com.mcmiddleearth.perks.perks.Perk;
+import com.mcmiddleearth.perks.supporter.DonorDataInputHandler;
+import com.mcmiddleearth.perks.supporter.PatreonClient;
+import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
 /**
@@ -26,10 +32,33 @@ import org.bukkit.scheduler.BukkitRunnable;
  */
 public class PermissionUpdater extends BukkitRunnable{
     
-    ConfigurationSection update = PerksPlugin.getInstance().getConfig().getConfigurationSection("update");
-    
+    private ConfigurationSection update = PerksPlugin.getInstance().getConfig().getConfigurationSection("update");
+    private int sourcesFinished;
+
     @Override
     public void run() {
-        new DonorDataInputHandler(update.getString("donor"),2000).start();
+        sourcesFinished = 0;
+        PermissionData.clearCredits();
+        new DonorDataInputHandler(update.getString("donor"),2000).start(this);
+        PatreonClient.updateCredits(this);
+    }
+
+    public synchronized void updatePermissions() {
+        sourcesFinished++;
+        if(sourcesFinished<2) {
+            return;
+        }
+        PermissionData.saveCreditData();
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+            for(Player player: Bukkit.getOnlinePlayers()) {
+                PermissionData.updatePerkPermissions(player);
+            }
+            for(Perk perk: PerkManager.getPerks()) {
+                perk.check();
+            }
+            }
+        }.runTask(PerksPlugin.getInstance());
     }
 }

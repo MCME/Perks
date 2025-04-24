@@ -19,6 +19,7 @@ package com.mcmiddleearth.perks;
 import com.mcmiddleearth.perks.commands.PerksCommandExecutor;
 import com.mcmiddleearth.perks.commands.VideoTeamCommand;
 import com.mcmiddleearth.perks.listeners.PermissionListener;
+import com.mcmiddleearth.perks.supporter.PatreonClient;
 import com.mcmiddleearth.perks.perks.*;
 import com.mcmiddleearth.perks.permissions.PermissionData;
 import com.mcmiddleearth.perks.permissions.PermissionUpdater;
@@ -58,6 +59,7 @@ public class PerksPlugin extends JavaPlugin {
             perkSettings = this.getConfig().createSection("perks");
             this.saveConfig();
         }
+        PatreonClient.init();
         PermissionData.load();
         getServer().getPluginManager().registerEvents(new PermissionListener(), this);
         permissionUpdater = new PermissionUpdater();
