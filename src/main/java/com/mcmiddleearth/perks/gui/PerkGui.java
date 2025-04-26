@@ -5,47 +5,107 @@ import com.mcmiddleearth.perks.perks.Perk;
 import com.mcmiddleearth.perks.permissions.CreditData;
 import com.mcmiddleearth.perks.permissions.PermissionData;
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
-import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.event.inventory.InventoryCloseEvent;
+import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.logging.Logger;
 
-public class PerkGui implements Listener {
+public class PerkGui {
+
+    //private static final List<PerkItem> hats = new ArrayList<>();
+    //private static final List<PerkItem> favorites = new ArrayList<>();
+    //private static final List<PerkItem> allPerks = new ArrayList<>();
+    //private static final List<DefinitionItem> morePerks = new ArrayList<>();
+
+    private final ListDisplay morePerks;
+    private final ListDisplay favoritePerks;
+    private final ListDisplay hats;
+    private final ListDisplay allPerks;
+
+    private static boolean displayAllPerks = false;
 
     private static final int guiSlots = 36;
-    public static Set<Inventory> openInventories = new HashSet<>();
+    public Inventory inventory;
 
-    @EventHandler
-    public void onInventoryClick(InventoryClickEvent event) {
-        if(openInventories.contains(event.getInventory()) && event.getRawSlot() < guiSlots ) {
-            if(event.getRawSlot()>17) {
+    private static final int allPerksSlot = 23;
+    private static final int forumSlot = 14;
+    private static final int patreonSlot = 5;
+    private static final int returnSlot = 0;
+
+    public PerkGui(Player player) {
+        Inventory inventory = Bukkit.createInventory(null, guiSlots, Component.text("Perks").color(NamedTextColor.YELLOW));
+
+        morePerks = new ListDisplay(inventory, null, 0,2,5, false);
+        favoritePerks = new ListDisplay(inventory, null, 27, 1, 9, false);
+        hats = new ListDisplay(inventory, null, 15, 1, 3, true);
+        allPerks = new ListDisplay(inventory, null, 0, 4, 9, false);
+
+        placeButtonsFirstPage();
+
+        hats.display();
+        favoritePerks.display();
+        morePerks.display();
+        player.openInventory(inventory);
+    }
+
+    public void onClick(Player player, int slot, ClickType clickType) {
+        if(slot < guiSlots ) {
+            if (displayAllPerks) {
+                if (allPerks.handleClick(slot, clickType)) {
+                    return;
+                } else if(slot == allPerksSlot) {
+                    displayAllPerks = true;
+                    allPerks.display();
+                    placeButtonsSecondPage();
+                }
+            } else {
+                if (morePerks.handleClick(slot, clickType)) {
+                    return;
+                } else if (favoritePerks.handleClick(slot, clickType)) {
+                    return;
+                } else if (hats.handleClick(slot, clickType)) {
+                    return;
+                } else if(slot == returnSlot) {
+                    morePerks.display();
+                    favoritePerks.display();
+                    hats.display();
+                    placeButtonsFirstPage();
+                }
+            }
+            /*if(event.getRawSlot()>17) {
                 Player player = (Player)event.getWhoClicked();
                 openInventories.remove(event.getInventory());
                 event.getWhoClicked().closeInventory();
-                Bukkit.dispatchCommand(player, "/perk "+event.getInventory().getItem(event.getRawSlot()).getItemMeta().getItemName());
+                String command = event.getInventory().getItem(event.getRawSlot()).getItemMeta().getItemName();
+                Logger.getGlobal().info("command: "+command);
+                PerksPlugin.getInstance().getPerksExecutor().onCommand(player, null, "perk", command.split(" "));
+                //Bukkit.dispatchCommand(player, "/perk "+event.getInventory().getItem(event.getRawSlot()).getItemMeta().getItemName());
             } else {
                 event.setCancelled(true);
-            }
+            }*/
         }
     }
 
-    @EventHandler
-    public void onInventoryClose(InventoryCloseEvent event) {
-        if(openInventories.contains(event.getInventory())) {
-            openInventories.remove(event.getInventory());
-        }
+    public void close(){
+        inventory.close();
+    }
+
+    private void placeButtonsFirstPage() {
+        //todo: place patreon and forum button and deco buttons
+    }
+
+    private  void placeButtonsSecondPage() {
+        //todo: return button
     }
 
     public static void openPerkGui(Player player) {
@@ -143,7 +203,22 @@ public class PerkGui implements Listener {
             }
         }
 
+        ItemStack testItem = new ItemStack(Material.STONE);
+        ItemMeta meta = testItem.getItemMeta();
+        List<String> lore = new ArrayList<>();
+        meta.setCustomModelData(1);
+        lore.add("Test cmd 1: ");
+        meta.setLore(lore);
+        testItem.setItemMeta(meta);
+Logger.getGlobal().info("Set Test Item slot 22");
+        inventory.setItem(22, testItem);
+
+
         player.openInventory(inventory);
         openInventories.add(inventory);
+    }
+
+    public boolean hasInventory(Inventory inventory) {
+        return this.inventory == inventory;
     }
 }
