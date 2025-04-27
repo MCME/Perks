@@ -21,7 +21,7 @@ public class GuiManager implements Listener {
     public void onGuiClick(InventoryClickEvent event) {
         PerkGui gui = openGuis.get(event.getWhoClicked().getUniqueId());
         if(gui!=null && event.getWhoClicked() instanceof Player player) {
-            gui.onClick(player, event.getRawSlot(), event.getClick());
+            event.setCancelled(gui.handleClick(player, event.getRawSlot(), event.getClick()));
         }
     }
 
@@ -35,7 +35,7 @@ public class GuiManager implements Listener {
     }
 
     public static void openGui(Player player) {
-        PerkGui gui = new PerkGui();
+        PerkGui gui = new PerkGui(player);
         openGuis.put(player.getUniqueId(), gui);
     }
 

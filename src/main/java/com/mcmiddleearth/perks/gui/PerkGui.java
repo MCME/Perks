@@ -26,21 +26,24 @@ public class PerkGui {
     //private static final List<PerkItem> favorites = new ArrayList<>();
     //private static final List<PerkItem> allPerks = new ArrayList<>();
     //private static final List<DefinitionItem> morePerks = new ArrayList<>();
+    private static final int guiSlots = 36;
+
+    private static final int allPerksSlot = 23;
+    private static final int forumSlot = 14;
+    private static final int patreonSlot = 5;
+    private static final int returnSlot = 0;
 
     private final ListDisplay morePerks;
     private final ListDisplay favoritePerks;
     private final ListDisplay hats;
     private final ListDisplay allPerks;
 
-    private static boolean displayAllPerks = false;
+    private boolean displayAllPerks = false;
 
-    private static final int guiSlots = 36;
     public Inventory inventory;
 
-    private static final int allPerksSlot = 23;
-    private static final int forumSlot = 14;
-    private static final int patreonSlot = 5;
-    private static final int returnSlot = 0;
+    private GuiItem forumItem;
+    private GuiItem patreonItem;
 
     public PerkGui(Player player) {
         Inventory inventory = Bukkit.createInventory(null, guiSlots, Component.text("Perks").color(NamedTextColor.YELLOW));
@@ -58,30 +61,39 @@ public class PerkGui {
         player.openInventory(inventory);
     }
 
-    public void onClick(Player player, int slot, ClickType clickType) {
+    public boolean handleClick(Player player, int slot, ClickType clickType) {
         if(slot < guiSlots ) {
             if (displayAllPerks) {
-                if (allPerks.handleClick(slot, clickType)) {
-                    return;
-                } else if(slot == allPerksSlot) {
-                    displayAllPerks = true;
-                    allPerks.display();
-                    placeButtonsSecondPage();
+                if (!allPerks.handleClick(player, slot, clickType)) {
+                    switch(slot) {
+                        case allPerksSlot:
+                            displayAllPerks = true;
+                            allPerks.display();
+                            placeButtonsSecondPage();
+                            break;
+                        case forumSlot:
+                            forumItem.handleClick(player, clickType);
+                            break;
+                        case patreonSlot:
+                            patreonItem.handleClick(player, clickType);
+                            break;
+                    }
                 }
             } else {
-                if (morePerks.handleClick(slot, clickType)) {
-                    return;
-                } else if (favoritePerks.handleClick(slot, clickType)) {
-                    return;
-                } else if (hats.handleClick(slot, clickType)) {
-                    return;
-                } else if(slot == returnSlot) {
-                    morePerks.display();
-                    favoritePerks.display();
-                    hats.display();
-                    placeButtonsFirstPage();
+                if(!morePerks.handleClick(player, slot, clickType)) {
+                   if(!favoritePerks.handleClick(player, slot, clickType)) {
+                       if (!hats.handleClick(player, slot, clickType)) {
+                           if (slot == returnSlot) {
+                               morePerks.display();
+                               favoritePerks.display();
+                               hats.display();
+                               placeButtonsFirstPage();
+                           }
+                       }
+                   }
                 }
             }
+            return true;
             /*if(event.getRawSlot()>17) {
                 Player player = (Player)event.getWhoClicked();
                 openInventories.remove(event.getInventory());
@@ -93,6 +105,8 @@ public class PerkGui {
             } else {
                 event.setCancelled(true);
             }*/
+        } else {
+            return false;
         }
     }
 
