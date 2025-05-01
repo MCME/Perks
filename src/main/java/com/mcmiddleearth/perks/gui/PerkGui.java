@@ -1,6 +1,7 @@
 package com.mcmiddleearth.perks.gui;
 
 import com.mcmiddleearth.perks.PerkManager;
+import com.mcmiddleearth.perks.PerksPlugin;
 import com.mcmiddleearth.perks.perks.Perk;
 import com.mcmiddleearth.perks.permissions.CreditData;
 import com.mcmiddleearth.perks.permissions.PermissionData;
@@ -9,12 +10,15 @@ import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -40,24 +44,34 @@ public class PerkGui {
 
     private boolean displayAllPerks = false;
 
-    public Inventory inventory;
+    private Inventory inventory;
 
-    private GuiItem forumItem;
-    private GuiItem patreonItem;
+    private final GuiItem forumItem, patreonItem, allPerksItem, returnItem;
+    //todo: deactivated arrow items
 
     public PerkGui(Player player) {
         Inventory inventory = Bukkit.createInventory(null, guiSlots, Component.text("Perks").color(NamedTextColor.YELLOW));
 
-        morePerks = new ListDisplay(inventory, null, 0,2,5, false);
-        favoritePerks = new ListDisplay(inventory, null, 27, 1, 9, false);
-        hats = new ListDisplay(inventory, null, 15, 1, 3, true);
-        allPerks = new ListDisplay(inventory, null, 0, 4, 9, false);
-
-        placeButtonsFirstPage();
+        morePerks = new ListDisplay(inventory, PermissionData.getPerkDefinitionItems(player),0,2,5,
+                false, GuiManager.getGuiItem("morePerks.previous"), GuiManager.getGuiItem("morePerks.next"));
+        favoritePerks = new ListDisplay(inventory, GuiManager.getFavoritePerks(player), 27, 1, 9,
+                false, GuiManager.getGuiItem("favoritePerks.previous"), GuiManager.getGuiItem("favoritePerks.next"));
+        hats = new ListDisplay(inventory, GuiManager.getHats(player), 15, 1, 3,
+                true, GuiManager.getGuiItem("hats.previous"), GuiManager.getGuiItem("hats.next"));
+        allPerks = new ListDisplay(inventory, PerkManager.getPerks().stream().map(Perk::getGuiItem).toList(),
+                0, 4, 9, false,
+                GuiManager.getGuiItem("allPerks.previous"), GuiManager.getGuiItem("allPerks.next"));
 
         hats.display();
         favoritePerks.display();
         morePerks.display();
+
+        forumItem = GuiManager.getGuiItem("forum");
+        patreonItem = GuiManager.getGuiItem("patreon");
+        allPerksItem = GuiManager.getGuiItem("allPerks");
+        returnItem = GuiManager.getGuiItem("return");
+
+        placeButtonsFirstPage();
         player.openInventory(inventory);
     }
 
@@ -116,10 +130,14 @@ public class PerkGui {
 
     private void placeButtonsFirstPage() {
         //todo: place patreon and forum button and deco buttons
+        inventory.setItem(forumSlot, forumItem.getItemStack());
+        inventory.setItem(patreonSlot, patreonItem.getItemStack());
+        inventory.setItem(allPerksSlot, allPerksItem.getItemStack());
     }
 
     private  void placeButtonsSecondPage() {
         //todo: return button
+        inventory.setItem(returnSlot, returnItem.getItemStack());
     }
 
     public static void openPerkGui(Player player) {
@@ -127,6 +145,7 @@ public class PerkGui {
 
         CreditData creditData = PermissionData.getCredits(player);
 
+        ItemStack item0=null,item1=null,item2=null;
         if(creditData!=null) {
             ItemStack totalItem = new ItemStack(Material.GOLD_NUGGET);
             ItemMeta meta = totalItem.getItemMeta();
@@ -134,6 +153,7 @@ public class PerkGui {
             meta.lore(Collections.singletonList(Component.text(creditData.getTotal())));
             totalItem.setItemMeta(meta);
             inventory.setItem(1, totalItem);
+            item0 = totalItem;
 
             ItemStack forumItem = new ItemStack(Material.GOLD_NUGGET);
             meta = forumItem.getItemMeta();
@@ -199,6 +219,7 @@ public class PerkGui {
                 definitionItem.setItemMeta(meta);
                 inventory.setItem(i, definitionItem);
                 i++;
+                item1 = definitionItem;
             }
         } else {
             ItemStack errorItem = new ItemStack(Material.STONE);
@@ -210,11 +231,12 @@ public class PerkGui {
 
         int i = 18;
         for(Perk perk: PerkManager.getPerks()) {
-            ItemStack item = perk.getGuiItem();
+            GuiItem item = perk.getGuiItem();
             if(item != null) {
-                inventory.setItem(i, item);
+                inventory.setItem(i, item.getItemStack());
                 i++;
             }
+            item2=item.getItemStack();
         }
 
         ItemStack testItem = new ItemStack(Material.STONE);
@@ -227,9 +249,26 @@ public class PerkGui {
 Logger.getGlobal().info("Set Test Item slot 22");
         inventory.setItem(22, testItem);
 
+        File testFile = new File(PerksPlugin.getInstance().getDataFolder(),"test.yml");
+        if(!testFile.exists()) {
+            try {
+                testFile.createNewFile();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        YamlConfiguration config = new YamlConfiguration();
+        config.set("item3", item0.serialize());
+        config.set("item1", item1.serialize());
+        config.set("item2", item2.serialize());
 
+        try {
+            config.save(testFile);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
         player.openInventory(inventory);
-        openInventories.add(inventory);
+        //openInventories.add(inventory);
     }
 
     public boolean hasInventory(Inventory inventory) {

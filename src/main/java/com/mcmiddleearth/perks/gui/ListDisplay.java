@@ -3,7 +3,6 @@ package com.mcmiddleearth.perks.gui;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -13,8 +12,8 @@ public class ListDisplay {
 
     private static final int inventoryColumns = 9;
 
-    private static final ItemStack previousItem;
-    private static final ItemStack nextItem;
+    private final GuiItem previousItem;
+    private final GuiItem nextItem;
 
     private final List<GuiItem> items = new ArrayList<>();
 
@@ -26,7 +25,8 @@ public class ListDisplay {
 
     private final Inventory inventory;
 
-    public ListDisplay(Inventory inventory, List<GuiItem> items, int firstSlot, int rows, int columns, boolean alwaysShowArrows) {
+    public ListDisplay(Inventory inventory, List<GuiItem> items, int firstSlot, int rows, int columns,
+                       boolean alwaysShowArrows, GuiItem previousItem, GuiItem nextItem) {
         if(items!=null) this.items.addAll(items);
         this.firstSlot = firstSlot;
         this.rows = rows;
@@ -34,6 +34,8 @@ public class ListDisplay {
         firstVisibleItemIndex = 0;
         this.alwaysShoArrows = alwaysShowArrows;
         this.inventory = inventory;
+        this.previousItem = previousItem;
+        this.nextItem = nextItem;
     }
 
     public void display() {
@@ -41,10 +43,10 @@ public class ListDisplay {
         for(int row = 0; row < rows; row++) {
             for(int column = 0; column < columns; column++) {
                 if(hasPreviousItem() && row==0 && column==0) {
-                    inventory.setItem(firstSlot, previousItem);
+                    inventory.setItem(firstSlot, previousItem.getItemStack());
                     currentItemIndex++;
                 } else if(hasNextItem() && row==rows-1 && column==columns-1) {
-                    inventory.setItem(firstSlot+row*inventoryColumns+column, nextItem);
+                    inventory.setItem(firstSlot+row*inventoryColumns+column, nextItem.getItemStack());
                     currentItemIndex++;
                 } else {
                     inventory.setItem(firstSlot+row*inventoryColumns+column, items.get(currentItemIndex).getItemStack());
@@ -118,11 +120,11 @@ public class ListDisplay {
     }
 
     public boolean isPreviousItem(int slot) {
-        return previousItem.equals(inventory.getItem(slot));
+        return previousItem.getItemStack().equals(inventory.getItem(slot));
     }
 
     public boolean isNextItem(int slot) {
-        return nextItem.equals(inventory.getItem(slot));
+        return nextItem.getItemStack().equals(inventory.getItem(slot));
     }
 
     public GuiItem getItem(int slot) {

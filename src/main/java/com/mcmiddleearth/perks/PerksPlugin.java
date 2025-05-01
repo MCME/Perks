@@ -18,6 +18,7 @@ package com.mcmiddleearth.perks;
 
 import com.mcmiddleearth.perks.commands.PerksCommandExecutor;
 import com.mcmiddleearth.perks.commands.VideoTeamCommand;
+import com.mcmiddleearth.perks.gui.GuiManager;
 import com.mcmiddleearth.perks.gui.PerkGui;
 import com.mcmiddleearth.perks.listeners.PermissionListener;
 import com.mcmiddleearth.perks.supporter.PatreonClient;
@@ -63,7 +64,7 @@ public class PerksPlugin extends JavaPlugin {
         PatreonClient.init();
         PermissionData.load();
         getServer().getPluginManager().registerEvents(new PermissionListener(), this);
-        getServer().getPluginManager().registerEvents(new PerkGui(), this);
+        getServer().getPluginManager().registerEvents(new GuiManager(), this);
         permissionUpdater = new PermissionUpdater();
         permissionUpdater.runTaskTimer(this, 500, 2000);
         

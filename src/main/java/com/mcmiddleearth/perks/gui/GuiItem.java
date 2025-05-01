@@ -1,11 +1,16 @@
 package com.mcmiddleearth.perks.gui;
 
 import com.mcmiddleearth.perks.PerksPlugin;
+import net.kyori.adventure.text.serializer.json.JSONComponentSerializer;
+import org.bukkit.Material;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.Arrays;
+import java.util.List;
 
 public class GuiItem {
 
@@ -14,6 +19,40 @@ public class GuiItem {
     private String leftCommand;
     private String rightCommand;
     private String middleCommand;
+
+    public static final GuiItem errorItem;
+
+    static {
+        errorItem = new GuiItem(new ItemStack(Material.STONE), "","","");
+        ItemMeta meta = errorItem.getItemStack().getItemMeta();
+        meta.setItemName("Error: Something went wrong.");
+        errorItem.getItemStack().setItemMeta(meta);
+    }
+
+    public GuiItem(ItemStack itemStack, String leftCommand, String rightCommand, String middleCommand) {
+        this.itemStack = itemStack;
+        this.leftCommand = leftCommand;
+        this.rightCommand = rightCommand;
+        this.middleCommand = middleCommand;
+    }
+
+    public static GuiItem load(ConfigurationSection config) {
+        if(config == null) return GuiItem.errorItem;
+        ConfigurationSection itemConfig = config.getConfigurationSection("itemStack");
+        if(itemConfig==null) {
+            return GuiItem.errorItem;
+        }
+        ItemStack item = new ItemStack(Material.valueOf(itemConfig.getString("material", Material.STONE.name())));
+        ItemMeta meta = item.getItemMeta();
+        meta.setCustomModelData(itemConfig.getInt("cmd",0));
+        meta.lore(itemConfig.getStringList("lore").stream().map(line -> JSONComponentSerializer.json().deserialize(line)).toList());
+        item.setItemMeta(meta);
+
+        String leftCommand = config.getString("leftCommand","");
+        String rightCommand = config.getString("rightCommand","");
+        String middleCommand = config.getString("MiddleCommand","");
+        return new GuiItem(item, leftCommand, rightCommand, middleCommand);
+    }
 
     public void handleClick(Player player, ClickType clickType) {
         if(clickType.isLeftClick()) {
@@ -37,5 +76,17 @@ public class GuiItem {
 
     public ItemStack getItemStack() {
         return itemStack;
+    }
+
+    public String getLeftCommand() {
+        return leftCommand;
+    }
+
+    public String getRightCommand() {
+        return rightCommand;
+    }
+
+    public String getMiddleCommand() {
+        return middleCommand;
     }
 }

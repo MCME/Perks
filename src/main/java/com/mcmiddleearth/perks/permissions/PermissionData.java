@@ -18,6 +18,8 @@ package com.mcmiddleearth.perks.permissions;
 
 import com.mcmiddleearth.perks.PerkManager;
 import com.mcmiddleearth.perks.PerksPlugin;
+import com.mcmiddleearth.perks.gui.DefinitionItem;
+import com.mcmiddleearth.perks.gui.GuiItem;
 import com.mcmiddleearth.perks.perks.Perk;
 import com.mcmiddleearth.pluginutil.NumericUtil;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -111,6 +113,7 @@ Logger.getGlobal().info("Giving permission to "+ playerID+" for credit "+credit)
     public static void setCredits(HashMap<UUID, CreditData> creditDatas) {
         PermissionData.creditDatas = creditDatas;
     }
+
     public static CreditData getCredits(Player player) {
         return creditDatas.get(player.getUniqueId());
     }
@@ -169,6 +172,15 @@ Logger.getGlobal().info("Perk: "+player.getName()+" "+perk.getName());
         return creditDefinitionConfig;
     }
 
+    public static List<GuiItem> getPerkDefinitionItems(Player player) {
+        List<GuiItem> result = new ArrayList<>();
+        for(String key: creditDefinitionConfig.getKeys(false)) {
+            ConfigurationSection section = creditDefinitionConfig.getConfigurationSection(key);
+            result.add(DefinitionItem.load(section, key, player, creditDatas.get(player.getUniqueId())));
+        }
+        return result;
+    }
+
     /**
      * Makes a perk available for everyone with Permission.USER.
      * @param perk
@@ -187,4 +199,5 @@ Logger.getGlobal().info("Perk: "+player.getName()+" "+perk.getName());
     public static void disableFreePerk(Perk perk) {
         freePerks.remove(perk);
     }
+
 }

@@ -1,0 +1,57 @@
+tiers:
+  leftCommand:
+  rightCommand:
+  middlCommand:
+  itemStack:
+    material:
+    cmd:
+    lore:
+      - ""
+      - ""
+    name:
+lifetime:
+  <gui_item>
+secondPage:
+  <gui_item>
+firstPage:
+  <gui_item>
+arrows:
+  morePerks:
+    previous:
+      <gui_item>
+    next:
+      <gui_item>
+  allPerks:
+    previous:
+      <gui_item>
+    next:
+      <gui_item>
+  favorites:
+    previous:
+      enabled:
+        <gui_item>
+      disabled:
+        <gui_item>
+    next:
+      enabled:
+        <gui_item>
+      disabled:
+        <gui_item>
+  hats:
+    previous:
+      enabled:
+        <gui_item>
+      disabled:
+        <gui_item>
+    next:
+      enabled:
+        <gui_item>
+      disabled:
+        <gui_item>
+label:
+  favorite:
+    <gui_item>
+  morePerks:
+    <gui_item>
+  hats:
+    <gui_item>

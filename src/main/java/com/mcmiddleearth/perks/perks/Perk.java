@@ -18,6 +18,7 @@ package com.mcmiddleearth.perks.perks;
 
 import com.mcmiddleearth.perks.PerksPlugin;
 import com.mcmiddleearth.perks.commands.PerksCommandHandler;
+import com.mcmiddleearth.perks.gui.GuiItem;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.event.Listener;
@@ -32,7 +33,7 @@ public class Perk {
     
     private final String name;
 
-    private final ItemStack guiItem;
+    private GuiItem guiItem;
     
     private PerksCommandHandler handler;
     private Listener listener;
@@ -41,22 +42,15 @@ public class Perk {
     
     public Perk(String name) {
         this.name = name;
-        ItemStack itemStack = null;
+        GuiItem item = new GuiItem(new ItemStack(Material.STONE),"", "", "");
         ConfigurationSection config = PerksPlugin.getPerkSettings().getConfigurationSection(name);
         if(config != null) {
             ConfigurationSection itemSection = config.getConfigurationSection("guiItem");
             if(itemSection != null) {
-                try {
-                    itemStack = new ItemStack(Material.valueOf(itemSection.getString("type", Material.STONE.name())));
-                    ItemMeta meta = itemStack.getItemMeta();
-                    meta.setCustomModelData(itemSection.getInt("cmd", 0));
-                    meta.setItemName(name);
-                    meta.setLore(itemSection.getStringList("lore"));
-                    itemStack.setItemMeta(meta);
-                } catch(IllegalArgumentException ignore) {}
+                guiItem = GuiItem.load(itemSection);
             }
         }
-        guiItem = itemStack;
+        guiItem = item;
     }
     
     public boolean isEnabled() {
@@ -100,7 +94,7 @@ public class Perk {
         return commands;
     }
 
-    public ItemStack getGuiItem() {
+    public GuiItem getGuiItem() {
         return guiItem;
     }
 }
