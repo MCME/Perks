@@ -36,6 +36,7 @@ public class PerkGui {
     private static final int forumSlot = 14;
     private static final int patreonSlot = 5;
     private static final int returnSlot = 0;
+    private static final int backgroundSlot = 22;
 
     private final ListDisplay morePerks;
     private final ListDisplay favoritePerks;
@@ -44,20 +45,22 @@ public class PerkGui {
 
     private boolean displayAllPerks = false;
 
-    private Inventory inventory;
+    private final Inventory inventory;
 
-    private final GuiItem forumItem, patreonItem, allPerksItem, returnItem;
-    //todo: deactivated arrow items
+    private final GuiItem forumItem, patreonItem, allPerksItem, returnItem, backgroundItem;
 
     public PerkGui(Player player) {
         Inventory inventory = Bukkit.createInventory(null, guiSlots, Component.text("Perks").color(NamedTextColor.YELLOW));
 
-        morePerks = new ListDisplay(inventory, PermissionData.getPerkDefinitionItems(player),0,2,5,
-                false, GuiManager.getGuiItem("morePerks.previous"), GuiManager.getGuiItem("morePerks.next"));
+        morePerks = new ListDisplay(inventory, PermissionData.getPerkDefinitionItems(player),
+                        0,2,5, false,
+                        GuiManager.getGuiItem("morePerks.previous"), GuiManager.getGuiItem("morePerks.next"));
         favoritePerks = new ListDisplay(inventory, GuiManager.getFavoritePerks(player), 27, 1, 9,
-                false, GuiManager.getGuiItem("favoritePerks.previous"), GuiManager.getGuiItem("favoritePerks.next"));
+                        GuiManager.getGuiItem("favoritePerks.previous.enabled"), GuiManager.getGuiItem("favoritePerks.next.enabled"),
+                        GuiManager.getGuiItem("favoritePerks.previous.disabled"), GuiManager.getGuiItem("favoritePerks.next.disabled"));
         hats = new ListDisplay(inventory, GuiManager.getHats(player), 15, 1, 3,
-                true, GuiManager.getGuiItem("hats.previous"), GuiManager.getGuiItem("hats.next"));
+                        GuiManager.getGuiItem("hats.previous.enabled"), GuiManager.getGuiItem("hats.next.enabled"),
+                        GuiManager.getGuiItem("hats.previous.disabled"), GuiManager.getGuiItem("hats.next.disabled"));
         allPerks = new ListDisplay(inventory, PerkManager.getPerks().stream().map(Perk::getGuiItem).toList(),
                 0, 4, 9, false,
                 GuiManager.getGuiItem("allPerks.previous"), GuiManager.getGuiItem("allPerks.next"));
@@ -70,6 +73,9 @@ public class PerkGui {
         patreonItem = GuiManager.getGuiItem("patreon");
         allPerksItem = GuiManager.getGuiItem("allPerks");
         returnItem = GuiManager.getGuiItem("return");
+        backgroundItem = GuiManager.getGuiItem("label.background");
+
+        this.inventory = inventory;
 
         placeButtonsFirstPage();
         player.openInventory(inventory);
@@ -129,14 +135,13 @@ public class PerkGui {
     }
 
     private void placeButtonsFirstPage() {
-        //todo: place patreon and forum button and deco buttons
         inventory.setItem(forumSlot, forumItem.getItemStack());
         inventory.setItem(patreonSlot, patreonItem.getItemStack());
         inventory.setItem(allPerksSlot, allPerksItem.getItemStack());
+        inventory.setItem(backgroundSlot, backgroundItem.getItemStack());
     }
 
     private  void placeButtonsSecondPage() {
-        //todo: return button
         inventory.setItem(returnSlot, returnItem.getItemStack());
     }
 

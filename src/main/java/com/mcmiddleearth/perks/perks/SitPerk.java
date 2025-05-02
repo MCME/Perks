@@ -17,8 +17,10 @@
 package com.mcmiddleearth.perks.perks;
 
 import com.mcmiddleearth.perks.PerksPlugin;
+import com.mcmiddleearth.perks.commands.SitHandler;
 import com.mcmiddleearth.perks.listeners.SitListener;
 import com.mcmiddleearth.perks.permissions.PermissionData;
+import com.mcmiddleearth.perks.permissions.Permissions;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -67,6 +69,7 @@ public class SitPerk extends Perk {
         }
         item = Material.valueOf(PerksPlugin.getPerkString(this.getName(),"item","GHAST_TEAR"));
         setListener(new SitListener());
+        this.setCommandHandler(new SitHandler(), Permissions.USER.getPermissionNode());
     }
     
     public static void sitDown(Player player, Block clicked) {

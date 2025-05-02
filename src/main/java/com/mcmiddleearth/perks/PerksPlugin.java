@@ -102,6 +102,7 @@ public class PerksPlugin extends JavaPlugin {
                                                  new PotionEffectPerk.PotionEffectData("ring",PotionEffectType.BLINDNESS,null)));
         PerkManager.addPerk(new ItemPerk("elytra", Material.ELYTRA,"fluffy wings",1));
         PerkManager.addPerk(new ItemPerk("firework", Material.FIREWORK_ROCKET,"splendid firework",64));
+        PerkManager.addPerk(new EquipmentPerk("hat"));
 
         this.updateConfigurationFile();
         

@@ -14,6 +14,8 @@ public class ListDisplay {
 
     private final GuiItem previousItem;
     private final GuiItem nextItem;
+    private final GuiItem previousItemDeactivated;
+    private final GuiItem nextItemDeactivated;
 
     private final List<GuiItem> items = new ArrayList<>();
 
@@ -27,6 +29,17 @@ public class ListDisplay {
 
     public ListDisplay(Inventory inventory, List<GuiItem> items, int firstSlot, int rows, int columns,
                        boolean alwaysShowArrows, GuiItem previousItem, GuiItem nextItem) {
+        this(inventory, items, firstSlot, rows, columns, alwaysShowArrows, previousItem, nextItem, previousItem, nextItem);
+    }
+
+    public ListDisplay(Inventory inventory, List<GuiItem> items, int firstSlot, int rows, int columns,
+                        GuiItem previousItem, GuiItem nextItem, GuiItem previousItemDeactivated, GuiItem nextItemDeactivated) {
+        this(inventory, items, firstSlot, rows, columns, true,
+                previousItem, nextItem, previousItemDeactivated, nextItemDeactivated);
+    }
+
+    private ListDisplay(Inventory inventory, List<GuiItem> items, int firstSlot, int rows, int columns, boolean alwaysShowArrows,
+                        GuiItem previousItem, GuiItem nextItem, GuiItem previousItemDeactivated, GuiItem nextItemDeactivated) {
         if(items!=null) this.items.addAll(items);
         this.firstSlot = firstSlot;
         this.rows = rows;
@@ -36,6 +49,8 @@ public class ListDisplay {
         this.inventory = inventory;
         this.previousItem = previousItem;
         this.nextItem = nextItem;
+        this.previousItemDeactivated = previousItemDeactivated;
+        this.nextItemDeactivated = nextItemDeactivated;
     }
 
     public void display() {

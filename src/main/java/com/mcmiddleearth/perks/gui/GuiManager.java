@@ -28,23 +28,62 @@ public class GuiManager implements Listener {
 
     private static final File favoritesFile = new File(PerksPlugin.getInstance().getDataFolder(), "favorites.yml");
 
-    private static final Map<UUID, Set<Perk>> favorites = new HashMap<>();
+    private static final YamlConfiguration favoritesConfig = new YamlConfiguration();
+
+    //private static final Map<UUID, Set<Perk>> favorites = new HashMap<>();
 
     public GuiManager() {
         try {
             guiItemConfig.load(guiItemFile);
+            favoritesConfig.load(favoritesFile);
         } catch (IOException | InvalidConfigurationException e) {
             throw new RuntimeException(e);
         }
     }
 
     public static List<GuiItem> getFavoritePerks(Player player) {
-        return null;
+        if(favoritesConfig.contains(player.getUniqueId().toString())) {
+            List<String> playerFavorites = favoritesConfig.getStringList(player.getUniqueId().toString());
+            return PerkManager.getPerks().stream().filter(perk -> playerFavorites.contains(perk.getName()))
+                    .map(Perk::getGuiItem).toList();
+        }
+        return new ArrayList<>();
     }
 
     public static List<GuiItem> getHats(Player player) {
         return PerkManager.getPerks().stream().filter(perk -> perk instanceof EquipmentPerk && player.hasPermission(perk.getPermissionNode()))
                 .map(Perk::getGuiItem).toList();
+    }
+
+    public static boolean addFavorite(Player player, String perkName) {
+        List<String> favorites = favoritesConfig.getStringList(player.getUniqueId().toString());
+        Perk perk = PerkManager.forName(perkName);
+        if(perk != null && !favorites.contains(perk.getName())) {
+            favorites.add(perk.getName());
+            favoritesConfig.set(player.getUniqueId().toString(), favorites);
+            saveFavoriteConfig();
+            return true;
+        }
+        return false;
+    }
+
+    public static boolean removeFavorite(Player player, String perkName) {
+        List<String> favorites = favoritesConfig.getStringList(player.getUniqueId().toString());
+        if(favorites.contains(perkName)) {
+            favorites.remove(perkName);
+            favoritesConfig.set(player.getUniqueId().toString(), favorites);
+            saveFavoriteConfig();
+            return true;
+        }
+        return false;
+    }
+
+    private static void saveFavoriteConfig() {
+        try {
+            favoritesConfig.save(favoritesFile);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @EventHandler

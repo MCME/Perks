@@ -44,11 +44,16 @@ public class PerksCommandExecutor implements CommandExecutor {
         addCommandHandler("close", new OpenHandler(Permissions.ADMIN.getPermissionNode()));
         addCommandHandler("patreon", new PatreonTestHandler(Permissions.ADMIN.getPermissionNode()));
         addCommandHandler("gui", new GuiHandler(Permissions.USER.getPermissionNode()));
+        addCommandHandler("favor", new FavoriteHandler(Permissions.USER.getPermissionNode()));
+        addCommandHandler("unfavor", new FavoriteHandler(Permissions.USER.getPermissionNode()));
     }
     
     @Override
     public boolean onCommand(CommandSender cs, Command cmnd, String string, String[] strings) {
         if(strings == null || strings.length == 0) {
+            commands.get("gui").handle(cs, string, string);
+            return true;
+        } else if (strings[0].equalsIgnoreCase("help")) {
             sendCommandList(cs);
             return true;
         }

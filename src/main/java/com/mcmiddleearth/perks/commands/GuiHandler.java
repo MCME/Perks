@@ -1,6 +1,7 @@
 package com.mcmiddleearth.perks.commands;
 
-import com.mcmiddleearth.perks.gui.PerkGui;
+import com.mcmiddleearth.perks.PerksPlugin;
+import com.mcmiddleearth.perks.gui.GuiManager;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -12,18 +13,18 @@ public class GuiHandler extends PerksCommandHandler {
 
     @Override
     public String getShortDescription(String subcommand) {
-        return "";
+        return ": "+ PerksPlugin.getMessageUtil().INFO+"Open perks menu.";
     }
 
     @Override
     public String getUsageDescription(String subcommand) {
-        return "";
+        return ": "+ PerksPlugin.getMessageUtil().INFO+"Open menu to interact with your perks..";
     }
 
     @Override
     protected void execute(CommandSender cs, String cmd, String... args) {
         if(cs instanceof Player player) {
-            PerkGui.openPerkGui(player);
+            GuiManager.openGui(player);
         }
     }
 }

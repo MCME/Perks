@@ -1,57 +1,221 @@
 tiers:
-  leftCommand:
-  rightCommand:
-  middlCommand:
+  leftCommand: {"text": "Minecraft Middle Earth Patreon: https://www.patreon.com/c/mcmiddleearth/membership","color": "#e28132"}
   itemStack:
-    material:
-    cmd:
+    material: minecraft:stone
+    cmd: 21
+    name: {"text":"Patreon","color":"#cd6a18","shadow_color":6500616,"bold":true,"extra":[{"text":"[ ","color":"#cd6a18","bold":false},{"text":"<<<INSERT CURRENT TIER>>>","color":"#cccccc"},{"text":" ]","color":"#cd6a18"}]}
     lore:
-      - ""
-      - ""
-    name:
+      - {"text": "Click for link to the MCME Patreon.","color": "#919191"}
 lifetime:
-  <gui_item>
+  leftCommand: {"text": "Minecraft Middle Earth Support: https://www.mcmiddleearth.com/community/donate/drives/contribute-towards-our-community-costs.1/","color": "#e2c432"}
+  itemStack:
+    material: minecraft:stone
+    cmd: 22
+    name: {"text":"Lifetime Support","color":"#e2b332","shadow_color":6310933,"bold":true,"extra":[{"text":"[ ","color":"#e2b332","bold":false},{"text":"<<<INSERT LIFETIME AMOUNT>>>","color":"#cccccc"},{"text":" ]","color":"#e2b332"}]}
+    lore:
+      - {"text": "Click for link to the Support Us page.","color": "#919191"}
 secondPage:
-  <gui_item>
+  leftCommand: <<<OPEN ALL PERKS MENU>>>
+  itemStack:
+    material: minecraft:stone
+    cmd: 23
+    name: {"text":"All Perks","color":"#e2b332","shadow_color":6310933,"bold":true}
+    lore:
+      - {"text": "Click to open All Perks.","color": "#919191"}
 firstPage:
-  <gui_item>
+  leftCommand: <<<OPEN PERKS UI>>>
+  itemStack:
+    material: minecraft:stone
+    cmd: 2
+    name: {"text":"Back to Perks","color":"#e2b332","shadow_color":6310933}
 arrows:
   morePerks:
     previous:
-      <gui_item>
+      leftCommand: <<<SCROLL MORE PERKS BACKWARDS>>>
+      itemStack:
+        material: minecraft:stone
+        cmd: 7
+        name: {"text":"Previous","color":"#e2b332","shadow_color":6310933}
     next:
-      <gui_item>
+      leftCommand: <<<SCROLL MORE PERKS FORWARDS>>>
+      itemStack:
+        material: minecraft:stone
+        cmd: 8
+        name: {"text":"Next","color":"#e2b332","shadow_color":6310933}
   allPerks:
     previous:
-      <gui_item>
+      leftCommand: <<<SCROLL ALL PERKS BACKWARDS>>>
+      itemStack:
+        material: minecraft:stone
+        cmd: 7
+        name: {"text":"Previous","color":"#e2b332","shadow_color":6310933}
     next:
-      <gui_item>
+      leftCommand: <<<SCROLL ALL PERKS FORWARDS>>>
+      itemStack:
+        material: minecraft:stone
+        cmd: 8
+        name: {"text":"Next","color":"#e2b332","shadow_color":6310933}
   favorites:
     previous:
       enabled:
-        <gui_item>
+        leftCommand: <<<SCROLL FAVORITE PERKS BACKWARDS>>>
+        itemStack:
+          material: minecraft:stone
+          cmd: 2
+          name: {"text":"Previous","color":"#e2b332","shadow_color":6310933}
       disabled:
-        <gui_item>
+        itemStack:
+          material: minecraft:stone
+          cmd: 5
     next:
       enabled:
-        <gui_item>
+        leftCommand: <<<SCROLL FAVORITE PERKS FORWARDS>>>
+        itemStack:
+          material: minecraft:stone
+          cmd: 3
+          name: {"text":"Next","color":"#e2b332","shadow_color":6310933}
       disabled:
-        <gui_item>
+        itemStack:
+          material: minecraft:stone
+          cmd: 6
   hats:
     previous:
       enabled:
-        <gui_item>
+        leftCommand: <<<SCROLL FAVORITE PERKS BACKWARDS>>>
+        itemStack:
+          material: minecraft:stone
+          cmd: 2
+          name: {"text":"Previous","color":"#e2b332","shadow_color":6310933}
       disabled:
-        <gui_item>
+        itemStack:
+          material: minecraft:stone
+          cmd: 5
     next:
       enabled:
-        <gui_item>
+        leftCommand: <<<SCROLL FAVORITE PERKS FORWARDS>>>
+        itemStack:
+          material: minecraft:stone
+          cmd: 3
+          name: {"text":"Next","color":"#e2b332","shadow_color":6310933}
       disabled:
-        <gui_item>
+        itemStack:
+          material: minecraft:stone
+          cmd: 6
 label:
-  favorite:
-    <gui_item>
-  morePerks:
-    <gui_item>
-  hats:
-    <gui_item>
+  background:
+    itemStack:
+      material: minecraft:stone
+      cmd: 1
+cosmetics:
+  hat1:
+    rightCommand: <<<UNEQUIP>>>
+    leftCommand: <<<EQUIP/EXIT UI>>>
+    itemStack:
+      material: minecraft:stone
+      cmd: 4
+      lore:
+        - {"text": "A stunning piece of kit, previously worn by Gimli son of Glóin. Only Aulë knows how you got a hold of it…","color": "#d4d4d4"}
+        - ""
+        - {"text":"Patreon:","color":"#cd6a18","shadow_color":6500616,"bold":true,"extra":[{"text":"Dwarf Tier","color":"#cccccc"}]}
+        - {"text": "Right click to unequip.","color": "#919191"}
+      name: {"text": "Gimli's Helmet","color":"#cccccc","shadow_color": 0,"bold": true }
+  hat2:
+    rightCommand: <<<UNEQUIP>>>
+    leftCommand: <<<EQUIP/EXIT UI>>>
+    itemStack:
+      material: minecraft:stone
+      cmd: 9
+      lore:
+        - {"text": "Highly sought after headgear worn by virtually everyone but this one in particular was owned by the one they use to call Strider.","color": "#d4d4d4"}
+        - ""
+        - {"text":"Patreon:","color":"#cd6a18","shadow_color":6500616,"bold":true,"extra":[{"text":"Dúnadan Tier","color":"#cccccc"}]}
+        - {"text": "Right click to unequip.","color": "#919191"}
+      name: {"text": "Aragorn's Hood","color":"#cccccc","shadow_color": 0,"bold": true }
+  hat3:
+    rightCommand: <<<UNEQUIP>>>
+    leftCommand: <<<EQUIP/EXIT UI>>>
+    itemStack:
+      material: minecraft:stone
+      cmd: 10
+      lore:
+        - {"text": "This may look like a pile of sticks but at some point it used to belong to the King of the Woodland Realm. It also seems to have a particularly strong… magical effect on its wearer's ears…","color": "#d4d4d4"}
+        - ""
+        - {"text":"Patreon:","color":"#cd6a18","shadow_color":6500616,"bold":true,"extra":[{"text":"Elf Tier","color":"#cccccc"}]}
+        - {"text": "Right click to unequip.","color": "#919191"}
+      name: {"text": "Tharanduil's Crown","color":"#cccccc","shadow_color": 0,"bold": true }
+  hat4:
+    rightCommand: <<<UNEQUIP>>>
+    leftCommand: <<<EQUIP/EXIT UI>>>
+    itemStack:
+      material: minecraft:stone
+      cmd: 11
+      lore:
+        - {"text": "Pointy hat. You know what that means… it was probably stolen from a wizard. You are in trouble.","color": "#d4d4d4"}
+        - ""
+        - {"text":"Patreon:","color":"#cd6a18","shadow_color":6500616,"bold":true,"extra":[{"text":"Maiar Tier","color":"#cccccc"}]}
+        - {"text": "Right click to unequip.","color": "#919191"}
+      name: {"text": "Gandalf's Hat","color":"#cccccc","shadow_color": 0,"bold": true }
+  hat5:
+    rightCommand: <<<UNEQUIP>>>
+    leftCommand: <<<EQUIP/EXIT UI>>>
+    itemStack:
+      material: minecraft:stone
+      cmd: 15
+      lore:
+        - {"text": "Ul ukhadow ro mausan purpouke lieuk upon arda, agh gith avhaav iuk shal iav benduk uklowpak agh ukurepak avo mausan liwo.","color": "#d4d4d4"}
+        - ""
+        - {"text":"Patreon:","color":"#cd6a18","shadow_color":6500616,"bold":true,"extra":[{"text":"The Eye Tier","color":"#cccccc"}]}
+        - {"text": "Right click to unequip.","color": "#919191"}
+      name: {"text": "The Eye","color":"#cccccc","shadow_color": 0,"bold": true }
+
+wearables:
+  hat1:
+    rightCommand: <<<UNEQUIP>>>
+    itemStack:
+      material: minecraft:stone
+      cmd: 16
+      lore:
+        - {"text": "A stunning piece of kit, previously worn by Gimli son of Glóin. Only Aulë knows how you got a hold of it…","color": "#d4d4d4"}
+        - ""
+        - {"text": "Right click to unequip.","color": "#919191"}
+      name: {"text": "Gimli's Helmet","color":"#33a2d1","shadow_color": 1261651,"bold": true }
+  hat2:
+    rightCommand: <<<UNEQUIP>>>
+    itemStack:
+      material: minecraft:stone
+      cmd: 17
+      lore:
+        - {"text": "Highly sought after headgear worn by virtually everyone but this one in particular was owned by the one they use to call Strider.","color": "#d4d4d4"}
+        - ""
+        - {"text": "Right click to unequip.","color": "#919191"}
+      name: {"text": "Aragorn's Hood","color":"#239035","shadow_color": 803093,"bold": true }
+  hat3:
+    rightCommand: <<<UNEQUIP>>>
+    itemStack:
+      material: minecraft:stone
+      cmd: 18
+      lore:
+        - {"text": "This may look like a pile of sticks but at some point it used to belong to the King of the Woodland Realm. It also seems to have a particularly strong… magical effect on its wearer's ears…","color": "#d4d4d4"}
+        - ""
+        - {"text": "Right click to unequip.","color": "#919191"}
+      name: {"text": "Tharanduil's Crown","color":"#914c9a","shadow_color": 5187156,"bold": true }
+  hat4:
+    rightCommand: <<<UNEQUIP>>>
+    itemStack:
+      material: minecraft:stone
+      cmd: 19
+      lore:
+        - {"text": "Pointy hat. You know what that means… it was probably stolen from a wizard. You are in trouble.","color": "#d4d4d4"}
+        - ""
+        - {"text": "Right click to unequip.","color": "#919191"}
+      name: {"text": "Gandalf's Hat","color":"#a29fa3","shadow_color": 2368548,"bold": true }
+  hat5:
+    rightCommand: <<<UNEQUIP>>>
+    itemStack:
+      material: minecraft:stone
+      cmd: 20
+      lore:
+        - {"text": "Ul ukhadow ro mausan purpouke lieuk upon arda, agh gith avhaav iuk shal iav benduk uklowpak agh ukurepak avo mausan liwo.","color": "#d4d4d4"}
+        - ""
+        - {"text": "Right click to unequip.","color": "#919191"}
+      name: {"text": "The Eye","color":"#cd3232","shadow_color": 7410451,"bold": true }
