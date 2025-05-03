@@ -1,7 +1,7 @@
 package com.mcmiddleearth.perks.gui;
 
 import com.mcmiddleearth.perks.PerksPlugin;
-import net.kyori.adventure.text.serializer.json.JSONComponentSerializer;
+import com.mcmiddleearth.perks.utils.ItemStackUtil;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
@@ -10,7 +10,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.Arrays;
-import java.util.List;
 
 public class GuiItem {
 
@@ -42,12 +41,7 @@ public class GuiItem {
         if(itemConfig==null) {
             return GuiItem.errorItem;
         }
-        ItemStack item = new ItemStack(Material.valueOf(itemConfig.getString("material", Material.STONE.name())));
-        ItemMeta meta = item.getItemMeta();
-        meta.setCustomModelData(itemConfig.getInt("cmd",0));
-        meta.lore(itemConfig.getStringList("lore").stream().map(line -> JSONComponentSerializer.json().deserialize(line)).toList());
-        item.setItemMeta(meta);
-
+        ItemStack item = ItemStackUtil.loadItem(itemConfig);
         String leftCommand = config.getString("leftCommand","");
         String rightCommand = config.getString("rightCommand","");
         String middleCommand = config.getString("MiddleCommand","");

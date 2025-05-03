@@ -69,7 +69,7 @@ public class SitPerk extends Perk {
         }
         item = Material.valueOf(PerksPlugin.getPerkString(this.getName(),"item","GHAST_TEAR"));
         setListener(new SitListener());
-        this.setCommandHandler(new SitHandler(), Permissions.USER.getPermissionNode());
+        this.setCommandHandler(new SitHandler(this, Permissions.USER.getPermissionNode()));
     }
     
     public static void sitDown(Player player, Block clicked) {

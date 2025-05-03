@@ -46,9 +46,7 @@ public class CompanionPerk extends Perk {
 
     private static boolean allowSpawn;
 
-    private static final String perkName = "pet";
-
-    public CompanionPerk() {
+    public CompanionPerk(String perkName) {
         super(perkName);
         setListener(new CompanionListener());
         setCommandHandler(new CompanionHandler(this, Permissions.USER.getPermissionNode()),perkName);
@@ -170,7 +168,7 @@ Logger.getGlobal().info("Custom name. "+customName);
                     return data.creationTime();
                 }
             }));
-            for(int i = 0; i < Math.max(0,entityList.size()-PerksPlugin.getPerkInt(perkName, "maxAllowedNumber",3)); i++) {
+            for(int i = 0; i < Math.max(0,entityList.size()-PerksPlugin.getPerkInt(this.getName(), "maxAllowedNumber",3)); i++) {
                 entityList.get(i).remove();
             }
         }

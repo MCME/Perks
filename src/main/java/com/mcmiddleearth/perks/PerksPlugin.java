@@ -82,7 +82,8 @@ public class PerksPlugin extends JavaPlugin {
         PerkManager.addPerk(new JockeyPerk());
         PerkManager.addPerk(new GallopPerk());
         PerkManager.addPerk(new ParrotPerk());
-        PerkManager.addPerk(new CompanionPerk());
+        PerkManager.addPerk(new CompanionPerk("dog"));
+        PerkManager.addPerk(new CompanionPerk("cat"));
         PerkManager.addPerk(new BoatPerk());
         PerkManager.addPerk(new CompassPerk());
         PerkManager.addPerk(new PotionEffectPerk("speed",
@@ -102,7 +103,11 @@ public class PerksPlugin extends JavaPlugin {
                                                  new PotionEffectPerk.PotionEffectData("ring",PotionEffectType.BLINDNESS,null)));
         PerkManager.addPerk(new ItemPerk("elytra", Material.ELYTRA,"fluffy wings",1));
         PerkManager.addPerk(new ItemPerk("firework", Material.FIREWORK_ROCKET,"splendid firework",64));
-        PerkManager.addPerk(new EquipmentPerk("hat"));
+        PerkManager.addPerk(new EquipmentPerk("hat1"));
+        PerkManager.addPerk(new EquipmentPerk("hat2"));
+        PerkManager.addPerk(new EquipmentPerk("hat3"));
+        PerkManager.addPerk(new EquipmentPerk("hat4"));
+        PerkManager.addPerk(new EquipmentPerk("hat5"));
 
         this.updateConfigurationFile();
         

@@ -35,6 +35,9 @@ public class GuiManager implements Listener {
     public GuiManager() {
         try {
             guiItemConfig.load(guiItemFile);
+            if(!favoritesFile.exists()) {
+                favoritesFile.createNewFile();
+            }
             favoritesConfig.load(favoritesFile);
         } catch (IOException | InvalidConfigurationException e) {
             throw new RuntimeException(e);
