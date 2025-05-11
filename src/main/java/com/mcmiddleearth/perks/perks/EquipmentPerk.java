@@ -54,7 +54,10 @@ public class EquipmentPerk extends Perk {
 
     public boolean isItem(@Nullable ItemStack other) {
         return other != null && item.getType().equals(other.getType())
-            && item.getItemMeta().getCustomModelData() == other.getItemMeta().getCustomModelData();
+            && (item.getItemMeta() == null && other.getItemMeta() == null
+                || item.getItemMeta() != null && other.getItemMeta() != null
+                    && (!item.getItemMeta().hasCustomModelData() && !other.getItemMeta().hasCustomModelData()
+                        || item.getItemMeta().getCustomModelData() == other.getItemMeta().getCustomModelData()));
     }
 
     public void giveItem(Player player) {

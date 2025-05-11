@@ -10,6 +10,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.Arrays;
+import java.util.logging.Logger;
 
 public class GuiItem {
 
@@ -39,6 +40,7 @@ public class GuiItem {
         if(config == null) return GuiItem.errorItem;
         ConfigurationSection itemConfig = config.getConfigurationSection("itemStack");
         if(itemConfig==null) {
+Logger.getGlobal().info("missing itemConfig for gui item: "+config.getCurrentPath());
             return GuiItem.errorItem;
         }
         ItemStack item = ItemStackUtil.loadItem(itemConfig);

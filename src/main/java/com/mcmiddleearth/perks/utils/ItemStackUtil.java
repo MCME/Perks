@@ -1,5 +1,6 @@
 package com.mcmiddleearth.perks.utils;
 
+import com.google.gson.JsonParseException;
 import net.kyori.adventure.text.serializer.json.JSONComponentSerializer;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
@@ -7,6 +8,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import javax.annotation.Nullable;
+import java.util.logging.Logger;
 
 public class ItemStackUtil {
 
@@ -14,11 +16,19 @@ public class ItemStackUtil {
         if(itemConfig == null) {
             return new ItemStack(Material.STONE);
         }
-        ItemStack item = new ItemStack(Material.valueOf(itemConfig.getString("material", Material.STONE.name())));
+        ItemStack item = new ItemStack(Material.STONE);
+        try {
+            item = new ItemStack(Material.valueOf(itemConfig.getString("material", Material.STONE.name()).toUpperCase()));
+        } catch (IllegalArgumentException ignore) {}
         ItemMeta meta = item.getItemMeta();
         meta.setCustomModelData(itemConfig.getInt("cmd",0));
-        meta.lore(itemConfig.getStringList("lore").stream().map(line -> JSONComponentSerializer.json().deserialize(line)).toList());
-        meta.displayName(JSONComponentSerializer.json().deserialize(itemConfig.getString("name","")));
+        try {
+            meta.lore(itemConfig.getStringList("lore").stream().map(line -> JSONComponentSerializer.json().deserialize(line)).toList());
+            meta.displayName(JSONComponentSerializer.json().deserialize(itemConfig.getString("name", "")));
+        } catch(JsonParseException ex) {
+            meta.setDisplayName("Json Parse Error: "+itemConfig.getString("name", ""));
+Logger.getGlobal().info("Json Parse Error: "+itemConfig.getString("name", ""));
+        }
         item.setItemMeta(meta);
         return item;
     }

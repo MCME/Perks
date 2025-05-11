@@ -7,6 +7,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 public class ListDisplay {
 
@@ -57,6 +58,10 @@ public class ListDisplay {
         int currentItemIndex = firstVisibleItemIndex;
         for(int row = 0; row < rows; row++) {
             for(int column = 0; column < columns; column++) {
+//Logger.getGlobal().info("currentItemIndex: "+currentItemIndex + " fistVisibleItemIndex: "+firstVisibleItemIndex);
+                if(currentItemIndex >= items.size()) {
+                    return;
+                }
                 if(hasPreviousItem() && row==0 && column==0) {
                     inventory.setItem(firstSlot, previousItem.getItemStack());
                     currentItemIndex++;

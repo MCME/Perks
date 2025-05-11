@@ -176,7 +176,10 @@ Logger.getGlobal().info("Perk: "+player.getName()+" "+perk.getName());
         List<GuiItem> result = new ArrayList<>();
         for(String key: creditDefinitionConfig.getKeys(false)) {
             ConfigurationSection section = creditDefinitionConfig.getConfigurationSection(key);
-            result.add(DefinitionItem.load(section, key, player, creditDatas.get(player.getUniqueId())));
+            CreditData data =  creditDatas.get(player.getUniqueId());
+            if(data != null) {
+                result.add(DefinitionItem.load(section, key, player, data));
+            }
         }
         return result;
     }
