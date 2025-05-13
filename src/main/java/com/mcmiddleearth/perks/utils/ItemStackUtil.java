@@ -17,17 +17,20 @@ public class ItemStackUtil {
             return new ItemStack(Material.STONE);
         }
         ItemStack item = new ItemStack(Material.STONE);
+        String[] itemData = itemConfig.getString("material", Material.STONE.name()).toUpperCase().split(":");
         try {
-            item = new ItemStack(Material.valueOf(itemConfig.getString("material", Material.STONE.name()).toUpperCase()));
-        } catch (IllegalArgumentException ignore) {}
+            item = new ItemStack(Material.valueOf(itemData[itemData.length-1]));
+        } catch (IllegalArgumentException ex) {
+            Logger.getGlobal().warning("Invalid item stack material: "+itemData[itemData.length-1]);
+        }
         ItemMeta meta = item.getItemMeta();
         meta.setCustomModelData(itemConfig.getInt("cmd",0));
         try {
             meta.lore(itemConfig.getStringList("lore").stream().map(line -> JSONComponentSerializer.json().deserialize(line)).toList());
-            meta.displayName(JSONComponentSerializer.json().deserialize(itemConfig.getString("name", "")));
+            meta.displayName(JSONComponentSerializer.json().deserialize(itemConfig.getString("name", "{\"text\":\" \"}")));
         } catch(JsonParseException ex) {
             meta.setDisplayName("Json Parse Error: "+itemConfig.getString("name", ""));
-Logger.getGlobal().info("Json Parse Error: "+itemConfig.getString("name", ""));
+            Logger.getGlobal().warning("Json Parse Error: "+itemConfig.getString("name", ""));
         }
         item.setItemMeta(meta);
         return item;

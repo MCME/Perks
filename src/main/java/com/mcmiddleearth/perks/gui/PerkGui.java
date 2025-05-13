@@ -62,17 +62,17 @@ public class PerkGui {
                         GuiManager.getGuiItem("hats.previous.enabled"), GuiManager.getGuiItem("hats.next.enabled"),
                         GuiManager.getGuiItem("hats.previous.disabled"), GuiManager.getGuiItem("hats.next.disabled"));
         allPerks = new ListDisplay(inventory, PerkManager.getPerks().stream().map(Perk::getGuiItem).toList(),
-                0, 4, 9, false,
+                1, 4, 8, false,
                 GuiManager.getGuiItem("allPerks.previous"), GuiManager.getGuiItem("allPerks.next"));
 
         hats.display();
         favoritePerks.display();
         morePerks.display();
 
-        forumItem = GuiManager.getGuiItem("forum");
-        patreonItem = GuiManager.getGuiItem("patreon");
-        allPerksItem = GuiManager.getGuiItem("allPerks");
-        returnItem = GuiManager.getGuiItem("return");
+        forumItem = GuiManager.getGuiItem("lifetime");
+        patreonItem = GuiManager.getGuiItem("tiers");
+        allPerksItem = GuiManager.getGuiItem("secondPage");
+        returnItem = GuiManager.getGuiItem("firstPage");
         backgroundItem = GuiManager.getGuiItem("label.background");
 
         this.inventory = inventory;
@@ -85,29 +85,34 @@ public class PerkGui {
         if(slot < guiSlots ) {
             if (displayAllPerks) {
                 if (!allPerks.handleClick(player, slot, clickType)) {
-                    switch(slot) {
-                        case allPerksSlot:
-                            displayAllPerks = true;
-                            allPerks.display();
-                            placeButtonsSecondPage();
-                            break;
-                        case forumSlot:
-                            forumItem.handleClick(player, clickType);
-                            break;
-                        case patreonSlot:
-                            patreonItem.handleClick(player, clickType);
-                            break;
+                    if (slot == returnSlot) {
+Logger.getGlobal().info("Display all perks!");
+                        inventory.clear();
+                        displayAllPerks = false;
+                        morePerks.display();
+                        favoritePerks.display();
+                        hats.display();
+                        placeButtonsFirstPage();
                     }
                 }
             } else {
                 if(!morePerks.handleClick(player, slot, clickType)) {
                    if(!favoritePerks.handleClick(player, slot, clickType)) {
                        if (!hats.handleClick(player, slot, clickType)) {
-                           if (slot == returnSlot) {
-                               morePerks.display();
-                               favoritePerks.display();
-                               hats.display();
-                               placeButtonsFirstPage();
+                           switch(slot) {
+                               case allPerksSlot:
+                                   inventory.clear();
+                                   displayAllPerks = true;
+                                   allPerks.display();
+                                   placeButtonsSecondPage();
+Logger.getGlobal().info("Display all perks!");
+                                   break;
+                               case forumSlot:
+                                   forumItem.handleClick(player, clickType);
+                                   break;
+                               case patreonSlot:
+                                   patreonItem.handleClick(player, clickType);
+                                   break;
                            }
                        }
                    }

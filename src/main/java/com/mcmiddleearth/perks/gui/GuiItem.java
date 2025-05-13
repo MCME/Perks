@@ -1,7 +1,9 @@
 package com.mcmiddleearth.perks.gui;
 
+import com.google.common.base.Joiner;
 import com.mcmiddleearth.perks.PerksPlugin;
 import com.mcmiddleearth.perks.utils.ItemStackUtil;
+import net.kyori.adventure.text.serializer.json.JSONComponentSerializer;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
@@ -38,12 +40,13 @@ public class GuiItem {
 
     public static GuiItem load(ConfigurationSection config) {
         if(config == null) return GuiItem.errorItem;
-        ConfigurationSection itemConfig = config.getConfigurationSection("itemStack");
-        if(itemConfig==null) {
-Logger.getGlobal().info("missing itemConfig for gui item: "+config.getCurrentPath());
-            return GuiItem.errorItem;
-        }
-        ItemStack item = ItemStackUtil.loadItem(itemConfig);
+//config.getKeys(false).stream().forEach(key -> Logger.getGlobal().info(key));
+//        ConfigurationSection itemConfig = config.getConfigurationSection("itemStack");
+//        if(itemConfig==null) {
+//Logger.getGlobal().info("missing itemConfig for gui item: "+config.getCurrentPath());
+//            return GuiItem.errorItem;
+//        }
+        ItemStack item = ItemStackUtil.loadItem(config);
         String leftCommand = config.getString("leftCommand","");
         String rightCommand = config.getString("rightCommand","");
         String middleCommand = config.getString("MiddleCommand","");
@@ -63,9 +66,16 @@ Logger.getGlobal().info("missing itemConfig for gui item: "+config.getCurrentPat
     private void executeCommand(Player player, String command) {
         if(command != null && !command.isEmpty()) {
             String[] split = command.split(" ");
-            if (split[0].equalsIgnoreCase("/perk")) {
+            if(split[0].equalsIgnoreCase("/perk")) {
+                player.closeInventory();
                 PerksPlugin.getInstance().getPerksExecutor().onCommand(player, null, "perk",
                         Arrays.copyOfRange(split, 1, split.length));
+Logger.getGlobal().info("Execute perk command: "+command);
+            } else if (split[0].equalsIgnoreCase("/message")) {
+                player.closeInventory();
+                player.sendMessage(JSONComponentSerializer.json()
+                        .deserialize(Joiner.on(" ").join(Arrays.copyOfRange(split, 1, split.length))));
+Logger.getGlobal().info("Sending Message: "+command);
             }
         }
     }
