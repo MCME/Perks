@@ -96,18 +96,18 @@ Logger.getGlobal().info("Giving permission to "+ playerID+" for credit "+credit)
         }
     }
     
-    public static CreditData updatePerkPermissions(Player player) {
+    public static void updatePerkPermissions(Player player) {
         PermissionAttachment attachment = getPermissionAttachment(player);
         player.removeAttachment(attachment);
         List<String> credits = creditEntries.get(player.getUniqueId());
         if(credits==null) {
-            return null;
+            return;
         }
         CreditData creditData = new CreditData(credits);
 //Logger.getGlobal().info("Set perk perms for: "+player.getName()+" - "+creditKey);
         setPermissions(player.getUniqueId(), creditData);
         player.recalculatePermissions();
-        return creditData;
+        creditDatas.put(player.getUniqueId(), creditData);
     }
 
     public static void setCredits(HashMap<UUID, CreditData> creditDatas) {

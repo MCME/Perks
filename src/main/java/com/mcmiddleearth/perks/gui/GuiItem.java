@@ -66,16 +66,20 @@ public class GuiItem {
     private void executeCommand(Player player, String command) {
         if(command != null && !command.isEmpty()) {
             String[] split = command.split(" ");
-            if(split[0].equalsIgnoreCase("/perk")) {
+            if (split[0].equalsIgnoreCase("closegui")) {
                 player.closeInventory();
+            }
+            if(split[1].equalsIgnoreCase("/perk")) {
                 PerksPlugin.getInstance().getPerksExecutor().onCommand(player, null, "perk",
-                        Arrays.copyOfRange(split, 1, split.length));
+                        Arrays.copyOfRange(split, 2, split.length));
 Logger.getGlobal().info("Execute perk command: "+command);
-            } else if (split[0].equalsIgnoreCase("/message")) {
-                player.closeInventory();
+            } else if (split[1].equalsIgnoreCase("/message")) {
                 player.sendMessage(JSONComponentSerializer.json()
-                        .deserialize(Joiner.on(" ").join(Arrays.copyOfRange(split, 1, split.length))));
+                        .deserialize(Joiner.on(" ").join(Arrays.copyOfRange(split, 2, split.length))));
 Logger.getGlobal().info("Sending Message: "+command);
+            }
+            if(split[0].equalsIgnoreCase("updategui")) {
+                GuiManager.updateGui(player);
             }
         }
     }
@@ -94,5 +98,13 @@ Logger.getGlobal().info("Sending Message: "+command);
 
     public String getMiddleCommand() {
         return middleCommand;
+    }
+
+    public void setRightCommand(String rightCommand) {
+        this.rightCommand = rightCommand;
+    }
+
+    public void setLeftCommand(String leftCommand) {
+        this.leftCommand = leftCommand;
     }
 }

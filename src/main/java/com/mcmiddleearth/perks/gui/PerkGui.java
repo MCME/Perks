@@ -38,10 +38,10 @@ public class PerkGui {
     private static final int returnSlot = 0;
     private static final int backgroundSlot = 22;
 
-    private final ListDisplay morePerks;
-    private final ListDisplay favoritePerks;
-    private final ListDisplay hats;
-    private final ListDisplay allPerks;
+    private ListDisplay morePerks;
+    private ListDisplay favoritePerks;
+    private ListDisplay hats;
+    private ListDisplay allPerks;
 
     private boolean displayAllPerks = false;
 
@@ -49,25 +49,14 @@ public class PerkGui {
 
     private final GuiItem forumItem, patreonItem, allPerksItem, returnItem, backgroundItem;
 
+    private final Player player;
+
     public PerkGui(Player player) {
         Inventory inventory = Bukkit.createInventory(null, guiSlots, Component.text("Perks").color(NamedTextColor.YELLOW));
+        this.player = player;
+        this.inventory = inventory;
 
-        morePerks = new ListDisplay(inventory, PermissionData.getPerkDefinitionItems(player),
-                        0,2,5, false,
-                        GuiManager.getGuiItem("morePerks.previous"), GuiManager.getGuiItem("morePerks.next"));
-        favoritePerks = new ListDisplay(inventory, GuiManager.getFavoritePerks(player), 27, 1, 9,
-                        GuiManager.getGuiItem("favoritePerks.previous.enabled"), GuiManager.getGuiItem("favoritePerks.next.enabled"),
-                        GuiManager.getGuiItem("favoritePerks.previous.disabled"), GuiManager.getGuiItem("favoritePerks.next.disabled"));
-        hats = new ListDisplay(inventory, GuiManager.getHats(player), 15, 1, 3,
-                        GuiManager.getGuiItem("hats.previous.enabled"), GuiManager.getGuiItem("hats.next.enabled"),
-                        GuiManager.getGuiItem("hats.previous.disabled"), GuiManager.getGuiItem("hats.next.disabled"));
-        allPerks = new ListDisplay(inventory, PerkManager.getPerks().stream().map(Perk::getGuiItem).toList(),
-                1, 4, 8, false,
-                GuiManager.getGuiItem("allPerks.previous"), GuiManager.getGuiItem("allPerks.next"));
-
-        hats.display();
-        favoritePerks.display();
-        morePerks.display();
+        update();
 
         forumItem = GuiManager.getGuiItem("lifetime");
         patreonItem = GuiManager.getGuiItem("tiers");
@@ -75,10 +64,36 @@ public class PerkGui {
         returnItem = GuiManager.getGuiItem("firstPage");
         backgroundItem = GuiManager.getGuiItem("label.background");
 
-        this.inventory = inventory;
-
         placeButtonsFirstPage();
         player.openInventory(inventory);
+    }
+
+    public void update() {
+        morePerks = new ListDisplay(inventory, PermissionData.getPerkDefinitionItems(player),
+                0,2,5, false,
+                GuiManager.getGuiItem("morePerks.previous"), GuiManager.getGuiItem("morePerks.next"),
+                (morePerks!=null ? morePerks.getFirstVisibleItemIndex() : 0));
+        favoritePerks = new ListDisplay(inventory, GuiManager.getFavoritePerks(player), 27, 1, 9,
+                GuiManager.getGuiItem("favoritePerks.previous.enabled"), GuiManager.getGuiItem("favoritePerks.next.enabled"),
+                GuiManager.getGuiItem("favoritePerks.previous.disabled"), GuiManager.getGuiItem("favoritePerks.next.disabled"),
+                (favoritePerks!=null ? morePerks.getFirstVisibleItemIndex() : 0));
+        hats = new ListDisplay(inventory, GuiManager.getHats(player), 15, 1, 3,
+                GuiManager.getGuiItem("hats.previous.enabled"), GuiManager.getGuiItem("hats.next.enabled"),
+                GuiManager.getGuiItem("hats.previous.disabled"), GuiManager.getGuiItem("hats.next.disabled"),
+                (hats!=null ? morePerks.getFirstVisibleItemIndex() : 0));
+Logger.getGlobal().info("Perk gui item mat: "+PerkManager.getPerks().stream().findFirst().get().getGuiItem().getItemStack().getType());
+        allPerks = new ListDisplay(inventory, GuiManager.getAllPerks(),
+                1, 4, 8, false,
+                GuiManager.getGuiItem("allPerks.previous"), GuiManager.getGuiItem("allPerks.next"),
+                (allPerks!=null ? morePerks.getFirstVisibleItemIndex() : 0));
+
+        if(displayAllPerks) {
+            allPerks.display();
+        } else {
+            hats.display();
+            favoritePerks.display();
+            morePerks.display();
+        }
     }
 
     public boolean handleClick(Player player, int slot, ClickType clickType) {
@@ -86,7 +101,7 @@ public class PerkGui {
             if (displayAllPerks) {
                 if (!allPerks.handleClick(player, slot, clickType)) {
                     if (slot == returnSlot) {
-Logger.getGlobal().info("Display all perks!");
+Logger.getGlobal().info("Display first page!");
                         inventory.clear();
                         displayAllPerks = false;
                         morePerks.display();
@@ -284,4 +299,5 @@ Logger.getGlobal().info("Set Test Item slot 22");
     public boolean hasInventory(Inventory inventory) {
         return this.inventory == inventory;
     }
+
 }

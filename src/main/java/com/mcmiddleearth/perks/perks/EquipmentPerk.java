@@ -28,6 +28,8 @@ public class EquipmentPerk extends Perk {
 
     public EquipmentPerk(String name) {
         super(name);
+        getGuiItem().setRightCommand("closegui /perk "+name+" unequip");
+        getGuiItem().setLeftCommand("closegui /perk "+name+" equip");
         setListener(new EquipmentListener(this));
 
         ConfigurationSection config = PerksPlugin.getPerkSettings()

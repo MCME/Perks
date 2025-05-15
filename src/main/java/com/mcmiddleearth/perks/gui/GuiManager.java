@@ -48,7 +48,7 @@ public class GuiManager implements Listener {
         if(favoritesConfig.contains(player.getUniqueId().toString())) {
             List<String> playerFavorites = favoritesConfig.getStringList(player.getUniqueId().toString());
             return PerkManager.getPerks().stream().filter(perk -> playerFavorites.contains(perk.getName()))
-                    .map(Perk::getGuiItem).toList();
+                    .map(Perk::getFavoriteGuiItem).toList();
         }
         return new ArrayList<>();
     }
@@ -87,6 +87,15 @@ public class GuiManager implements Listener {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public static List<GuiItem> getAllPerks() {
+        return PerkManager.getPerks().stream().map(Perk::getGuiItem).toList();
+    }
+
+    public static void updateGui(Player player) {
+        PerkGui gui = openGuis.get(player.getUniqueId());
+        gui.update();
     }
 
     @EventHandler

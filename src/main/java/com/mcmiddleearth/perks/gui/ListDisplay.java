@@ -29,23 +29,23 @@ public class ListDisplay {
     private final Inventory inventory;
 
     public ListDisplay(Inventory inventory, List<GuiItem> items, int firstSlot, int rows, int columns,
-                       boolean alwaysShowArrows, GuiItem previousItem, GuiItem nextItem) {
-        this(inventory, items, firstSlot, rows, columns, alwaysShowArrows, previousItem, nextItem, previousItem, nextItem);
+                       boolean alwaysShowArrows, GuiItem previousItem, GuiItem nextItem, int firstVisibleItemIndex) {
+        this(inventory, items, firstSlot, rows, columns, alwaysShowArrows, previousItem, nextItem, previousItem, nextItem, firstVisibleItemIndex);
     }
 
     public ListDisplay(Inventory inventory, List<GuiItem> items, int firstSlot, int rows, int columns,
-                        GuiItem previousItem, GuiItem nextItem, GuiItem previousItemDeactivated, GuiItem nextItemDeactivated) {
+                        GuiItem previousItem, GuiItem nextItem, GuiItem previousItemDeactivated, GuiItem nextItemDeactivated, int firstVisibleItemIndex) {
         this(inventory, items, firstSlot, rows, columns, true,
-                previousItem, nextItem, previousItemDeactivated, nextItemDeactivated);
+                previousItem, nextItem, previousItemDeactivated, nextItemDeactivated, firstVisibleItemIndex);
     }
 
     private ListDisplay(Inventory inventory, List<GuiItem> items, int firstSlot, int rows, int columns, boolean alwaysShowArrows,
-                        GuiItem previousItem, GuiItem nextItem, GuiItem previousItemDeactivated, GuiItem nextItemDeactivated) {
+                        GuiItem previousItem, GuiItem nextItem, GuiItem previousItemDeactivated, GuiItem nextItemDeactivated, int firstVisibleItemIndex) {
         if(items!=null) this.items.addAll(items);
         this.firstSlot = firstSlot;
         this.rows = rows;
         this.columns = columns;
-        firstVisibleItemIndex = 0;
+        this.firstVisibleItemIndex = firstVisibleItemIndex;
         this.alwaysShoArrows = alwaysShowArrows;
         this.inventory = inventory;
         this.previousItem = previousItem;
@@ -69,6 +69,7 @@ public class ListDisplay {
                     inventory.setItem(firstSlot+row*inventoryColumns+column, nextItem.getItemStack());
                     currentItemIndex++;
                 } else {
+Logger.getGlobal().info("Set list display item ["+currentItemIndex+"]: "+items.get(currentItemIndex).getItemStack().getType());
                     inventory.setItem(firstSlot+row*inventoryColumns+column, items.get(currentItemIndex).getItemStack());
                     currentItemIndex++;
                 }
@@ -155,5 +156,9 @@ public class ListDisplay {
             row++;
         }
         return items.get(row*columns+index);
+    }
+
+    public int getFirstVisibleItemIndex() {
+        return firstVisibleItemIndex;
     }
 }

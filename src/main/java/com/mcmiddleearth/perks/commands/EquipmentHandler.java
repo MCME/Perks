@@ -26,12 +26,22 @@ public class EquipmentHandler extends PerksCommandHandler {
     @Override
     protected void execute(CommandSender cs, String cmd, String... args) {
         Player player = (Player)cs;
-        if (((EquipmentPerk)getPerk()).hasItem(player)) {
-            PerksPlugin.getMessageUtil().sendErrorMessage(cs, "You already have this item: "+getPerk().getName());
-            return;
+        if(args.length < 1 || args[0].equalsIgnoreCase("equip")) {
+            if (((EquipmentPerk) getPerk()).hasItem(player)) {
+                PerksPlugin.getMessageUtil().sendErrorMessage(cs, "You already have this item: " + getPerk().getName());
+                return;
+            }
+            ((EquipmentPerk) getPerk()).giveItem(player);
+            PerksPlugin.getMessageUtil().sendInfoMessage(cs, "Have fun with your "
+                    + ((EquipmentPerk) this.getPerk()).getItemName());
+        } else {
+            if (!((EquipmentPerk) getPerk()).hasItem(player)) {
+                PerksPlugin.getMessageUtil().sendErrorMessage(cs, "You don't have this item: " + getPerk().getName());
+                return;
+            }
+            ((EquipmentPerk) getPerk()).removeItems(player);
+            PerksPlugin.getMessageUtil().sendInfoMessage(cs, getPerk().getName()+" removed."
+                    + ((EquipmentPerk) this.getPerk()).getItemName());
         }
-        ((EquipmentPerk)getPerk()).giveItem(player);
-        PerksPlugin.getMessageUtil().sendInfoMessage(cs, "Have fun with your "
-                +((EquipmentPerk)this.getPerk()).getItemName());
     }
 }

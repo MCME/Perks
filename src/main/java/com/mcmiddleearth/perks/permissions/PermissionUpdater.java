@@ -57,7 +57,13 @@ Logger.getGlobal().info("updatePermissions "+sourcesFinished);
         new BukkitRunnable() {
             @Override
             public void run() {
-                HashMap<UUID, CreditData> creditData = new HashMap<>();
+                for(Player player: Bukkit.getOnlinePlayers()) {
+                    PermissionData.updatePerkPermissions(player);
+                }
+                for(Perk perk: PerkManager.getPerks()) {
+                    perk.check();
+                }
+                /*HashMap<UUID, CreditData> creditData = new HashMap<>();
                 for(Player player: Bukkit.getOnlinePlayers()) {
                     CreditData data = PermissionData.updatePerkPermissions(player);
                     if(data!=null) {
@@ -67,7 +73,7 @@ Logger.getGlobal().info("updatePermissions "+sourcesFinished);
                 PermissionData.setCredits(creditData);
                 for(Perk perk: PerkManager.getPerks()) {
                     perk.check();
-                }
+                }*/
             }
         }.runTask(PerksPlugin.getInstance());
     }

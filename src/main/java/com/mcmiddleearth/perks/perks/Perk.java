@@ -25,6 +25,8 @@ import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import java.util.logging.Logger;
+
 /**
  *
  * @author Eriol_Eandur
@@ -33,7 +35,7 @@ public class Perk {
     
     private final String name;
 
-    private GuiItem guiItem;
+    private GuiItem guiItem, favoriteGuiItem;
     
     private PerksCommandHandler handler;
     private Listener listener;
@@ -42,15 +44,21 @@ public class Perk {
     
     public Perk(String name) {
         this.name = name;
-        GuiItem item = new GuiItem(new ItemStack(Material.STONE),"", "", "");
+        guiItem = new GuiItem(new ItemStack(Material.STONE),"", "", "");
+        favoriteGuiItem = new GuiItem(new ItemStack(Material.STONE),"", "", "");
         ConfigurationSection config = PerksPlugin.getPerkSettings().getConfigurationSection(name);
+Logger.getGlobal().info("New perk: "+name);
         if(config != null) {
+Logger.getGlobal().info("Config found. Gui section: "+config.contains("guiItem"));
             ConfigurationSection itemSection = config.getConfigurationSection("guiItem");
             if(itemSection != null) {
                 guiItem = GuiItem.load(itemSection);
+                guiItem.setRightCommand("gui /perk favor "+name);
+                favoriteGuiItem = GuiItem.load(itemSection);
+                favoriteGuiItem.setRightCommand("updategui /perk unfavor "+name);
+Logger.getGlobal().info("GuiItem material: "+guiItem.getItemStack().getType());
             }
         }
-        guiItem = item;
     }
     
     public boolean isEnabled() {
@@ -97,4 +105,9 @@ public class Perk {
     public GuiItem getGuiItem() {
         return guiItem;
     }
+
+    public GuiItem getFavoriteGuiItem() {
+        return favoriteGuiItem;
+    }
+
 }
