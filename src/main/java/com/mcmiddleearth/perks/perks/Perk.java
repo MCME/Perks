@@ -53,7 +53,7 @@ Logger.getGlobal().info("Config found. Gui section: "+config.contains("guiItem")
             ConfigurationSection itemSection = config.getConfigurationSection("guiItem");
             if(itemSection != null) {
                 guiItem = GuiItem.load(itemSection);
-                guiItem.setRightCommand("gui /perk favor "+name);
+                guiItem.setRightCommand("updategui /perk favor "+name);
                 favoriteGuiItem = GuiItem.load(itemSection);
                 favoriteGuiItem.setRightCommand("updategui /perk unfavor "+name);
 Logger.getGlobal().info("GuiItem material: "+guiItem.getItemStack().getType());

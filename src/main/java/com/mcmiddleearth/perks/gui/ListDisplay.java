@@ -132,7 +132,10 @@ Logger.getGlobal().info("Set list display item ["+currentItemIndex+"]: "+items.g
             } else if (isNextItem(slot)) {
                 nextPage();
             } else {
-                getItem(slot).handleClick(player, click);
+                GuiItem guiItem = getItem(slot);
+                if(guiItem!= null) {
+                    guiItem.handleClick(player, click);
+                }
             }
             return true;
         } else {
@@ -155,7 +158,8 @@ Logger.getGlobal().info("Set list display item ["+currentItemIndex+"]: "+items.g
             index = index - 9;
             row++;
         }
-        return items.get(row*columns+index);
+        int finalIndex = row*columns+index;
+        return finalIndex < items.size() ? items.get(finalIndex) : null;
     }
 
     public int getFirstVisibleItemIndex() {

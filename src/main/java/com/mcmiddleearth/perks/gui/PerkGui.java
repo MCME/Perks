@@ -56,19 +56,19 @@ public class PerkGui {
         this.player = player;
         this.inventory = inventory;
 
-        update();
-
         forumItem = GuiManager.getGuiItem("lifetime");
         patreonItem = GuiManager.getGuiItem("tiers");
         allPerksItem = GuiManager.getGuiItem("secondPage");
         returnItem = GuiManager.getGuiItem("firstPage");
         backgroundItem = GuiManager.getGuiItem("label.background");
 
-        placeButtonsFirstPage();
+        update();
+
         player.openInventory(inventory);
     }
 
     public void update() {
+        inventory.clear();
         morePerks = new ListDisplay(inventory, PermissionData.getPerkDefinitionItems(player),
                 0,2,5, false,
                 GuiManager.getGuiItem("morePerks.previous"), GuiManager.getGuiItem("morePerks.next"),
@@ -89,10 +89,12 @@ Logger.getGlobal().info("Perk gui item mat: "+PerkManager.getPerks().stream().fi
 
         if(displayAllPerks) {
             allPerks.display();
+            placeButtonsSecondPage();
         } else {
             hats.display();
             favoritePerks.display();
             morePerks.display();
+            placeButtonsFirstPage();
         }
     }
 
