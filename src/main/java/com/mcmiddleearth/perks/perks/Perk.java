@@ -53,8 +53,18 @@ Logger.getGlobal().info("Config found. Gui section: "+config.contains("guiItem")
             ConfigurationSection itemSection = config.getConfigurationSection("guiItem");
             if(itemSection != null) {
                 guiItem = GuiItem.load(itemSection);
+                ItemMeta meta = guiItem.getItemStack().getItemMeta();
+                if(meta != null && meta.getDisplayName().equalsIgnoreCase("")) {
+                    meta.setDisplayName(name);
+                    guiItem.getItemStack().setItemMeta(meta);
+                }
                 guiItem.setRightCommand("updategui /perk favor "+name);
                 favoriteGuiItem = GuiItem.load(itemSection);
+                meta = favoriteGuiItem.getItemStack().getItemMeta();
+                if(meta != null && meta.getDisplayName().equalsIgnoreCase("")) {
+                    meta.setDisplayName(name);
+                    favoriteGuiItem.getItemStack().setItemMeta(meta);
+                }
                 favoriteGuiItem.setRightCommand("updategui /perk unfavor "+name);
 Logger.getGlobal().info("GuiItem material: "+guiItem.getItemStack().getType());
             }

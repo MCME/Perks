@@ -6,30 +6,48 @@ patreon:
   client_id: xxx
   client_secret: xxx
   redirect_uri: https://build.mcmiddleearth.com
+#
+# speedFactor: 0.6 equals 60% increase
+settings:
+  enabled: true
+update:
+  donor: https://www.mcmiddleearth.com/tools/printdonations.php
 perks:
   sit:
     item: GHAST_TEAR
     enabled: true
+    guiItem:
+      leftCommand: closegui /perk sit
+      material: GHAST_TEAR
+      lore:
+        - Sit down by right-clicking any block
   firework:
     itemName: splendid firework
     item: FIREWORK_ROCKET
-    itemQuantity: 64
     enabled: true
+    itemQuantity: 23
     guiItem:
-      leftCommand: ...
-      itemStack:
-        material: ...
-        cmd: ...
-        lore:
-          - ...
-        name:
+      leftCommand: closegui /perk firework
+      material: FIREWORK_ROCKET
+      lore:
+        - /perk firework
   fire:
     defaultTicks: 200
     maxTicks: 2000
     enabled: true
+    guiItem:
+      leftCommand: closegui /perk fire
+      material: CAMPFIRE
+      lore:
+        - /perk fire
   name:
     donorTagColor: YELLOW
-    enabled: true
+    enabled: false
+    guiItem:
+      leftCommand: closegui /perk sit
+      material: NAME_TAG
+      lore:
+        - Just a yellow name tag
   light:
     startDistance: 6
     teleportDistance: 40
@@ -39,36 +57,109 @@ perks:
     speedFactor: 0.1
     item: STICK
     enabled: true
+    guiItem:
+      leftCommand: closegui /perk light
+      material: FIREWORK_ROCKET
+      lore:
+        - /perk light
   ring:
     itemName: Ring of Power
     item: GOLD_NUGGET
     enabled: true
+    guiItem:
+      leftCommand: closegui /perk ring
+      material: GOLD_NUGGET
+      lore:
+        - /perk ring
   elytra:
     itemName: fluffy wings
     item: ELYTRA
     itemQuantity: 1
     enabled: true
+    guiItem:
+      leftCommand: closegui /perk elytra
+      material: ELYTRA
+      lore:
+        - /perk elytra
   jockey:
     antiJockeyPermission: perks.antijockey
     item: LEAD
     enabled: true
+    guiItem:
+      leftCommand: closegui /perk jockey
+      material: LEAD
+      lore:
+        - /perk jockey
   speed:
     itemName: Boots of Speed
     item: DIAMOND_BOOTS
-    amplifier: 4
     duration: -1
+    amplifier: 4
     enabled: true
+    guiItem:
+      leftCommand: closegui /perk speed
+      material: DIAMOND_BOOTS
+      lore:
+        - /perk speed
   jump:
     itemName: Leggings of Jumping
     item: DIAMOND_LEGGINGS
-    amplifier: 50
     duration: -1
+    amplifier: 50
     enabled: true
+    guiItem:
+      leftCommand: closegui /perk jump
+      material: DIAMOND_LEGGINGS
+      lore:
+        - /perk jump
   horse:
     enabled: true
-  companion:
+    guiItem:
+      leftCommand: closegui /perk horse
+      material: SADDLE
+      lore:
+        - /perk horse
+  gallop:
     enabled: true
-    maxAllowedNumber: 3
+    speedFactor: 0.6
+    guiItem:
+      leftCommand: closegui /perk gallop
+      material: SADDLE
+      lore:
+        - /perk gallop
+  boat:
+    enabled: true
+    guiItem:
+      leftCommand: closegui /perk boat
+      material: OAK_BOAT
+      lore:
+        - /perk boat
+  parrot:
+    enabled: true
+    guiItem:
+      leftCommand: closegui /perk parrot
+      material: PLAYER_HEAD
+  compass:
+    enabled: true
+    guiItem:
+      leftCommand: closegui /perk compass
+      material: COMPASS
+      lore:
+        - /perk compass
+  dog:
+    enabled: true
+    guiItem:
+      leftCommand: closegui /perk dog
+      material: LEAD
+      lore:
+        - /perk dog
+  cat:
+    enabled: true
+    guiItem:
+      leftCommand: closegui /perk cat
+      material: LEAD
+      lore:
+        - /perk cat
   hat1:
     enabled: true
     slot: HEAD
@@ -76,10 +167,10 @@ perks:
       material: minecraft:stone
       cmd: 16
       lore:
-        - {"text": "A stunning piece of kit, previously worn by Gimli son of Glóin. Only Aulë knows how you got a hold of it…","color": "#d4d4d4"}
-        - ""
-        - {"text": "Right click to unequip.","color": "#919191"}
-      name: {"text": "Gimli's Helmet","color":"#33a2d1","shadow_color": 1261651,"bold": true }
+        - "{\"text\": \"A stunning piece of kit, previously worn by Gimli son of Glóin. Only Aulë knows how you got a hold of it…\",\"color\": \"#d4d4d4\"}"
+        - "\"\""
+        - "{\"text\": \"Right click to unequip.\",\"color\": \"#919191\"}"
+      name: "{\"text\": \"Gimli's Helmet\",\"color\":\"#33a2d1\",\"shadow_color\": 1261651,\"bold\": true }"
     guiItem:
       rightCommand: <<<UNEQUIP>>>
       leftCommand: <<<EQUIP/EXIT UI>>>
@@ -87,11 +178,11 @@ perks:
         material: minecraft:stone
         cmd: 4
         lore:
-          - { "text": "A stunning piece of kit, previously worn by Gimli son of Glóin. Only Aulë knows how you got a hold of it…","color": "#d4d4d4" }
-          - ""
-          - { "text": "Patreon:","color": "#cd6a18","shadow_color": 6500616,"bold": true,"extra": [ { "text": "Dwarf Tier","color": "#cccccc" } ] }
-          - { "text": "Right click to unequip.","color": "#919191" }
-        name: { "text": "Gimli's Helmet","color": "#cccccc","shadow_color": 0,"bold": true }
+          - "{ \"text\": \"A stunning piece of kit, previously worn by Gimli son of Glóin. Only Aulë knows how you got a hold of it…\",\"color\": \"#d4d4d4\" }"
+          - "\"\""
+          - "{ \"text\": \"Patreon:\",\"color\": \"#cd6a18\",\"shadow_color\": 6500616,\"bold\": true,\"extra\": [ { \"text\": \"Dwarf Tier\",\"color\": \"#cccccc\" } ] }"
+          - "{ \"text\": \"Right click to unequip.\",\"color\": \"#919191\" }"
+        name: "{ \"text\": \"Gimli's Helmet\",\"color\": \"#cccccc\",\"shadow_color\": 0,\"bold\": true }"
   hat2:
     enabled: true
     slot: HEAD
@@ -99,10 +190,10 @@ perks:
       material: minecraft:stone
       cmd: 17
       lore:
-        - {"text": "Highly sought after headgear worn by virtually everyone but this one in particular was owned by the one they use to call Strider.","color": "#d4d4d4"}
-        - ""
-        - {"text": "Right click to unequip.","color": "#919191"}
-      name: {"text": "Aragorn's Hood","color":"#239035","shadow_color": 803093,"bold": true }
+        - "{\"text\": \"Highly sought after headgear worn by virtually everyone but this one in particular was owned by the one they use to call Strider.\",\"color\": \"#d4d4d4\"}"
+        - "\"\""
+        - "{\"text\": \"Right click to unequip.\",\"color\": \"#919191\"}"
+      name: "{\"text\": \"Aragorn's Hood\",\"color\":\"#239035\",\"shadow_color\": 803093,\"bold\": true }"
     guiItem:
       rightCommand: <<<UNEQUIP>>>
       leftCommand: <<<EQUIP/EXIT UI>>>
@@ -110,11 +201,11 @@ perks:
         material: minecraft:stone
         cmd: 9
         lore:
-          - {"text": "Highly sought after headgear worn by virtually everyone but this one in particular was owned by the one they use to call Strider.","color": "#d4d4d4"}
-          - ""
-          - {"text":"Patreon:","color":"#cd6a18","shadow_color":6500616,"bold":true,"extra":[{"text":"Dúnadan Tier","color":"#cccccc"}]}
-          - {"text": "Right click to unequip.","color": "#919191"}
-        name: {"text": "Aragorn's Hood","color":"#cccccc","shadow_color": 0,"bold": true }
+          - "{\"text\": \"Highly sought after headgear worn by virtually everyone but this one in particular was owned by the one they use to call Strider.\",\"color\": \"#d4d4d4\"}"
+          - "\"\""
+          - "{\"text\":\"Patreon:\",\"color\":\"#cd6a18\",\"shadow_color\":6500616,\"bold\":true,\"extra\":[{\"text\":\"Dúnadan Tier\",\"color\":\"#cccccc\"}]}"
+          - "{\"text\": \"Right click to unequip.\",\"color\": \"#919191\"}"
+        name: "{\"text\": \"Aragorn's Hood\",\"color\":\"#cccccc\",\"shadow_color\": 0,\"bold\": true }"
   hat3:
     enabled: true
     slot: HEAD
@@ -122,10 +213,10 @@ perks:
       material: minecraft:stone
       cmd: 18
       lore:
-        - {"text": "This may look like a pile of sticks but at some point it used to belong to the King of the Woodland Realm. It also seems to have a particularly strong… magical effect on its wearer's ears…","color": "#d4d4d4"}
-        - ""
-        - {"text": "Right click to unequip.","color": "#919191"}
-      name: {"text": "Tharanduil's Crown","color":"#914c9a","shadow_color": 5187156,"bold": true }
+        - "{\"text\": \"This may look like a pile of sticks but at some point it used to belong to the King of the Woodland Realm. It also seems to have a particularly strong… magical effect on its wearer's ears…\",\"color\": \"#d4d4d4\"}"
+        - "\"\""
+        - "{\"text\": \"Right click to unequip.\",\"color\": \"#919191\"}"
+      name: "{\"text\": \"Tharanduil's Crown\",\"color\":\"#914c9a\",\"shadow_color\": 5187156,\"bold\": true }"
     guiItem:
       rightCommand: <<<UNEQUIP>>>
       leftCommand: <<<EQUIP/EXIT UI>>>
@@ -133,11 +224,11 @@ perks:
         material: minecraft:stone
         cmd: 10
         lore:
-          - {"text": "This may look like a pile of sticks but at some point it used to belong to the King of the Woodland Realm. It also seems to have a particularly strong… magical effect on its wearer's ears…","color": "#d4d4d4"}
-          - ""
-          - {"text":"Patreon:","color":"#cd6a18","shadow_color":6500616,"bold":true,"extra":[{"text":"Elf Tier","color":"#cccccc"}]}
-          - {"text": "Right click to unequip.","color": "#919191"}
-        name: {"text": "Tharanduil's Crown","color":"#cccccc","shadow_color": 0,"bold": true }
+          - "{\"text\":\"This may look like a pile of sticks but at some point it used to belong to the King of the Woodland Realm. It also seems to have a particularly strong… magical effect on its wearer's ears…\",\"color\": \"#d4d4d4\"}"
+          - "\"\""
+          - "{\"text\":\"Patreon:\",\"color\":\"#cd6a18\",\"shadow_color\":6500616,\"bold\":true,\"extra\":[{\"text\":\"Elf Tier\",\"color\":\"#cccccc\"}]}"
+          - "{\"text\": \"Right click to unequip.\",\"color\": \"#919191\"}"
+        name: "{\"text\": \"Tharanduil's Crown\",\"color\":\"#cccccc\",\"shadow_color\": 0,\"bold\": true }"
   hat4:
     enabled: true
     slot: HEAD
@@ -145,10 +236,10 @@ perks:
       material: minecraft:stone
       cmd: 19
       lore:
-        - {"text": "Pointy hat. You know what that means… it was probably stolen from a wizard. You are in trouble.","color": "#d4d4d4"}
-        - ""
-        - {"text": "Right click to unequip.","color": "#919191"}
-      name: {"text": "Gandalf's Hat","color":"#a29fa3","shadow_color": 2368548,"bold": true }
+        - "{\"text\": \"Pointy hat. You know what that means… it was probably stolen from a wizard. You are in trouble.\",\"color\": \"#d4d4d4\"}"
+        - "\"\""
+        - "{\"text\": \"Right click to unequip.\",\"color\": \"#919191\"}"
+      name: "{\"text\": \"Gandalf's Hat\",\"color\":\"#a29fa3\",\"shadow_color\": 2368548,\"bold\": true }"
     guiItem:
       rightCommand: <<<UNEQUIP>>>
       leftCommand: <<<EQUIP/EXIT UI>>>
@@ -156,11 +247,11 @@ perks:
         material: minecraft:stone
         cmd: 11
         lore:
-          - {"text": "Pointy hat. You know what that means… it was probably stolen from a wizard. You are in trouble.","color": "#d4d4d4"}
-          - ""
-          - {"text":"Patreon:","color":"#cd6a18","shadow_color":6500616,"bold":true,"extra":[{"text":"Maiar Tier","color":"#cccccc"}]}
-          - {"text": "Right click to unequip.","color": "#919191"}
-        name: {"text": "Gandalf's Hat","color":"#cccccc","shadow_color": 0,"bold": true }
+          - "{\"text\": \"Pointy hat. You know what that means… it was probably stolen from a wizard. You are in trouble.\",\"color\": \"#d4d4d4\"}"
+          - "\"\""
+          - "{\"text\":\"Patreon:\",\"color\":\"#cd6a18\",\"shadow_color\":6500616,\"bold\":true,\"extra\":[{\"text\":\"Maiar Tier\",\"color\":\"#cccccc\"}]}"
+          - "{\"text\": \"Right click to unequip.\",\"color\": \"#919191\"}"
+        name: "{\"text\": \"Gandalf's Hat\",\"color\":\"#cccccc\",\"shadow_color\": 0,\"bold\": true }"
   hat5:
     enabled: true
     slot: HEAD
@@ -168,10 +259,10 @@ perks:
       material: minecraft:stone
       cmd: 20
       lore:
-        - {"text": "Ul ukhadow ro mausan purpouke lieuk upon arda, agh gith avhaav iuk shal iav benduk uklowpak agh ukurepak avo mausan liwo.","color": "#d4d4d4"}
-        - ""
-        - {"text": "Right click to unequip.","color": "#919191"}
-      name: {"text": "The Eye","color":"#cd3232","shadow_color": 7410451,"bold": true }
+        - "{\"text\": \"Ul ukhadow ro mausan purpouke lieuk upon arda, agh gith avhaav iuk shal iav benduk uklowpak agh ukurepak avo mausan liwo.\",\"color\": \"#d4d4d4\"}"
+        - "\"\""
+        - "{\"text\": \"Right click to unequip.\",\"color\": \"#919191\"}"
+      name: "{\"text\": \"The Eye\",\"color\":\"#cd3232\",\"shadow_color\": 7410451,\"bold\": true }"
     guiItem:
       rightCommand: <<<UNEQUIP>>>
       leftCommand: <<<EQUIP/EXIT UI>>>
@@ -179,8 +270,8 @@ perks:
         material: minecraft:stone
         cmd: 15
         lore:
-          - {"text": "Ul ukhadow ro mausan purpouke lieuk upon arda, agh gith avhaav iuk shal iav benduk uklowpak agh ukurepak avo mausan liwo.","color": "#d4d4d4"}
-          - ""
-          - {"text":"Patreon:","color":"#cd6a18","shadow_color":6500616,"bold":true,"extra":[{"text":"The Eye Tier","color":"#cccccc"}]}
-          - {"text": "Right click to unequip.","color": "#919191"}
-        name: {"text": "The Eye","color":"#cccccc","shadow_color": 0,"bold": true }
+          - "{\"text\": \"Ul ukhadow ro mausan purpouke lieuk upon arda, agh gith avhaav iuk shal iav benduk uklowpak agh ukurepak avo mausan liwo.\",\"color\": \"#d4d4d4\"}"
+          - "\"\""
+          - "{\"text\":\"Patreon:\",\"color\":\"#cd6a18\",\"shadow_color\":6500616,\"bold\":true,\"extra\":[{\"text\":\"The Eye Tier\",\"color\":\"#cccccc\"}]}"
+          - "{\"text\": \"Right click to unequip.\",\"color\": \"#919191\"}"
+        name: "{\"text\": \"The Eye\",\"color\":\"#cccccc\",\"shadow_color\": 0,\"bold\": true }"

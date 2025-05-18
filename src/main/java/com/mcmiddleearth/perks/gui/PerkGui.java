@@ -71,20 +71,20 @@ public class PerkGui {
         inventory.clear();
         morePerks = new ListDisplay(inventory, PermissionData.getPerkDefinitionItems(player),
                 0,2,5, false,
-                GuiManager.getGuiItem("morePerks.previous"), GuiManager.getGuiItem("morePerks.next"),
+                GuiManager.getGuiItem("arrows.morePerks.previous"), GuiManager.getGuiItem("arrows.morePerks.next"),
                 (morePerks!=null ? morePerks.getFirstVisibleItemIndex() : 0));
         favoritePerks = new ListDisplay(inventory, GuiManager.getFavoritePerks(player), 27, 1, 9,
-                GuiManager.getGuiItem("favoritePerks.previous.enabled"), GuiManager.getGuiItem("favoritePerks.next.enabled"),
-                GuiManager.getGuiItem("favoritePerks.previous.disabled"), GuiManager.getGuiItem("favoritePerks.next.disabled"),
+                GuiManager.getGuiItem("arrows.favorites.previous.enabled"), GuiManager.getGuiItem("arrows.favorites.next.enabled"),
+                GuiManager.getGuiItem("arrows.favorites.previous.disabled"), GuiManager.getGuiItem("arrows.favorites.next.disabled"),
                 (favoritePerks!=null ? morePerks.getFirstVisibleItemIndex() : 0));
         hats = new ListDisplay(inventory, GuiManager.getHats(player), 15, 1, 3,
-                GuiManager.getGuiItem("hats.previous.enabled"), GuiManager.getGuiItem("hats.next.enabled"),
-                GuiManager.getGuiItem("hats.previous.disabled"), GuiManager.getGuiItem("hats.next.disabled"),
+                GuiManager.getGuiItem("arrows.hats.previous.enabled"), GuiManager.getGuiItem("arrows.hats.next.enabled"),
+                GuiManager.getGuiItem("arrows.hats.previous.disabled"), GuiManager.getGuiItem("arrows.hats.next.disabled"),
                 (hats!=null ? morePerks.getFirstVisibleItemIndex() : 0));
 Logger.getGlobal().info("Perk gui item mat: "+PerkManager.getPerks().stream().findFirst().get().getGuiItem().getItemStack().getType());
         allPerks = new ListDisplay(inventory, GuiManager.getAllPerks(),
                 1, 4, 8, false,
-                GuiManager.getGuiItem("allPerks.previous"), GuiManager.getGuiItem("allPerks.next"),
+                GuiManager.getGuiItem("arrows.allPerks.previous"), GuiManager.getGuiItem("arrows.allPerks.next"),
                 (allPerks!=null ? morePerks.getFirstVisibleItemIndex() : 0));
 
         if(displayAllPerks) {
