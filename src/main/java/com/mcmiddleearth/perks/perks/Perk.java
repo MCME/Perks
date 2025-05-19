@@ -44,8 +44,8 @@ public class Perk {
     
     public Perk(String name) {
         this.name = name;
-        guiItem = new GuiItem(new ItemStack(Material.STONE),"", "", "");
-        favoriteGuiItem = new GuiItem(new ItemStack(Material.STONE),"", "", "");
+        guiItem = new GuiItem(new ItemStack(Material.STONE),"", "", "",1);
+        favoriteGuiItem = new GuiItem(new ItemStack(Material.STONE),"", "", "",1);
         ConfigurationSection config = PerksPlugin.getPerkSettings().getConfigurationSection(name);
 Logger.getGlobal().info("New perk: "+name);
         if(config != null) {

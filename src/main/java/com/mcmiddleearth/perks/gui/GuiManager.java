@@ -90,7 +90,7 @@ public class GuiManager implements Listener {
     }
 
     public static List<GuiItem> getAllPerks() {
-        return PerkManager.getPerks().stream().map(Perk::getGuiItem).toList();
+        return PerkManager.getPerks().stream().filter(perk -> ! (perk instanceof  EquipmentPerk)).map(Perk::getGuiItem).toList();
     }
 
     public static void updateGui(Player player) {

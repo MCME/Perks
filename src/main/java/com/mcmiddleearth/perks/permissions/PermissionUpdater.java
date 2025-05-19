@@ -48,7 +48,7 @@ public class PermissionUpdater extends BukkitRunnable{
     }
 
     public synchronized void updatePermissions() {
-Logger.getGlobal().info("updatePermissions "+sourcesFinished);
+//Logger.getGlobal().info("updatePermissions "+sourcesFinished);
         sourcesFinished++;
         if(sourcesFinished<2) {
             return;

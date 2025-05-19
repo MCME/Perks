@@ -143,7 +143,7 @@ Logger.getGlobal().info("Giving permission to "+ playerID+" for credit "+credit)
                     for(String perkName:perks) {
                         Perk perk = PerkManager.forName(perkName);
                         if(perk!=null) {
-Logger.getGlobal().info("Perk: "+player.getName()+" "+perk.getName());
+//Logger.getGlobal().info("Perk: "+player.getName()+" "+perk.getName());
                             attachment.setPermission(perk.getPermissionNode(), true);
                         }
                     }

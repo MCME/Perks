@@ -64,7 +64,7 @@ public class PatreonClient {
                 "&client_id=" + clientId +
                 "&client_secret=" + clientSecret +
                 "&redirect_uri=" + URLEncoder.encode(REDIRECT_URI, "UTF-8");
-Logger.getGlobal().info(PATREON_URI+"/token"+params);
+//Logger.getGlobal().info(PATREON_URI+"/token"+params);
         HttpURLConnection conn = (HttpURLConnection) new URL(PATREON_URI+"/token").openConnection();
         conn.setRequestMethod("POST");
         conn.setDoOutput(true);
@@ -151,7 +151,7 @@ Logger.getGlobal().info(PATREON_URI+"/token"+params);
         if(campaignId == null) {
             campaignId = getCampaignId(refresh);
         }
-Logger.getGlobal().info("Campaign ID: "+campaignId);
+//Logger.getGlobal().info("Campaign ID: "+campaignId);
         HttpURLConnection conn = (HttpURLConnection) new URL(PATREON_URI+"/v2/campaigns/"+campaignId
                 +"/members?include=currently_entitled_tiers,user&fields[member]=lifetime_support_cents&fields[user]=social_connections&fields[tier]=title")
                 .openConnection();
@@ -174,7 +174,7 @@ Logger.getGlobal().info("Campaign ID: "+campaignId);
 
         String response = new BufferedReader(new InputStreamReader(conn.getInputStream())).lines()
                 .reduce("", (acc, line) -> acc + line);
-Logger.getGlobal().info(response);
+//Logger.getGlobal().info(response);
         return parseMembers(response);
     }
 
@@ -183,10 +183,10 @@ Logger.getGlobal().info(response);
         JsonObject jsonObject = JsonParser.parseString(json).getAsJsonObject();
         JsonArray data = jsonObject.get("data").getAsJsonArray();
         for (JsonElement jsonMember : data.asList()) {
-Logger.getGlobal().info("member: "+jsonMember.toString());
+//Logger.getGlobal().info("member: "+jsonMember.toString());
             int lifetimeSupport = jsonMember.getAsJsonObject().get("attributes").getAsJsonObject()
                     .get("lifetime_support_cents").getAsInt();
-Logger.getGlobal().info("lifetime: "+lifetimeSupport);
+//Logger.getGlobal().info("lifetime: "+lifetimeSupport);
             JsonObject relationships = jsonMember.getAsJsonObject().get("relationships").getAsJsonObject();
             JsonArray tiers = relationships.get("currently_entitled_tiers").getAsJsonObject()
                     .get("data").getAsJsonArray();
@@ -198,7 +198,7 @@ Logger.getGlobal().info("lifetime: "+lifetimeSupport);
             int userId = relationships.get("user").getAsJsonObject()
                     .get("data").getAsJsonObject()
                     .get("id").getAsInt();
-Logger.getGlobal().info("userId: "+userId);
+//Logger.getGlobal().info("userId: "+userId);
             String discordId = "";
             JsonArray included = jsonObject.get("included").getAsJsonArray();
             for (JsonElement additionalData : included.asList()) {
@@ -207,7 +207,7 @@ Logger.getGlobal().info("userId: "+userId);
                     JsonElement socialConnections = additionalData.getAsJsonObject()
                                                         .get("attributes").getAsJsonObject()
                                                         .get("social_connections");
-Logger.getGlobal().info("Found user: "+socialConnections);
+//Logger.getGlobal().info("Found user: "+socialConnections);
                     if(socialConnections != null && socialConnections.isJsonObject()) {
                         JsonElement discord = socialConnections.getAsJsonObject().get("discord");
                         if (discord != null && discord.isJsonObject()) {
@@ -216,13 +216,13 @@ Logger.getGlobal().info("Found user: "+socialConnections);
                     }
                 } else if(additionalData.getAsJsonObject().get("type").getAsString().equals("tier")
                         && tierIdList.contains(additionalData.getAsJsonObject().get("id").getAsString())) {
-Logger.getGlobal().info("Found tier: "+additionalData.getAsJsonObject().get("attributes").getAsJsonObject()
-        .get("title").getAsString());
+//Logger.getGlobal().info("Found tier: "+additionalData.getAsJsonObject().get("attributes").getAsJsonObject()
+//        .get("title").getAsString());
                     tierTitleList.add("tier_"+additionalData.getAsJsonObject().get("attributes").getAsJsonObject()
                                                                       .get("title").getAsString());
                 }
             }
-Logger.getGlobal().info("discordId: "+discordId);
+//Logger.getGlobal().info("discordId: "+discordId);
             if(!discordId.isEmpty()) {
                 Member member = new Member(discordId, lifetimeSupport/100, tierTitleList);
                 result.add(member);
@@ -236,15 +236,15 @@ Logger.getGlobal().info("discordId: "+discordId);
             Configuration config = new YamlConfiguration();
             try {
                 List<Member> members = fetchMembers(true);
-Logger.getGlobal().info("members found: "+ members.size());
+//Logger.getGlobal().info("members found: "+ members.size());
                 for(Member member: members) {
-Logger.getGlobal().info("discordId: "+ member.discordId);
+//Logger.getGlobal().info("discordId: "+ member.discordId);
                     UUID uuid = DiscordUtil.getUniqueId(member.discordId);
                     if(member.discordId.equals("1257826230561149069")) {
-Logger.getGlobal().info("discordId replacement Eriol");
+//Logger.getGlobal().info("discordId replacement Eriol");
                         uuid = DiscordUtil.getUniqueId("258267590516801536");
                     }
-Logger.getGlobal().info("uuid: "+ uuid);
+//Logger.getGlobal().info("uuid: "+ uuid);
                     if(uuid != null) {
                         member.tiers.add("patreon_"+member.sum);
                         config.set(uuid.toString(), member.tiers);

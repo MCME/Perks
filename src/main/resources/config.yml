@@ -6,44 +6,57 @@ patreon:
   client_id: xxx
   client_secret: xxx
   redirect_uri: https://build.mcmiddleearth.com
-#
-# speedFactor: 0.6 equals 60% increase
-settings:
-  enabled: true
-update:
-  donor: https://www.mcmiddleearth.com/tools/printdonations.php
 perks:
   sit:
     item: GHAST_TEAR
     enabled: true
     guiItem:
+      order: 10
       leftCommand: closegui /perk sit
-      material: GHAST_TEAR
+      material: minecraft:stone
+      cmd: 26
       lore:
-        - Sit down by right-clicking any block
+        - '{"text":"Right click with the pipe to sit.","color":"#d4d4d4","extra":[{"text":"[/perk sit]","color":"#707070"}]}'
+        - ''
+        - '{"text":"Lifetime Support:","color":"#e2b332","shadow_color":6310933,"bold":true,"extra":[{"text":"20$","color":"#cccccc"}]}'
+        - '{"text":"Right-click to add to favorites.","color":"#707070"}'
+      name: '{"text":"Sit Emote","color":"#cccccc","shadow_color":0,"bold": true }'
   firework:
     itemName: splendid firework
     item: FIREWORK_ROCKET
     enabled: true
     itemQuantity: 23
     guiItem:
+      order: 20
       leftCommand: closegui /perk firework
-      material: FIREWORK_ROCKET
+      material: minecraft:stone
+      cmd: 28
       lore:
-        - /perk firework
+        - '{"text":"Access to fireworks","color":"#d4d4d4","extra":[{"text":"[/perk firework]","color":"#707070"}]}'
+        - ''
+        - '{"text":"Lifetime Support:","color":"#e2b332","shadow_color":6310933,"bold":true,"extra":[{"text":"70$","color":"#cccccc"}]}'
+        - '{"text":"Right-click to add to favorites.","color":"#707070"}'
+      name: '{"text":"Fireworks","color":"#cccccc","shadow_color":0,"bold": true }'
   fire:
     defaultTicks: 200
     maxTicks: 2000
     enabled: true
     guiItem:
+      order: 30
       leftCommand: closegui /perk fire
-      material: CAMPFIRE
+      material: minecraft:stone
+      cmd: 27
       lore:
-        - /perk fire
+        - '{"text":"Oooo… hot!","color":"#d4d4d4","extra":[{"text":"[/perk fire]","color":"#707070"}]}'
+        - ''
+        - '{"text":"Lifetime Support:","color":"#e2b332","shadow_color":6310933,"bold":true,"extra":[{"text":"50$","color":"#cccccc"}]}'
+        - '{"text":"Right-click to add to favorites.","color":"#707070"}'
+      name: '{"text":"Denethor Demise Emote","color":"#cccccc","shadow_color":0,"bold": true }'
   name:
     donorTagColor: YELLOW
     enabled: false
     guiItem:
+      order: 40
       leftCommand: closegui /perk sit
       material: NAME_TAG
       lore:
@@ -58,34 +71,53 @@ perks:
     item: STICK
     enabled: true
     guiItem:
+      order: 50
       leftCommand: closegui /perk light
-      material: FIREWORK_ROCKET
+      material: minecraft:stone
+      cmd: 27
       lore:
-        - /perk light
+        - '{"text":"Optifine required.","color":"#d4d4d4","extra":[{"text":"[/perk light]","color":"#707070"}]}'
+        - ''
+        - '{"text":"Lifetime Support:","color":"#e2b332","shadow_color":6310933,"bold":true,"extra":[{"text":"50$","color":"#cccccc"}]}'
+        - '{"text":"Right-click to add to favorites.","color":"#707070"}'
+      name: '{"text":"Light Magic Wand","color":"#cccccc","shadow_color":0,"bold": true }'
   ring:
     itemName: Ring of Power
     item: GOLD_NUGGET
     enabled: true
     guiItem:
+      order: 60
       leftCommand: closegui /perk ring
-      material: GOLD_NUGGET
+      material: minecraft:stone
+      cmd: 12
       lore:
-        - /perk ring
+        - '{"text":"Right click to use.","color":"#d4d4d4","extra":[{"text":"[/perk ring]","color":"#707070"}]}'
+        - ''
+        - '{"text":"Lifetime Support:","color":"#e2b332","shadow_color":6310933,"bold":true,"extra":[{"text":"50$","color":"#cccccc"}]}'
+        - '{"text":"Right-click to add to favorites.","color":"#707070"}'
+      name: '{"text":"The One Ring","color":"#cccccc","shadow_color":0,"bold": true }'
   elytra:
     itemName: fluffy wings
     item: ELYTRA
     itemQuantity: 1
     enabled: true
     guiItem:
+      order: 70
       leftCommand: closegui /perk elytra
-      material: ELYTRA
+      material: minecraft:stone
+      cmd: 32
       lore:
-        - /perk elytra
+        - '{"text":"Take flight!","color":"#d4d4d4","extra":[{"text":"[/perk elytra]","color":"#707070"}]}'
+        - ''
+        - '{"text":"Lifetime Support:","color":"#e2b332","shadow_color":6310933,"bold":true,"extra":[{"text":"100$","color":"#cccccc"}]}'
+        - '{"text":"Right-click to add to favorites.","color":"#707070"}'
+      name: '{"text":"Elytra Wings","color":"#cccccc","shadow_color":0,"bold": true }'
   jockey:
     antiJockeyPermission: perks.antijockey
     item: LEAD
     enabled: true
     guiItem:
+      order: 80
       leftCommand: closegui /perk jockey
       material: LEAD
       lore:
@@ -97,6 +129,7 @@ perks:
     amplifier: 4
     enabled: true
     guiItem:
+      order: 90
       leftCommand: closegui /perk speed
       material: DIAMOND_BOOTS
       lore:
@@ -108,21 +141,34 @@ perks:
     amplifier: 50
     enabled: true
     guiItem:
+      order: 100
       leftCommand: closegui /perk jump
-      material: DIAMOND_LEGGINGS
+      material: minecraft:stone
+      cmd: 33
       lore:
-        - /perk jump
+        - '{"text":"Jump much higher!","color":"#d4d4d4","extra":[{"text":"[/perk jump]","color":"#707070"}]}'
+        - ''
+        - '{"text":"Lifetime Support:","color":"#e2b332","shadow_color":6310933,"bold":true,"extra":[{"text":"20$","color":"#cccccc"}]}'
+        - '{"text":"Right-click to add to favorites.","color":"#707070"}'
+      name: '{"text":"Leggings of Jumping","color":"#cccccc","shadow_color":0,"bold": true }'
   horse:
     enabled: true
     guiItem:
+      order: 110
       leftCommand: closegui /perk horse
-      material: SADDLE
+      material: minecraft:stone
+      cmd: 32
       lore:
-        - /perk horse
+        - '{"text":"Right click with the pipe to sit.","color":"#d4d4d4","extra":[{"text":"[/perk horse]","color":"#707070"}]}'
+        - ''
+        - '{"text":"Lifetime Support:","color":"#e2b332","shadow_color":6310933,"bold":true,"extra":[{"text":"50$","color":"#cccccc"}]}'
+        - '{"text":"Right-click to add to favorites.","color":"#707070"}'
+      name: '{"text":"Spawn Horse","color":"#cccccc","shadow_color":0,"bold": true }'
   gallop:
     enabled: true
     speedFactor: 0.6
     guiItem:
+      order: 120
       leftCommand: closegui /perk gallop
       material: SADDLE
       lore:
@@ -130,36 +176,68 @@ perks:
   boat:
     enabled: true
     guiItem:
+      order: 130
       leftCommand: closegui /perk boat
-      material: OAK_BOAT
+      material: minecraft:stone
+      cmd: 24
       lore:
-        - /perk boat
+        - '{"text":"Spawn a boat.","color":"#d4d4d4","extra":[{"text":"[/perk boat]","color":"#707070"}]}'
+        - ''
+        - '{"text":"Lifetime Support:","color":"#e2b332","shadow_color":6310933,"bold":true,"extra":[{"text":"20$","color":"#cccccc"}]}'
+        - '{"text":"Right-click to add to favorites.","color":"#707070"}'
+      name: '{"text":"Boat Perk","color":"#cccccc","shadow_color":0,"bold": true }'
   parrot:
     enabled: true
     guiItem:
+      order: 140
       leftCommand: closegui /perk parrot
-      material: PLAYER_HEAD
+      material: minecraft:stone
+      cmd: 29
+      lore:
+        - '{"text":"Become a pirate.","color":"#d4d4d4","extra":[{"text":"[/perk parrot]","color":"#707070"}]}'
+        - ''
+        - '{"text":"Lifetime Support:","color":"#e2b332","shadow_color":6310933,"bold":true,"extra":[{"text":"70$","color":"#cccccc"}]}'
+        - '{"text":"Right-click to add to favorites.","color":"#707070"}'
+      name: '{"text":"Parrot Pet","color":"#cccccc","shadow_color":0,"bold": true }'
   compass:
     enabled: true
     guiItem:
+      order: 150
       leftCommand: closegui /perk compass
-      material: COMPASS
+      material: minecraft:stone
+      cmd: 25
       lore:
-        - /perk compass
+        - '{"text":"Receive a compass.","color":"#d4d4d4","extra":[{"text":"[/perk compass]","color":"#707070"}]}'
+        - ''
+        - '{"text":"Lifetime Support:","color":"#e2b332","shadow_color":6310933,"bold":true,"extra":[{"text":"20$","color":"#cccccc"}]}'
+        - '{"text":"Right-click to add to favorites.","color":"#707070"}'
+      name: '{"text":"Compass","color":"#cccccc","shadow_color":0,"bold": true }'
   dog:
     enabled: true
     guiItem:
+      order: 160
       leftCommand: closegui /perk dog
-      material: LEAD
+      material: minecraft:stone
+      cmd: 30
       lore:
-        - /perk dog
+        - '{"text":"Spawn your favorite canine friend","color":"#d4d4d4","extra":[{"text":"[/perk dog]","color":"#707070"}]}'
+        - ''
+        - '{"text":"Lifetime Support:","color":"#e2b332","shadow_color":6310933,"bold":true,"extra":[{"text":"70$","color":"#cccccc"}]}'
+        - '{"text":"Right-click to add to favorites.","color":"#707070"}'
+      name: '{"text":"Dog Pet","color":"#cccccc","shadow_color":0,"bold": true }'
   cat:
     enabled: true
     guiItem:
+      order: 170
       leftCommand: closegui /perk cat
-      material: LEAD
+      material: minecraft:stone
+      cmd: 31
       lore:
-        - /perk cat
+        - '{"text":"Spawn your favorite feline friend.","color":"#d4d4d4","extra":[{"text":"[/perk cat]","color":"#707070"}]}'
+        - ''
+        - '{"text":"Lifetime Support:","color":"#e2b332","shadow_color":6310933,"bold":true,"extra":[{"text":"70$","color":"#cccccc"}]}'
+        - '{"text":"Right-click to add to favorites.","color":"#707070"}'
+      name: '{"text":"Cat Pet","color":"#cccccc","shadow_color":0,"bold": true }'
   hat1:
     enabled: true
     slot: HEAD
@@ -167,22 +245,27 @@ perks:
       material: minecraft:stone
       cmd: 16
       lore:
-        - "{\"text\": \"A stunning piece of kit, previously worn by Gimli son of Glóin. Only Aulë knows how you got a hold of it…\",\"color\": \"#d4d4d4\"}"
-        - "\"\""
-        - "{\"text\": \"Right click to unequip.\",\"color\": \"#919191\"}"
-      name: "{\"text\": \"Gimli's Helmet\",\"color\":\"#33a2d1\",\"shadow_color\": 1261651,\"bold\": true }"
+      - '{"text": "A stunning piece of kit, previously worn by Gimli son of Glóin.
+        Only Aulë knows how you got a hold of it…","color": "#d4d4d4"}'
+      - ''
+      - '{"text": "Right click to unequip.","color": "#919191"}'
+      name: '{"text": "Gimli''s Helmet","color":"#33a2d1","shadow_color":1261651,"bold":
+          true }'
     guiItem:
+      order: 210
       rightCommand: <<<UNEQUIP>>>
       leftCommand: <<<EQUIP/EXIT UI>>>
-      itemStack:
-        material: minecraft:stone
-        cmd: 4
-        lore:
-          - "{ \"text\": \"A stunning piece of kit, previously worn by Gimli son of Glóin. Only Aulë knows how you got a hold of it…\",\"color\": \"#d4d4d4\" }"
-          - "\"\""
-          - "{ \"text\": \"Patreon:\",\"color\": \"#cd6a18\",\"shadow_color\": 6500616,\"bold\": true,\"extra\": [ { \"text\": \"Dwarf Tier\",\"color\": \"#cccccc\" } ] }"
-          - "{ \"text\": \"Right click to unequip.\",\"color\": \"#919191\" }"
-        name: "{ \"text\": \"Gimli's Helmet\",\"color\": \"#cccccc\",\"shadow_color\": 0,\"bold\": true }"
+      material: minecraft:stone
+      cmd: 4
+      lore:
+      - '{ "text": "A stunning piece of kit, previously worn by Gimli son of Glóin.
+        Only Aulë knows how you got a hold of it…","color": "#d4d4d4"}'
+      - ''
+      - '{ "text": "Patreon:","color": "#cd6a18","shadow_color": 6500616,"bold": true,"extra":
+      [ { "text": "Dwarf Tier","color": "#cccccc" } ] }'
+      - '{ "text": "Right click to unequip.","color": "#919191" }'
+      name: '{ "text": "Gimli''s Helmet","color": "#cccccc","shadow_color":0,"bold":
+      true }'
   hat2:
     enabled: true
     slot: HEAD
@@ -190,22 +273,29 @@ perks:
       material: minecraft:stone
       cmd: 17
       lore:
-        - "{\"text\": \"Highly sought after headgear worn by virtually everyone but this one in particular was owned by the one they use to call Strider.\",\"color\": \"#d4d4d4\"}"
-        - "\"\""
-        - "{\"text\": \"Right click to unequip.\",\"color\": \"#919191\"}"
-      name: "{\"text\": \"Aragorn's Hood\",\"color\":\"#239035\",\"shadow_color\": 803093,\"bold\": true }"
+      - '{"text": "Highly sought after headgear worn by virtually everyone but this
+        one in particular was owned by the one they use to call Strider.","color":
+      "#d4d4d4"}'
+      - ''
+      - '{"text": "Right click to unequip.","color": "#919191"}'
+      name: '{"text": "Aragorn''s Hood","color":"#239035","shadow_color": 803093,"bold":
+      true }'
     guiItem:
+      order: 220
       rightCommand: <<<UNEQUIP>>>
       leftCommand: <<<EQUIP/EXIT UI>>>
-      itemStack:
-        material: minecraft:stone
-        cmd: 9
-        lore:
-          - "{\"text\": \"Highly sought after headgear worn by virtually everyone but this one in particular was owned by the one they use to call Strider.\",\"color\": \"#d4d4d4\"}"
-          - "\"\""
-          - "{\"text\":\"Patreon:\",\"color\":\"#cd6a18\",\"shadow_color\":6500616,\"bold\":true,\"extra\":[{\"text\":\"Dúnadan Tier\",\"color\":\"#cccccc\"}]}"
-          - "{\"text\": \"Right click to unequip.\",\"color\": \"#919191\"}"
-        name: "{\"text\": \"Aragorn's Hood\",\"color\":\"#cccccc\",\"shadow_color\": 0,\"bold\": true }"
+      material: minecraft:stone
+      cmd: 9
+      lore:
+      - '{"text": "Highly sought after headgear worn by virtually everyone but this
+        one in particular was owned by the one they use to call Strider.","color":
+      "#d4d4d4"}'
+      - ''
+      - '{"text":"Patreon:","color":"#cd6a18","shadow_color":6500616,"bold":true,"extra":[{"text":"Dúnadan
+        Tier","color":"#cccccc"}]}'
+      - '{"text": "Right click to unequip.","color": "#919191"}'
+      name: '{"text": "Aragorn''s Hood","color":"#cccccc","shadow_color": 0,"bold":
+      true }'
   hat3:
     enabled: true
     slot: HEAD
@@ -213,22 +303,29 @@ perks:
       material: minecraft:stone
       cmd: 18
       lore:
-        - "{\"text\": \"This may look like a pile of sticks but at some point it used to belong to the King of the Woodland Realm. It also seems to have a particularly strong… magical effect on its wearer's ears…\",\"color\": \"#d4d4d4\"}"
-        - "\"\""
-        - "{\"text\": \"Right click to unequip.\",\"color\": \"#919191\"}"
-      name: "{\"text\": \"Tharanduil's Crown\",\"color\":\"#914c9a\",\"shadow_color\": 5187156,\"bold\": true }"
+      - '{"text": "This may look like a pile of sticks but at some point it used to
+        belong to the King of the Woodland Realm. It also seems to have a particularly
+        strong… magical effect on its wearer''s ears…","color": "#d4d4d4"}'
+      - ''
+      - '{"text": "Right click to unequip.","color": "#919191"}'
+      name: '{"text": "Tharanduil''s Crown","color":"#914c9a","shadow_color": 5187156,"bold":
+      true }'
     guiItem:
+      order: 230
       rightCommand: <<<UNEQUIP>>>
       leftCommand: <<<EQUIP/EXIT UI>>>
-      itemStack:
-        material: minecraft:stone
-        cmd: 10
-        lore:
-          - "{\"text\":\"This may look like a pile of sticks but at some point it used to belong to the King of the Woodland Realm. It also seems to have a particularly strong… magical effect on its wearer's ears…\",\"color\": \"#d4d4d4\"}"
-          - "\"\""
-          - "{\"text\":\"Patreon:\",\"color\":\"#cd6a18\",\"shadow_color\":6500616,\"bold\":true,\"extra\":[{\"text\":\"Elf Tier\",\"color\":\"#cccccc\"}]}"
-          - "{\"text\": \"Right click to unequip.\",\"color\": \"#919191\"}"
-        name: "{\"text\": \"Tharanduil's Crown\",\"color\":\"#cccccc\",\"shadow_color\": 0,\"bold\": true }"
+      material: minecraft:stone
+      cmd: 10
+      lore:
+      - '{"text":"This may look like a pile of sticks but at some point it used to
+        belong to the King of the Woodland Realm. It also seems to have a particularly
+        strong… magical effect on its wearer''s ears…","color": "#d4d4d4"}'
+      - ''
+      - '{"text":"Patreon:","color":"#cd6a18","shadow_color":6500616,"bold":true,"extra":[{"text":"Elf
+        Tier","color":"#cccccc"}]}'
+      - '{"text": "Right click to unequip.","color": "#919191"}'
+      name: '{"text": "Tharanduil''s Crown","color":"#cccccc","shadow_color": 0,"bold":
+      true }'
   hat4:
     enabled: true
     slot: HEAD
@@ -236,22 +333,27 @@ perks:
       material: minecraft:stone
       cmd: 19
       lore:
-        - "{\"text\": \"Pointy hat. You know what that means… it was probably stolen from a wizard. You are in trouble.\",\"color\": \"#d4d4d4\"}"
-        - "\"\""
-        - "{\"text\": \"Right click to unequip.\",\"color\": \"#919191\"}"
-      name: "{\"text\": \"Gandalf's Hat\",\"color\":\"#a29fa3\",\"shadow_color\": 2368548,\"bold\": true }"
+      - '{"text": "Pointy hat. You know what that means… it was probably stolen from
+        a wizard. You are in trouble.","color": "#d4d4d4"}'
+      - ''
+      - '{"text": "Right click to unequip.","color": "#919191"}'
+      name: '{"text": "Gandalf''s Hat","color":"#a29fa3","shadow_color": 2368548,"bold":
+      true }'
     guiItem:
+      order: 240
       rightCommand: <<<UNEQUIP>>>
       leftCommand: <<<EQUIP/EXIT UI>>>
-      itemStack:
-        material: minecraft:stone
-        cmd: 11
-        lore:
-          - "{\"text\": \"Pointy hat. You know what that means… it was probably stolen from a wizard. You are in trouble.\",\"color\": \"#d4d4d4\"}"
-          - "\"\""
-          - "{\"text\":\"Patreon:\",\"color\":\"#cd6a18\",\"shadow_color\":6500616,\"bold\":true,\"extra\":[{\"text\":\"Maiar Tier\",\"color\":\"#cccccc\"}]}"
-          - "{\"text\": \"Right click to unequip.\",\"color\": \"#919191\"}"
-        name: "{\"text\": \"Gandalf's Hat\",\"color\":\"#cccccc\",\"shadow_color\": 0,\"bold\": true }"
+      material: minecraft:stone
+      cmd: 11
+      lore:
+      - '{"text": "Pointy hat. You know what that means… it was probably stolen from
+        a wizard. You are in trouble.","color": "#d4d4d4"}'
+      - ''
+      - '{"text":"Patreon:","color":"#cd6a18","shadow_color":6500616,"bold":true,"extra":[{"text":"Maiar
+        Tier","color":"#cccccc"}]}'
+      - '{"text": "Right click to unequip.","color": "#919191"}'
+      name: '{"text": "Gandalf''s Hat","color":"#cccccc","shadow_color": 0,"bold":
+      true }'
   hat5:
     enabled: true
     slot: HEAD
@@ -259,19 +361,23 @@ perks:
       material: minecraft:stone
       cmd: 20
       lore:
-        - "{\"text\": \"Ul ukhadow ro mausan purpouke lieuk upon arda, agh gith avhaav iuk shal iav benduk uklowpak agh ukurepak avo mausan liwo.\",\"color\": \"#d4d4d4\"}"
-        - "\"\""
-        - "{\"text\": \"Right click to unequip.\",\"color\": \"#919191\"}"
-      name: "{\"text\": \"The Eye\",\"color\":\"#cd3232\",\"shadow_color\": 7410451,\"bold\": true }"
+      - '{"text": "Ul ukhadow ro mausan purpouke lieuk upon arda, agh gith avhaav
+        iuk shal iav benduk uklowpak agh ukurepak avo mausan liwo.","color": "#d4d4d4"}'
+      - ''
+      - '{"text": "Right click to unequip.","color": "#919191"}'
+      name: '{"text": "The Eye","color":"#cd3232","shadow_color": 7410451,"bold":
+      true }'
     guiItem:
+      order: 250
       rightCommand: <<<UNEQUIP>>>
       leftCommand: <<<EQUIP/EXIT UI>>>
-      itemStack:
-        material: minecraft:stone
-        cmd: 15
-        lore:
-          - "{\"text\": \"Ul ukhadow ro mausan purpouke lieuk upon arda, agh gith avhaav iuk shal iav benduk uklowpak agh ukurepak avo mausan liwo.\",\"color\": \"#d4d4d4\"}"
-          - "\"\""
-          - "{\"text\":\"Patreon:\",\"color\":\"#cd6a18\",\"shadow_color\":6500616,\"bold\":true,\"extra\":[{\"text\":\"The Eye Tier\",\"color\":\"#cccccc\"}]}"
-          - "{\"text\": \"Right click to unequip.\",\"color\": \"#919191\"}"
-        name: "{\"text\": \"The Eye\",\"color\":\"#cccccc\",\"shadow_color\": 0,\"bold\": true }"
+      material: minecraft:stone
+      cmd: 15
+      lore:
+      - '{"text": "Ul ukhadow ro mausan purpouke lieuk upon arda, agh gith avhaav
+        iuk shal iav benduk uklowpak agh ukurepak avo mausan liwo.","color": "#d4d4d4"}'
+      - ''
+      - '{"text":"Patreon:","color":"#cd6a18","shadow_color":6500616,"bold":true,"extra":[{"text":"The
+        Eye Tier","color":"#cccccc"}]}'
+      - '{"text": "Right click to unequip.","color": "#919191"}'
+      name: '{"text": "The Eye","color":"#cccccc","shadow_color": 0,"bold": true}'

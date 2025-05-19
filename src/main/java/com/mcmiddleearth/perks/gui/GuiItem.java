@@ -22,20 +22,23 @@ public class GuiItem {
     private String rightCommand;
     private String middleCommand;
 
+    private int order;
+
     public static final GuiItem errorItem;
 
     static {
-        errorItem = new GuiItem(new ItemStack(Material.STONE), "","","");
+        errorItem = new GuiItem(new ItemStack(Material.STONE), "","","", 1);
         ItemMeta meta = errorItem.getItemStack().getItemMeta();
         meta.setItemName("Error: Something went wrong.");
         errorItem.getItemStack().setItemMeta(meta);
     }
 
-    public GuiItem(ItemStack itemStack, String leftCommand, String rightCommand, String middleCommand) {
+    public GuiItem(ItemStack itemStack, String leftCommand, String rightCommand, String middleCommand, int order) {
         this.itemStack = itemStack;
         this.leftCommand = leftCommand;
         this.rightCommand = rightCommand;
         this.middleCommand = middleCommand;
+        this.order = order;
     }
 
     public static GuiItem load(ConfigurationSection config) {
@@ -50,7 +53,12 @@ public class GuiItem {
         String leftCommand = config.getString("leftCommand","");
         String rightCommand = config.getString("rightCommand","");
         String middleCommand = config.getString("MiddleCommand","");
-        return new GuiItem(item, leftCommand, rightCommand, middleCommand);
+        int order = config.getInt("order",1);
+        return new GuiItem(item, leftCommand, rightCommand, middleCommand, order);
+    }
+
+    public static int compare(GuiItem one, GuiItem two) {
+        return Integer.compare(one.getOrder(), two.getOrder());
     }
 
     public void handleClick(Player player, ClickType clickType) {
@@ -106,5 +114,9 @@ Logger.getGlobal().info("Sending Message: "+command);
 
     public void setLeftCommand(String leftCommand) {
         this.leftCommand = leftCommand;
+    }
+
+    public int getOrder() {
+        return order;
     }
 }

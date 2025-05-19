@@ -17,7 +17,7 @@ import java.util.List;
 public class DefinitionItem extends GuiItem {
 
     public DefinitionItem(ItemStack itemStack, String leftCommand, String rightCommand, String middleCommand) {
-        super(itemStack, leftCommand, rightCommand, middleCommand);
+        super(itemStack, leftCommand, rightCommand, middleCommand,1);
         //CreditData creditData = PermissionData.getCredits(player);
     }
 
