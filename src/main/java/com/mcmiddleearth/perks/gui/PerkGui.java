@@ -86,7 +86,7 @@ public class PerkGui {
                 (hats!=null ? morePerks.getFirstVisibleItemIndex() : 0));
 Logger.getGlobal().info("Perk gui item mat: "+PerkManager.getPerks().stream().findFirst().get().getGuiItem().getItemStack().getType());
         allPerks = new ListDisplay(inventory, GuiManager.getAllPerks().stream().sorted(GuiItem::compare).toList(),
-                1, 4, 8, false,
+                9, 3, 9, false,
                 GuiManager.getGuiItem("arrows.allPerks.previous"), GuiManager.getGuiItem("arrows.allPerks.next"),
                 (allPerks!=null ? morePerks.getFirstVisibleItemIndex() : 0));
 

@@ -61,7 +61,7 @@ public class GuiManager implements Listener {
     public static boolean addFavorite(Player player, String perkName) {
         List<String> favorites = favoritesConfig.getStringList(player.getUniqueId().toString());
         Perk perk = PerkManager.forName(perkName);
-        if(perk != null && !favorites.contains(perk.getName())) {
+        if(perk != null && player.hasPermission(perk.getPermissionNode()) && !favorites.contains(perk.getName())) {
             favorites.add(perk.getName());
             favoritesConfig.set(player.getUniqueId().toString(), favorites);
             saveFavoriteConfig();

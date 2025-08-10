@@ -196,7 +196,7 @@ Logger.getGlobal().info("Giving permission to "+ playerID+" for credit "+credit)
             public void run() {
                 disableFreePerk(perk);
             }
-        }.runTaskLater(PerksPlugin.getInstance(), duration*60*20);
+        }.runTaskLater(PerksPlugin.getInstance(), (long) duration *60*20);
     }
 
     public static void disableFreePerk(Perk perk) {
