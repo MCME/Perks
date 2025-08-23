@@ -74,21 +74,20 @@ public class PerkGui {
                 0,2,5, false,
                 GuiManager.getGuiItem("arrows.morePerks.previous"), GuiManager.getGuiItem("arrows.morePerks.next"),
                 (morePerks!=null ? morePerks.getFirstVisibleItemIndex() : 0));
-        favoritePerks = new ListDisplay(inventory, GuiManager.getFavoritePerks(player).stream()
-                                                        .sorted(GuiItem::compare).toList(), 27, 1, 9,
+        favoritePerks = new ListDisplay(inventory, GuiManager.getFavoritePerks(player), 27, 1, 9,
                 GuiManager.getGuiItem("arrows.favorites.previous.enabled"), GuiManager.getGuiItem("arrows.favorites.next.enabled"),
                 GuiManager.getGuiItem("arrows.favorites.previous.disabled"), GuiManager.getGuiItem("arrows.favorites.next.disabled"),
-                (favoritePerks!=null ? morePerks.getFirstVisibleItemIndex() : 0));
+                (favoritePerks!=null ? favoritePerks.getFirstVisibleItemIndex() : 0));
         hats = new ListDisplay(inventory, GuiManager.getHats(player).stream()
                                                         .sorted(GuiItem::compare).toList(), 15, 1, 3,
                 GuiManager.getGuiItem("arrows.hats.previous.enabled"), GuiManager.getGuiItem("arrows.hats.next.enabled"),
                 GuiManager.getGuiItem("arrows.hats.previous.disabled"), GuiManager.getGuiItem("arrows.hats.next.disabled"),
-                (hats!=null ? morePerks.getFirstVisibleItemIndex() : 0));
+                (hats!=null ? favoritePerks.getFirstVisibleItemIndex() : 0));
 Logger.getGlobal().info("Perk gui item mat: "+PerkManager.getPerks().stream().findFirst().get().getGuiItem().getItemStack().getType());
         allPerks = new ListDisplay(inventory, GuiManager.getAllPerks().stream().sorted(GuiItem::compare).toList(),
                 9, 3, 9, false,
                 GuiManager.getGuiItem("arrows.allPerks.previous"), GuiManager.getGuiItem("arrows.allPerks.next"),
-                (allPerks!=null ? morePerks.getFirstVisibleItemIndex() : 0));
+                (allPerks!=null ? allPerks.getFirstVisibleItemIndex() : 0));
 
         if(displayAllPerks) {
             allPerks.display();
@@ -106,7 +105,7 @@ Logger.getGlobal().info("Perk gui item mat: "+PerkManager.getPerks().stream().fi
             if (displayAllPerks) {
                 if (!allPerks.handleClick(player, slot, clickType)) {
                     if (slot == returnSlot) {
-Logger.getGlobal().info("Display first page!");
+//Logger.getGlobal().info("Display first page!");
                         inventory.clear();
                         displayAllPerks = false;
                         morePerks.display();
@@ -116,8 +115,11 @@ Logger.getGlobal().info("Display first page!");
                     }
                 }
             } else {
+Logger.getGlobal().info("Check more");
                 if(!morePerks.handleClick(player, slot, clickType)) {
+Logger.getGlobal().info("Check favourite");
                    if(!favoritePerks.handleClick(player, slot, clickType)) {
+Logger.getGlobal().info("Check hats");
                        if (!hats.handleClick(player, slot, clickType)) {
                            switch(slot) {
                                case allPerksSlot:
@@ -125,7 +127,7 @@ Logger.getGlobal().info("Display first page!");
                                    displayAllPerks = true;
                                    allPerks.display();
                                    placeButtonsSecondPage();
-Logger.getGlobal().info("Display all perks!");
+//Logger.getGlobal().info("Display all perks!");
                                    break;
                                case forumSlot:
                                    forumItem.handleClick(player, clickType);

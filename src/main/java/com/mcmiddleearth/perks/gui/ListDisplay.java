@@ -1,5 +1,6 @@
 package com.mcmiddleearth.perks.gui;
 
+import io.papermc.paper.datacomponent.DataComponentTypes;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
@@ -10,7 +11,6 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
-import java.util.logging.Logger;
 
 public class ListDisplay {
 
@@ -55,21 +55,23 @@ public class ListDisplay {
         this.previousItem = previousItem;
         this.nextItem = nextItem;
         this.previousItemDeactivated = previousItemDeactivated;
+        this.previousItemDeactivated.getItemStack().setData(DataComponentTypes.HIDE_TOOLTIP);
         this.nextItemDeactivated = nextItemDeactivated;
+        this.nextItemDeactivated.getItemStack().setData(DataComponentTypes.HIDE_TOOLTIP);
     }
 
     public void display() {
         int currentItemIndex = firstVisibleItemIndex;
         for(int row = 0; row < rows; row++) {
             for(int column = 0; column < columns; column++) {
-Logger.getGlobal().info("currentItemIndex: "+currentItemIndex + " fistVisibleItemIndex: "+firstVisibleItemIndex);
+//Logger.getGlobal().info("currentItemIndex: "+currentItemIndex + " fistVisibleItemIndex: "+firstVisibleItemIndex);
                 if(hasPreviousItem() && row==0 && column==0) {
                     if(isPreviousActive()) {
                         inventory.setItem(firstSlot, previousItem.getItemStack());
                     } else {
                         inventory.setItem(firstSlot, previousItemDeactivated.getItemStack());
                     }
-Logger.getGlobal().info("previous");
+//Logger.getGlobal().info("previous");
                     //currentItemIndex++;
                 } else if(hasNextItem() && row==rows-1 && column==columns-1) {
                     if(isNextActive()) {
@@ -77,11 +79,11 @@ Logger.getGlobal().info("previous");
                     } else {
                         inventory.setItem(firstSlot + row * inventoryColumns + column, nextItemDeactivated.getItemStack());
                     }
-Logger.getGlobal().info("next");
+//Logger.getGlobal().info("next");
                     //currentItemIndex++;
                 } else {
                     if(currentItemIndex < items.size()) {
-                        Logger.getGlobal().info("Set list display item [" + currentItemIndex + "]: " + items.get(currentItemIndex).getItemStack().getType());
+//Logger.getGlobal().info("Set list display item [" + currentItemIndex + "]: " + items.get(currentItemIndex).getItemStack().getType());
                         inventory.setItem(firstSlot + row * inventoryColumns + column, items.get(currentItemIndex).getItemStack());
                         currentItemIndex++;
                     } else {
@@ -89,16 +91,16 @@ Logger.getGlobal().info("next");
                     }
                 }
             }
-Logger.getGlobal().info("next row");
+//Logger.getGlobal().info("next row");
 
         }
-Logger.getGlobal().info("done");
+//Logger.getGlobal().info("done");
 
 
     }
 
     public void nextPage() {
-        int visibleItems = columns;
+        int visibleItems = columns * rows;
         if(hasPreviousItem()) visibleItems--;
         if(hasNextItem()) visibleItems--;
         firstVisibleItemIndex+=visibleItems;
@@ -135,7 +137,7 @@ Logger.getGlobal().info("done");
     }
 
     public boolean isNextActive() {
-Logger.getGlobal().info("isNextActive: last visible: "+calculateLastVisibleItemIndex()+" size: "+items.size());
+//Logger.getGlobal().info("isNextActive: last visible: "+calculateLastVisibleItemIndex()+" size: "+items.size());
         return calculateLastVisibleItemIndex() < items.size();
     }
 
@@ -163,11 +165,13 @@ Logger.getGlobal().info("isNextActive: last visible: "+calculateLastVisibleItemI
 
     public boolean handleClick(Player player, int slot, @NotNull ClickType click) {
         if(isSlotInside(slot)) {
+//Logger.getGlobal().info("is inside");
             if (isPreviousActive() && slot == firstSlot) {
                 previousPage();
             } else if (isNextActive() && slot == firstSlot + (rows-1) * inventoryColumns + (columns-1)) {
                 nextPage();
             } else {
+//Logger.getGlobal().info("Handle gui item");
                 GuiItem guiItem = getItem(slot);
                 if(guiItem!= null) {
                     guiItem.handleClick(player, click);
@@ -189,9 +193,9 @@ Logger.getGlobal().info("isNextActive: last visible: "+calculateLastVisibleItemI
         int finalIndex = row*columns+index+firstVisibleItemIndex;
         if(hasPreviousItem()) finalIndex--;
         int maxIndex = items.size()-1;
-        if(hasNextItem()) maxIndex--;
-Logger.getGlobal().info("has previous: "+hasPreviousItem());
-Logger.getGlobal().info("slot "+slot+" final index: "+finalIndex);
+        if(isNextActive()) maxIndex--;
+//Logger.getGlobal().info("has previous: "+hasPreviousItem());
+//Logger.getGlobal().info("slot "+slot+" final index: "+finalIndex);
         return finalIndex >= 0 && finalIndex <= maxIndex ? items.get(finalIndex) : null;
     }
 

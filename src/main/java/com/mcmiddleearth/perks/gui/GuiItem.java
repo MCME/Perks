@@ -12,7 +12,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.Arrays;
-import java.util.logging.Logger;
 
 public class GuiItem {
 
@@ -62,6 +61,7 @@ public class GuiItem {
     }
 
     public void handleClick(Player player, ClickType clickType) {
+//Logger.getGlobal().info("Right command: "+rightCommand);
         if(clickType.isLeftClick()) {
             executeCommand(player, leftCommand);
         } else if(clickType.equals(ClickType.MIDDLE)) {
@@ -80,13 +80,14 @@ public class GuiItem {
             if(split[1].equalsIgnoreCase("/perk")) {
                 PerksPlugin.getInstance().getPerksExecutor().onCommand(player, null, "perk",
                         Arrays.copyOfRange(split, 2, split.length));
-Logger.getGlobal().info("Execute perk command: "+command);
+//Logger.getGlobal().info("Execute perk command: "+command);
             } else if (split[1].equalsIgnoreCase("/message")) {
                 player.sendMessage(JSONComponentSerializer.json()
                         .deserialize(Joiner.on(" ").join(Arrays.copyOfRange(split, 2, split.length))));
-Logger.getGlobal().info("Sending Message: "+command);
+//Logger.getGlobal().info("Sending Message: "+command);
             }
             if(split[0].equalsIgnoreCase("updategui")) {
+//Logger.getGlobal().info("update gui");
                 GuiManager.updateGui(player);
             }
         }

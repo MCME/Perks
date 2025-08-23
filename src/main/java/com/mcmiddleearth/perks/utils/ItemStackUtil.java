@@ -1,6 +1,5 @@
 package com.mcmiddleearth.perks.utils;
 
-import com.google.common.base.Joiner;
 import com.google.gson.JsonParseException;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.json.JSONComponentSerializer;
@@ -10,7 +9,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import javax.annotation.Nullable;
-import java.awt.*;
 import java.util.logging.Logger;
 
 public class ItemStackUtil {
@@ -35,13 +33,17 @@ public class ItemStackUtil {
         try {
             meta.lore(itemConfig.getStringList("lore").stream().map(line -> {
                 if(line.startsWith("{")) {
+                    //Component comp = JSONComponentSerializer.json().deserialize(line);
+                    //return LegacyComponentSerializer.legacySection().serialize(comp);
                     return JSONComponentSerializer.json().deserialize(line);
                 } else {
                     return Component.text(line);
+                    //return line;
                 }
             }).toList());
             String nameJson = itemConfig.getString("name", "{\"text\":\" \"}");
             if(nameJson.startsWith("{")) {
+                //meta.setDisplayName(LegacyComponentSerializer.legacySection().serialize(JSONComponentSerializer.json().deserialize(nameJson)));
                 meta.displayName(JSONComponentSerializer.json().deserialize(nameJson));
             } else {
                 meta.setDisplayName(nameJson);

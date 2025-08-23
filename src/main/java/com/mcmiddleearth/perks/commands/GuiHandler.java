@@ -25,6 +25,19 @@ public class GuiHandler extends PerksCommandHandler {
     protected void execute(CommandSender cs, String cmd, String... args) {
         if(cs instanceof Player player) {
             GuiManager.openGui(player);
+            /*ItemStack item = new ItemStack(Material.AZURE_BLUET);
+            ItemMeta meta = item.getItemMeta();
+            meta.setDisplayName("TEST");
+            List<String> lore = new ArrayList<>();
+            lore.add("one");
+            lore.add("two");
+            meta.setLore(lore);
+            meta.setTooltipStyle(NamespacedKey.minecraft("perk"));
+            //meta.addItemFlags(ItemFlag.HIDE_ADDITIONAL_TOOLTIP, ItemFlag.HIDE_TOOLTIP_DISPLAY);
+            item.setItemMeta(meta);
+            //item.setData(DataComponentTypes.HIDE_ADDITIONAL_TOOLTIP);
+            //item.setData(DataComponentTypes.HIDE_TOOLTIP);
+            player.getInventory().addItem(item);*/
         }
     }
 }

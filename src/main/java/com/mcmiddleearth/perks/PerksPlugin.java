@@ -27,6 +27,7 @@ import com.mcmiddleearth.perks.permissions.PermissionData;
 import com.mcmiddleearth.perks.permissions.PermissionUpdater;
 import com.mcmiddleearth.perks.tabCompleter.TabComplete;
 import com.mcmiddleearth.pluginutil.message.MessageUtil;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.configuration.ConfigurationSection;
@@ -209,5 +210,12 @@ public class PerksPlugin extends JavaPlugin {
 
     public PerksCommandExecutor getPerksExecutor() {
         return perksExecutor;
+    }
+
+    public static void error(String message) {
+        getMessageUtil().sendErrorMessage(Bukkit.getConsoleSender(), message);
+    }
+    public static void info(String message) {
+        getMessageUtil().sendInfoMessage(Bukkit.getConsoleSender(), message);
     }
 }

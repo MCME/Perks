@@ -5,7 +5,6 @@ import com.mcmiddleearth.perks.permissions.CreditData;
 import com.mcmiddleearth.perks.permissions.PermissionData;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
-import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;

@@ -17,10 +17,12 @@
 package com.mcmiddleearth.perks;
 
 import com.mcmiddleearth.perks.perks.Perk;
+import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.plugin.PluginManager;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.logging.Logger;
 
 /**
  *
@@ -50,6 +52,7 @@ public class PerkManager {
                 return perk;
             }
         }
+        PerksPlugin.error("No perk found for key: "+name);
         return null;
     }
     

@@ -45,9 +45,12 @@ public class PermissionData {
 
     private final static File creditDataFile = new File(PerksPlugin.getInstance().getDataFolder(),"creditData.yml");
     private final static File creditDefinitionFile= new File(PerksPlugin.getInstance().getDataFolder(),"creditDefinition.yml");
-    
+    private final static File manualPerkFile= new File(PerksPlugin.getInstance().getDataFolder(),"manualPerks.yml");
+
     private static final YamlConfiguration creditDefinitionConfig = new YamlConfiguration();
-    
+
+    private static final YamlConfiguration manualPerkConfig = new YamlConfiguration();
+
     private static final Map<UUID, List<String>> creditEntries = new HashMap<>();
     private static Map<UUID, CreditData> creditDatas = new HashMap<>();
     
@@ -56,6 +59,7 @@ public class PermissionData {
     public static void load() {
         try {
             creditDefinitionConfig.load(creditDefinitionFile);
+            manualPerkConfig.load(manualPerkFile);
             try {
                 YamlConfiguration creditDataConfig = new YamlConfiguration();
                 creditDataConfig.load(creditDataFile);
@@ -164,8 +168,19 @@ Logger.getGlobal().info("Giving permission to "+ playerID+" for credit "+credit)
     }
     
     public static boolean isAllowed(Player player, Perk perk) {
+        if(perk == null) {
+            return false;
+        }
         return player.hasPermission(Permissions.USER.getPermissionNode()) 
-                && (player.hasPermission(perk.getPermissionNode()) || freePerks.contains(perk));
+                && (player.hasPermission(perk.getPermissionNode())
+                    || freePerks.contains(perk)
+                    || hasManualPerk(player, perk));
+    }
+
+    private static boolean hasManualPerk(Player player, Perk perk) {
+        List<String> manualPerks = manualPerkConfig.getStringList(player.getUniqueId().toString());
+//Logger.getGlobal().info("Player "+player.getName()+" has manual perk "+perk.getName()+": "+manualPerks.contains(perk.getName()));
+        return manualPerks.contains(perk.getName());
     }
 
     public static ConfigurationSection getPerkDefinitions() {

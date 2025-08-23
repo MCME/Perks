@@ -4,6 +4,7 @@ import com.mcmiddleearth.perks.PerkManager;
 import com.mcmiddleearth.perks.PerksPlugin;
 import com.mcmiddleearth.perks.perks.EquipmentPerk;
 import com.mcmiddleearth.perks.perks.Perk;
+import com.mcmiddleearth.perks.permissions.PermissionData;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -54,14 +55,17 @@ public class GuiManager implements Listener {
     }
 
     public static List<GuiItem> getHats(Player player) {
-        return PerkManager.getPerks().stream().filter(perk -> perk instanceof EquipmentPerk && player.hasPermission(perk.getPermissionNode()))
+        return PerkManager.getPerks().stream().filter(perk -> perk instanceof EquipmentPerk && PermissionData.isAllowed(player,perk))
                 .map(Perk::getGuiItem).toList();
     }
 
     public static boolean addFavorite(Player player, String perkName) {
         List<String> favorites = favoritesConfig.getStringList(player.getUniqueId().toString());
         Perk perk = PerkManager.forName(perkName);
-        if(perk != null && player.hasPermission(perk.getPermissionNode()) && !favorites.contains(perk.getName())) {
+//Logger.getGlobal().info("Trying to add: "+perkName);
+//favorites.forEach(name -> Logger.getGlobal().info(name));
+        if(PermissionData.isAllowed(player, perk) && !favorites.contains(perk.getName())) {
+//Logger.getGlobal().info("adding Favorite: "+perkName);
             favorites.add(perk.getName());
             favoritesConfig.set(player.getUniqueId().toString(), favorites);
             saveFavoriteConfig();
@@ -72,7 +76,10 @@ public class GuiManager implements Listener {
 
     public static boolean removeFavorite(Player player, String perkName) {
         List<String> favorites = favoritesConfig.getStringList(player.getUniqueId().toString());
+//Logger.getGlobal().info("Trying to remove: "+perkName);
+//favorites.forEach(name -> Logger.getGlobal().info(name));
         if(favorites.contains(perkName)) {
+//Logger.getGlobal().info("removing Favorite: "+perkName);
             favorites.remove(perkName);
             favoritesConfig.set(player.getUniqueId().toString(), favorites);
             saveFavoriteConfig();
@@ -100,8 +107,10 @@ public class GuiManager implements Listener {
 
     @EventHandler
     public void onGuiClick(InventoryClickEvent event) {
+//Logger.getGlobal().info("ClickEvent");
         PerkGui gui = openGuis.get(event.getWhoClicked().getUniqueId());
         if(gui!=null && event.getWhoClicked() instanceof Player player) {
+//Logger.getGlobal().info("Handle");
             event.setCancelled(gui.handleClick(player, event.getRawSlot(), event.getClick()));
         }
     }
