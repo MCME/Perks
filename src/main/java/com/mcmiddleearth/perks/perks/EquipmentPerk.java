@@ -14,6 +14,7 @@ import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 
 import javax.annotation.Nullable;
+import java.util.logging.Logger;
 
 
 /**
@@ -86,6 +87,15 @@ public class EquipmentPerk extends Perk {
         if(!PermissionData.isAllowed(p, this)) {
             removeItems(p);
         }
+//Logger.getGlobal().info("Check equipment perk items: "+getName());
+        ItemStack currentSlotItem = p.getInventory().getItem(itemSlot);
+        //p.getInventory().removeItemAnySlot(currentSlotItem);
+        for(int i = 0; i < p.getInventory().getSize(); i++) {
+            if(item.isSimilar(p.getInventory().getItem(i))) {
+                p.getInventory().setItem(i, new ItemStack(Material.AIR));
+            }
+        }
+        p.getInventory().setItem(itemSlot, currentSlotItem);
     }
 
     public void removeItems(Player p) {
@@ -100,7 +110,7 @@ public class EquipmentPerk extends Perk {
     }
 
     public String getItemName() {
-        return item.getItemMeta().getItemName();
+        return item.getItemMeta().getDisplayName();
     }
 
     public Material getItemMaterial() {
