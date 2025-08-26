@@ -19,6 +19,7 @@ package com.mcmiddleearth.perks.perks;
 import com.mcmiddleearth.perks.PerksPlugin;
 import com.mcmiddleearth.perks.commands.PerksCommandHandler;
 import com.mcmiddleearth.perks.gui.GuiItem;
+import com.mcmiddleearth.perks.utils.PlaceholderData;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.event.Listener;
@@ -52,14 +53,15 @@ Logger.getGlobal().info("New perk: "+name);
 Logger.getGlobal().info("Config found. Gui section: "+config.contains("guiItem"));
             ConfigurationSection itemSection = config.getConfigurationSection("guiItem");
             if(itemSection != null) {
-                guiItem = GuiItem.load(itemSection);
+                guiItem = GuiItem.load(itemSection, null);
                 ItemMeta meta = guiItem.getItemStack().getItemMeta();
                 if(meta != null && meta.getDisplayName().equalsIgnoreCase("")) {
                     meta.setDisplayName(name);
                     guiItem.getItemStack().setItemMeta(meta);
                 }
                 guiItem.setRightCommand("updategui /perk favor "+name);
-                favoriteGuiItem = GuiItem.load(itemSection);
+                PlaceholderData data = new PlaceholderData().favorite(true);
+                favoriteGuiItem = GuiItem.load(itemSection, data);
                 meta = favoriteGuiItem.getItemStack().getItemMeta();
                 if(meta != null && meta.getDisplayName().equalsIgnoreCase("")) {
                     meta.setDisplayName(name);

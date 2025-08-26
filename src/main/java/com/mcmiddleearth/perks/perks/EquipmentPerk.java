@@ -36,7 +36,7 @@ public class EquipmentPerk extends Perk {
         ConfigurationSection config = PerksPlugin.getPerkSettings()
                                                  .getConfigurationSection(name);
         if(config != null) {
-            item = ItemStackUtil.loadItem(config.getConfigurationSection("itemStack"));
+            item = ItemStackUtil.loadItem(config.getConfigurationSection("itemStack"), null);
         } else {
             item = new ItemStack(Material.STONE);
         }

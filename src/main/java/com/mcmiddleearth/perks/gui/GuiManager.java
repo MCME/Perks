@@ -5,6 +5,7 @@ import com.mcmiddleearth.perks.PerksPlugin;
 import com.mcmiddleearth.perks.perks.EquipmentPerk;
 import com.mcmiddleearth.perks.perks.Perk;
 import com.mcmiddleearth.perks.permissions.PermissionData;
+import com.mcmiddleearth.perks.utils.PlaceholderData;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -146,6 +147,9 @@ public class GuiManager implements Listener {
     }
 
     public static GuiItem getGuiItem(String key) {
-        return GuiItem.load(guiItemConfig.getConfigurationSection(key));
+        return getGuiItem(key, null);
+    }
+    public static GuiItem getGuiItem(String key, PlaceholderData data) {
+        return GuiItem.load(guiItemConfig.getConfigurationSection(key), data);
     }
 }

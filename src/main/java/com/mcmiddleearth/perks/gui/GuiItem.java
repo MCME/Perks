@@ -3,6 +3,7 @@ package com.mcmiddleearth.perks.gui;
 import com.google.common.base.Joiner;
 import com.mcmiddleearth.perks.PerksPlugin;
 import com.mcmiddleearth.perks.utils.ItemStackUtil;
+import com.mcmiddleearth.perks.utils.PlaceholderData;
 import net.kyori.adventure.text.serializer.json.JSONComponentSerializer;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
@@ -40,7 +41,7 @@ public class GuiItem {
         this.order = order;
     }
 
-    public static GuiItem load(ConfigurationSection config) {
+    public static GuiItem load(ConfigurationSection config, PlaceholderData data) {
         if(config == null) return GuiItem.errorItem;
 //config.getKeys(false).stream().forEach(key -> Logger.getGlobal().info(key));
 //        ConfigurationSection itemConfig = config.getConfigurationSection("itemStack");
@@ -48,7 +49,7 @@ public class GuiItem {
 //Logger.getGlobal().info("missing itemConfig for gui item: "+config.getCurrentPath());
 //            return GuiItem.errorItem;
 //        }
-        ItemStack item = ItemStackUtil.loadItem(config);
+        ItemStack item = ItemStackUtil.loadItem(config, data);
         String leftCommand = config.getString("leftCommand","");
         String rightCommand = config.getString("rightCommand","");
         String middleCommand = config.getString("MiddleCommand","");

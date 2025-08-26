@@ -3,6 +3,7 @@ package com.mcmiddleearth.perks.gui;
 import com.mcmiddleearth.perks.PerkManager;
 import com.mcmiddleearth.perks.permissions.CreditData;
 import com.mcmiddleearth.perks.permissions.PermissionData;
+import com.mcmiddleearth.perks.utils.PlaceholderData;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.configuration.ConfigurationSection;
@@ -21,7 +22,8 @@ public class DefinitionItem extends GuiItem {
     }
 
     public static DefinitionItem load(ConfigurationSection definition, String name, Player player, CreditData creditData) {
-        GuiItem guiItem = GuiItem.load(definition);
+        PlaceholderData data = new PlaceholderData(player);
+        GuiItem guiItem = GuiItem.load(definition, data);
         ItemStack definitionItem = guiItem.getItemStack();
         ItemMeta meta = definitionItem.getItemMeta();
         meta.customName(Component.text(name).color(NamedTextColor.YELLOW));

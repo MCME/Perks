@@ -1,10 +1,13 @@
 package com.mcmiddleearth.perks.utils;
 
+import com.google.common.base.Joiner;
 import com.google.gson.JsonParseException;
+import com.mcmiddleearth.perks.permissions.PermissionData;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.json.JSONComponentSerializer;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
@@ -13,7 +16,7 @@ import java.util.logging.Logger;
 
 public class ItemStackUtil {
 
-    public static ItemStack loadItem(@Nullable ConfigurationSection itemConfig) {
+    public static ItemStack loadItem(@Nullable ConfigurationSection itemConfig, PlaceholderData data) {
         if(itemConfig == null) {
             return new ItemStack(Material.STONE);
         }
@@ -32,6 +35,7 @@ public class ItemStackUtil {
         meta.setCustomModelData(itemConfig.getInt("cmd",0));
         try {
             meta.lore(itemConfig.getStringList("lore").stream().map(line -> {
+                line = replacePlaceholders(line, data);
                 if(line.startsWith("{")) {
                     //Component comp = JSONComponentSerializer.json().deserialize(line);
                     //return LegacyComponentSerializer.legacySection().serialize(comp);
@@ -41,7 +45,7 @@ public class ItemStackUtil {
                     //return line;
                 }
             }).toList());
-            String nameJson = itemConfig.getString("name", "{\"text\":\" \"}");
+            String nameJson = replacePlaceholders(itemConfig.getString("name", "{\"text\":\" \"}"), data);
             if(nameJson.startsWith("{")) {
                 //meta.setDisplayName(LegacyComponentSerializer.legacySection().serialize(JSONComponentSerializer.json().deserialize(nameJson)));
                 meta.displayName(JSONComponentSerializer.json().deserialize(nameJson));
@@ -53,5 +57,26 @@ public class ItemStackUtil {
         }
         item.setItemMeta(meta);
         return item;
+    }
+
+    private static String replacePlaceholders(String line, PlaceholderData data) {
+        if(data != null) {
+            String tiers = "None";
+            if(data.getTiers() != null && !data.getTiers().isEmpty()) {
+                tiers = Joiner.on(", ").join(data.getTiers());
+            }
+            line = line.replace("<<<CURRENT TIER>>>", tiers);
+            line = line.replace("<<<TOTAL>>>", String.format("%.0f $",data.getTotal()));
+            String requiredTiers = "None";
+            if(data.getRequiredTiers() != null && !data.getRequiredTiers().isEmpty()) {
+                requiredTiers = Joiner.on(", ").join(data.getRequiredTiers());
+            }
+            line = line.replace("<<<REQUIRED TIER>>>", requiredTiers);
+            line = line.replace("<<<REQUIRED TOTAL>>>", String.format("%.0f $",data.getRequiredTotal()));
+            line = line.replace("<<<ADD / REMOVE FAVORITE>>>", (data.isFavorite()?
+                    "Right-click to remove from favorites":
+                    "Right-click to add to favorites"));
+        }
+        return line;
     }
 }

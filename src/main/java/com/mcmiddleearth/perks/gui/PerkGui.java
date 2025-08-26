@@ -5,6 +5,7 @@ import com.mcmiddleearth.perks.PerksPlugin;
 import com.mcmiddleearth.perks.perks.Perk;
 import com.mcmiddleearth.perks.permissions.CreditData;
 import com.mcmiddleearth.perks.permissions.PermissionData;
+import com.mcmiddleearth.perks.utils.PlaceholderData;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Bukkit;
@@ -56,11 +57,11 @@ public class PerkGui {
         this.player = player;
         this.inventory = inventory;
 
-        forumItem = GuiManager.getGuiItem("lifetime");
-        patreonItem = GuiManager.getGuiItem("tiers");
-        allPerksItem = GuiManager.getGuiItem("secondPage");
-        returnItem = GuiManager.getGuiItem("firstPage");
-        backgroundItem = GuiManager.getGuiItem("label.background");
+        forumItem = GuiManager.getGuiItem("lifetime", new PlaceholderData(player));
+        patreonItem = GuiManager.getGuiItem("tiers", new PlaceholderData(player));
+        allPerksItem = GuiManager.getGuiItem("secondPage", new PlaceholderData(player));
+        returnItem = GuiManager.getGuiItem("firstPage", new PlaceholderData(player));
+        backgroundItem = GuiManager.getGuiItem("label.background", new PlaceholderData(player));
 
         update();
 
