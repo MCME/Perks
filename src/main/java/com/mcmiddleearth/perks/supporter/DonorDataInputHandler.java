@@ -60,7 +60,7 @@ public class DonorDataInputHandler extends HttpTextInputHandler{
                     continue;
                 }
                 if(uuid.equals("")) {
-                    uuid = Bukkit.getOfflinePlayer(name).getUniqueId().toString();
+                    uuid = Bukkit.getOfflinePlayerIfCached(name).getUniqueId().toString();
                 } else {
                     uuid = uuidFromString(uuid).toString();
                 }
