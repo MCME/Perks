@@ -19,6 +19,7 @@ package com.mcmiddleearth.perks.permissions;
 import com.mcmiddleearth.perks.PerksPlugin;
 import com.mcmiddleearth.perks.utils.HttpTextInputHandler;
 import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.MemoryConfiguration;
 
 import java.io.BufferedReader;
@@ -26,6 +27,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 import java.util.UUID;
+import java.util.logging.Logger;
 
 /**
  *
@@ -59,12 +61,19 @@ public class DonorDataInputHandler extends HttpTextInputHandler{
                     scanner.next();
                     continue;
                 }
-                if(uuid.equals("")) {
-                    uuid = Bukkit.getOfflinePlayer(name).getUniqueId().toString();
+//Logger.getGlobal().info("UUID: "+uuid);
+                if(uuid.length() != 32) { //uuid.equals("")
+                    OfflinePlayer offPlayer = Bukkit.getOfflinePlayerIfCached(name);
+                    if(offPlayer != null) {
+                        uuid = offPlayer.getUniqueId().toString();
+                    } else {
+                        uuid = "";
+                    }
                 } else {
                     uuid = uuidFromString(uuid).toString();
                 }
                 if(!uuid.equals("")) {
+//Logger.getGlobal().info("UUID processed: "+uuid);
                     String donation = scanner.next();
                     donation = donation.substring(donation.indexOf("<td>")+4);
                     donation = "Donor_"+donation.substring(0,donation.indexOf("."));
