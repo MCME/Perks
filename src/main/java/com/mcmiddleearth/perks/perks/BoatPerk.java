@@ -55,10 +55,13 @@ public class BoatPerk extends Perk {
     public void checkBoat() {
         for (World w : Bukkit.getServer().getWorlds()) {
             for (Entity e : w.getEntities()) {
-                if (isBoatPerk(e) && (((Vehicle)e).getPassenger()==null
-                                       || !PermissionData.isAllowed((Player)((Vehicle)e).getPassenger(),
-                                                                   this))) {
-                    e.remove();
+                if (isBoatPerk(e)) {
+                    java.util.List<org.bukkit.entity.Entity> passengers = e.getPassengers();
+                    if(passengers.isEmpty()
+                            || !(passengers.get(0) instanceof Player rider)
+                            || !PermissionData.isAllowed(rider, this)) {
+                        e.remove();
+                    }
                 }
             }
         }

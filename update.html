@@ -1,0 +1,842 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Perks Plugin — PR Update</title>
+    <style>
+        :root {
+            --bg: #0d1117;
+            --surface: #161b22;
+            --surface-raised: #1c2129;
+            --border: #30363d;
+            --text: #e6edf3;
+            --text-muted: #8b949e;
+            --accent: #58a6ff;
+            --accent-subtle: #1f3a5f;
+            --green: #3fb950;
+            --green-subtle: #12261e;
+            --red: #f85149;
+            --red-subtle: #2d1214;
+            --orange: #d29922;
+            --orange-subtle: #2e2111;
+            --purple: #bc8cff;
+            --purple-subtle: #1e1534;
+            --code-bg: #1c2129;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.7;
+            padding: 2rem;
+            max-width: 960px;
+            margin: 0 auto;
+        }
+
+        /* Header */
+        .hero {
+            text-align: center;
+            padding: 3rem 2rem;
+            margin-bottom: 2.5rem;
+            background: linear-gradient(135deg, var(--surface) 0%, var(--accent-subtle) 100%);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+        }
+        .hero h1 {
+            font-size: 2.2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(90deg, var(--accent), var(--purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .hero .subtitle {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+            margin-bottom: 1.5rem;
+        }
+        .stats {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+        .stat {
+            text-align: center;
+        }
+        .stat-value {
+            display: block;
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--accent);
+        }
+        .stat-label {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        /* Phase headers */
+        .phase {
+            margin: 3rem 0 1.5rem;
+            padding: 1.25rem 1.5rem;
+            background: var(--surface);
+            border-left: 4px solid var(--accent);
+            border-radius: 0 8px 8px 0;
+        }
+        .phase h2 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text);
+            margin-bottom: 0.25rem;
+        }
+        .phase p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+        .phase.green { border-left-color: var(--green); }
+        .phase.orange { border-left-color: var(--orange); }
+        .phase.purple { border-left-color: var(--purple); }
+
+        /* Section headers */
+        h3 {
+            font-size: 1.15rem;
+            font-weight: 600;
+            color: var(--text);
+            margin: 2rem 0 1rem;
+            padding-bottom: 0.4rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        /* Issue cards */
+        .issue {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 1.25rem 1.5rem;
+            margin-bottom: 1rem;
+            transition: border-color 0.2s;
+        }
+        .issue:hover {
+            border-color: var(--accent);
+        }
+        .issue-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 0.75rem;
+        }
+        .issue-number {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: var(--accent-subtle);
+            color: var(--accent);
+            font-size: 0.8rem;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+        .issue-title {
+            font-size: 1.05rem;
+            font-weight: 600;
+        }
+        .issue-file {
+            font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', monospace;
+            font-size: 0.85rem;
+            color: var(--accent);
+            background: var(--accent-subtle);
+            padding: 0.15em 0.5em;
+            border-radius: 4px;
+        }
+
+        .label {
+            display: inline-block;
+            font-size: 0.75rem;
+            font-weight: 600;
+            padding: 0.2em 0.6em;
+            border-radius: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+            margin-bottom: 0.5rem;
+        }
+        .label-problem { background: var(--red-subtle); color: var(--red); }
+        .label-why { background: var(--orange-subtle); color: var(--orange); }
+        .label-fix { background: var(--green-subtle); color: var(--green); }
+        .label-impact { background: var(--purple-subtle); color: var(--purple); }
+
+        .issue p {
+            color: var(--text-muted);
+            font-size: 0.92rem;
+            margin-bottom: 0.6rem;
+        }
+
+        .issue ul {
+            color: var(--text-muted);
+            font-size: 0.92rem;
+            margin: 0.4rem 0 0.6rem 1.5rem;
+        }
+        .issue li { margin-bottom: 0.3rem; }
+
+        /* Code blocks */
+        pre {
+            background: var(--code-bg);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 1rem 1.25rem;
+            overflow-x: auto;
+            margin: 0.75rem 0;
+            font-size: 0.85rem;
+            line-height: 1.5;
+        }
+        code {
+            font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', monospace;
+            font-size: 0.88em;
+        }
+        p code, li code {
+            background: var(--code-bg);
+            border: 1px solid var(--border);
+            padding: 0.15em 0.4em;
+            border-radius: 4px;
+            color: var(--accent);
+        }
+        .code-bad { border-left: 3px solid var(--red); }
+        .code-good { border-left: 3px solid var(--green); }
+        .code-label {
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.25rem;
+        }
+        .code-label.bad { color: var(--red); }
+        .code-label.good { color: var(--green); }
+
+        /* Feature cards */
+        .feature {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 1.25rem;
+        }
+        .feature:hover { border-color: var(--green); }
+        .feature-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 0.25rem;
+        }
+        .feature-files {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-bottom: 0.75rem;
+        }
+
+        /* Tables */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+            font-size: 0.9rem;
+        }
+        th {
+            background: var(--surface-raised);
+            color: var(--text);
+            font-weight: 600;
+            text-align: left;
+            padding: 0.6rem 1rem;
+            border: 1px solid var(--border);
+        }
+        td {
+            padding: 0.5rem 1rem;
+            border: 1px solid var(--border);
+            color: var(--text-muted);
+        }
+        tr:hover td { background: var(--surface); }
+
+        /* Badge */
+        .badge {
+            display: inline-block;
+            font-size: 0.75rem;
+            font-weight: 600;
+            padding: 0.2em 0.6em;
+            border-radius: 4px;
+            font-family: 'SFMono-Regular', Consolas, monospace;
+        }
+        .badge-fix { background: var(--red-subtle); color: var(--red); }
+        .badge-feature { background: var(--green-subtle); color: var(--green); }
+        .badge-rewrite { background: var(--purple-subtle); color: var(--purple); }
+        .badge-new { background: var(--accent-subtle); color: var(--accent); }
+        .badge-cleanup { background: var(--orange-subtle); color: var(--orange); }
+
+        /* Summary table file column */
+        td:first-child code {
+            background: none;
+            border: none;
+            padding: 0;
+            color: var(--text);
+        }
+
+        /* Compact list for code quality */
+        .compact-list {
+            columns: 2;
+            column-gap: 2rem;
+            list-style: none;
+            padding: 0;
+        }
+        .compact-list li {
+            padding: 0.3rem 0;
+            font-size: 0.88rem;
+            color: var(--text-muted);
+            break-inside: avoid;
+        }
+        .compact-list li::before {
+            content: "~";
+            color: var(--orange);
+            margin-right: 0.5rem;
+            font-weight: 700;
+        }
+
+        /* Divider */
+        hr {
+            border: none;
+            border-top: 1px solid var(--border);
+            margin: 2.5rem 0;
+        }
+
+        /* Responsive */
+        @media (max-width: 640px) {
+            body { padding: 1rem; }
+            .hero { padding: 2rem 1rem; }
+            .hero h1 { font-size: 1.6rem; }
+            .stats { gap: 1rem; }
+            .compact-list { columns: 1; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="hero">
+    <h1>Perks Plugin &mdash; PR Update</h1>
+    <p class="subtitle">Code audit, bug fixes, and feature enhancements for MCME Perks v2.5.1</p>
+    <div class="stats">
+        <div class="stat">
+            <span class="stat-value">24</span>
+            <span class="stat-label">Files Changed</span>
+        </div>
+        <div class="stat">
+            <span class="stat-value">25</span>
+            <span class="stat-label">Bugs Fixed</span>
+        </div>
+        <div class="stat">
+            <span class="stat-value">6</span>
+            <span class="stat-label">Features Added</span>
+        </div>
+        <div class="stat">
+            <span class="stat-value">2</span>
+            <span class="stat-label">New Files</span>
+        </div>
+    </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- PHASE 1 -->
+<!-- ============================================================ -->
+
+<div class="phase">
+    <h2>Phase 1: Code Audit</h2>
+    <p>25 issues fixed across 19 files. Before adding features, the existing codebase was audited for correctness, safety, and maintainability. Every fix targets a real defect or a pattern that would cause problems as the plugin evolves.</p>
+</div>
+
+<h3>Critical Fixes</h3>
+
+<!-- Issue 1 -->
+<div class="issue">
+    <div class="issue-header">
+        <span class="issue-number">1</span>
+        <span class="issue-title">IndexOutOfBoundsException guard</span>
+        <span class="issue-file">CompanionPerk.java</span>
+    </div>
+    <span class="label label-problem">Problem</span>
+    <p><code>getMetadata().get(0)</code> was called without checking if the metadata list was empty. If the entity had no metadata for that key, this throws <code>IndexOutOfBoundsException</code> at runtime &mdash; a server crash for the player.</p>
+    <span class="label label-why">Why this matters</span>
+    <p>Metadata is set by our plugin but can be absent if the entity was spawned by something else, or if the server reloaded while companions were active. Defensive checks on external data are a basic requirement.</p>
+    <span class="label label-fix">Fix</span>
+    <p>Added <code>!meta.isEmpty()</code> guard before accessing <code>meta.get(0)</code>.</p>
+</div>
+
+<!-- Issue 2 -->
+<div class="issue">
+    <div class="issue-header">
+        <span class="issue-number">2</span>
+        <span class="issue-title">Unsafe cast crash</span>
+        <span class="issue-file">VideoTeamCommand.java</span>
+    </div>
+    <span class="label label-problem">Problem</span>
+    <p><code>(Player) sender</code> was used without checking if the sender was actually a <code>Player</code>. Running <code>/videoteam</code> from the server console would crash with a <code>ClassCastException</code>.</p>
+    <span class="label label-why">Why this pattern is dangerous</span>
+    <p>Any command registered in <code>plugin.yml</code> can be run from the console. Unchecked casts on <code>CommandSender</code> are a category of bug, not a one-off.</p>
+    <span class="label label-fix">Fix</span>
+    <p>Replaced with <code>instanceof Player player</code> pattern matching (Java 21 feature). Console now gets a clean error message.</p>
+</div>
+
+<!-- Issue 3 -->
+<div class="issue">
+    <div class="issue-header">
+        <span class="issue-number">3</span>
+        <span class="issue-title">Full rewrite for safety and maintainability</span>
+        <span class="issue-file">TabComplete.java</span>
+    </div>
+    <span class="label label-problem">Problem (old code)</span>
+    <p>Hardcoded <code>PERK_NAMES</code> string array that had to be manually kept in sync with registered perks. No <code>instanceof</code> check on the sender. No null check on <code>PerkManager.forName()</code> results.</p>
+    <span class="label label-why">Why a rewrite was the right call</span>
+    <p>The hardcoded array was already out of date. Patching individual issues would leave the fundamental design problem: a second source of truth for the command list that inevitably drifts.</p>
+    <span class="label label-fix">Fix (new code)</span>
+    <p>Tab completion now reads dynamically from <code>PerksCommandExecutor.getCommands()</code> &mdash; the same registry used for command dispatch. This means:</p>
+    <ul>
+        <li>Adding a new perk automatically adds tab completion (zero maintenance).</li>
+        <li>Permission filtering uses the same <code>PermissionData.isAllowed()</code> path as the handler system.</li>
+        <li><code>instanceof Player</code> guard returns empty list for console tab-complete calls.</li>
+        <li><code>/perk help &lt;TAB&gt;</code> completes to available perk names.</li>
+    </ul>
+</div>
+
+<!-- Issue 4 -->
+<div class="issue">
+    <div class="issue-header">
+        <span class="issue-number">4</span>
+        <span class="issue-title">Dead scheduled task (resource leak)</span>
+        <span class="issue-file">PotionEffectPerk.java</span>
+    </div>
+    <span class="label label-problem">Problem</span>
+    <p>An empty <code>BukkitRunnable</code> was being <code>.runTaskTimer()</code>'d &mdash; it ran every tick doing nothing. On a busy server, scheduled tasks consume tick time even when empty.</p>
+    <span class="label label-fix">Fix</span>
+    <p>Removed the dead runnable entirely.</p>
+</div>
+
+<!-- Issue 5 -->
+<div class="issue">
+    <div class="issue-header">
+        <span class="issue-number">5</span>
+        <span class="issue-title">Deprecated API + unsafe cast</span>
+        <span class="issue-file">BoatPerk.java</span>
+    </div>
+    <span class="label label-problem">Problem</span>
+    <p><code>getPassenger()</code> (deprecated since Bukkit 1.11.2) returns a single entity, but boats can have multiple passengers since 1.9. Also, the result was cast to <code>Player</code> without checking.</p>
+    <span class="label label-why">Why deprecated APIs matter</span>
+    <p>Paper marks deprecated methods for removal. They can be dropped in any minor version, turning a warning into a compile failure.</p>
+    <span class="label label-fix">Fix</span>
+    <p>Replaced with <code>getPassengers()</code> + <code>instanceof Player</code> check on each passenger.</p>
+</div>
+
+<!-- Issue 6 -->
+<div class="issue">
+    <div class="issue-header">
+        <span class="issue-number">6</span>
+        <span class="issue-title">Class.forName() reflection replaced with whitelist</span>
+        <span class="issue-file">BoatHandler.java</span>
+    </div>
+    <span class="label label-problem">Problem (old code)</span>
+    <pre class="code-bad"><code>Class.forName("org.bukkit.entity.boat." + args[0])</code></pre>
+    <p>This is a security anti-pattern. The user controls the class name. While limited to the <code>boat</code> package, reflection-based dispatch from user input is never acceptable &mdash; it could load unintended classes if the package gains new types, and it provides no input validation or error messages.</p>
+    <span class="label label-fix">Fix &mdash; Why a Map is better</span>
+    <pre class="code-good"><code>private static final Map&lt;String, Class&lt;? extends Boat&gt;&gt; BOAT_TYPES = Map.of(
+    "oak", OakBoat.class,
+    "acacia", AcaciaBoat.class,
+    // ...
+);</code></pre>
+    <ul>
+        <li><strong>Compile-time verified:</strong> if Paper removes a boat class, this fails at compile, not at runtime.</li>
+        <li><strong>Self-documenting:</strong> the map <em>is</em> the list of valid types.</li>
+        <li><strong>Safe:</strong> only whitelisted types can be instantiated.</li>
+        <li><strong>User-friendly:</strong> gives clear error messages: "Boat type not found! Using oak boat."</li>
+    </ul>
+</div>
+
+<h3>Important Fixes</h3>
+
+<!-- Issue 7 -->
+<div class="issue">
+    <div class="issue-header">
+        <span class="issue-number">7</span>
+        <span class="issue-title">Same deprecated getPassenger() pattern</span>
+        <span class="issue-file">HorsePerk.java</span>
+    </div>
+    <span class="label label-fix">Fix</span>
+    <p>Same approach as BoatPerk &mdash; <code>getPassengers()</code> with <code>instanceof</code> check.</p>
+</div>
+
+<!-- Issue 8 -->
+<div class="issue">
+    <div class="issue-header">
+        <span class="issue-number">8</span>
+        <span class="issue-title">Empty method body</span>
+        <span class="issue-file">JockeyPerk.java</span>
+    </div>
+    <span class="label label-problem">Problem</span>
+    <p><code>unjockey()</code> was declared but had an empty body. Players who mounted another player could never dismount through the perk system.</p>
+    <span class="label label-fix">Fix</span>
+    <p>Implemented with <code>jockey.leaveVehicle()</code>.</p>
+</div>
+
+<!-- Issue 9 -->
+<div class="issue">
+    <div class="issue-header">
+        <span class="issue-number">9</span>
+        <span class="issue-title">Case-insensitive comparison + defensive collection</span>
+        <span class="issue-file">PerkManager.java</span>
+    </div>
+    <span class="label label-problem">Problem</span>
+    <p><code>.toLowerCase().equals()</code> is fragile &mdash; if the locale changes, <code>toLowerCase()</code> can produce unexpected results for certain characters. <code>getPerks()</code> returned the mutable internal set.</p>
+    <span class="label label-fix">Fix</span>
+    <p>Replaced with <code>.equalsIgnoreCase()</code> (locale-safe). <code>getPerks()</code> now returns <code>Collections.unmodifiableSet()</code> to prevent accidental modification of the registry.</p>
+</div>
+
+<!-- Issue 10 -->
+<div class="issue">
+    <div class="issue-header">
+        <span class="issue-number">10</span>
+        <span class="issue-title">Atomic map operation to prevent memory leak</span>
+        <span class="issue-file">SitPerk.java</span>
+    </div>
+    <span class="label label-problem">Problem</span>
+    <p><code>sitUp()</code> called <code>armorStands.get(player)</code> followed by <code>armorStands.remove(player)</code>. Between these two calls, another thread could modify the map. More importantly, the old code would leave entries in the map if the ArmorStand was null, slowly leaking memory.</p>
+    <span class="label label-fix">Fix</span>
+    <p><code>armorStands.remove(player)</code> returns the value and removes atomically.</p>
+</div>
+
+<!-- Issue 11 -->
+<div class="issue">
+    <div class="issue-header">
+        <span class="issue-number">11</span>
+        <span class="issue-title">Overly broad catch</span>
+        <span class="issue-file">ParrotHandler.java</span>
+    </div>
+    <span class="label label-problem">Problem</span>
+    <p><code>catch(Exception)</code> was used when only <code>IllegalArgumentException</code> was expected from <code>DyeColor.valueOf()</code>. This silently swallowed NPEs, ArrayIndexOutOfBounds, and other real bugs.</p>
+    <span class="label label-fix">Fix</span>
+    <p><code>catch(IllegalArgumentException)</code> &mdash; catches only what's expected, lets real bugs propagate.</p>
+</div>
+
+<!-- Issue 12 -->
+<div class="issue">
+    <div class="issue-header">
+        <span class="issue-number">12</span>
+        <span class="issue-title">URL prefix assembly bug</span>
+        <span class="issue-file">HttpTextInputHandler.java</span>
+    </div>
+    <span class="label label-problem">Problem</span>
+    <p class="code-label bad">Before:</p>
+    <pre class="code-bad"><code>url + "http://"   // protocol appended AFTER the URL</code></pre>
+    <p>Every HTTP request was malformed.</p>
+    <span class="label label-fix">Fix</span>
+    <pre class="code-good"><code>"http://" + url</code></pre>
+</div>
+
+<!-- Issue 13 -->
+<div class="issue">
+    <div class="issue-header">
+        <span class="issue-number">13</span>
+        <span class="issue-title">Null config section access</span>
+        <span class="issue-file">PerksPlugin.java</span>
+    </div>
+    <span class="label label-problem">Problem</span>
+    <p><code>getConfig().getConfigurationSection("perks")</code> can return <code>null</code> if the config section doesn't exist. The result was used without null checks in <code>arePerksEnabled</code>, <code>isPerkEnabled</code>, <code>enablePerk</code>, and <code>enableAllPerks</code>. First server start with no config = <code>NullPointerException</code>.</p>
+    <span class="label label-fix">Fix</span>
+    <p>Added null guards before every section access.</p>
+</div>
+
+<!-- Issue 14 -->
+<div class="issue">
+    <div class="issue-header">
+        <span class="issue-number">14</span>
+        <span class="issue-title">System.out.println in production</span>
+        <span class="issue-file">CompassHandler.java</span>
+    </div>
+    <span class="label label-problem">Problem</span>
+    <p><code>System.out.println</code> bypasses the plugin's logging framework, has no prefix, and can't be filtered or disabled. In a server with 50+ plugins, untagged stdout is noise.</p>
+    <span class="label label-fix">Fix</span>
+    <p>Replaced with <code>cs.sendMessage()</code> to send feedback to the command sender.</p>
+</div>
+
+<!-- Issue 15-16 -->
+<div class="issue">
+    <div class="issue-header">
+        <span class="issue-number" style="width: auto; padding: 0 8px;">15-16</span>
+        <span class="issue-title">Debug logging in hot paths</span>
+        <span class="issue-file">SitPerk.java</span>
+        <span class="issue-file">ParrotPerk.java</span>
+    </div>
+    <span class="label label-problem">Problem</span>
+    <p><code>Logger.getGlobal().info()</code> in <code>sitDown()</code>, <code>sitUp()</code>, and <code>checkParrot()</code> &mdash; methods that run on every sit/stand/parrot event. This floods the global log with per-player debug output that no admin wants to see in production.</p>
+    <span class="label label-fix">Fix</span>
+    <p>Removed all debug log statements (8 in SitPerk, 1 in ParrotPerk).</p>
+</div>
+
+<h3>Code Quality (Issues 17&ndash;25)</h3>
+
+<div class="issue">
+    <div class="issue-header">
+        <span class="issue-title">Cleanup across 8 files</span>
+    </div>
+    <p>Removed from the codebase:</p>
+    <ul class="compact-list">
+        <li>5 commented-out blocks in CompanionPerk</li>
+        <li>Respawn block in HorsePerk</li>
+        <li>boatSpawn method in BoatListener</li>
+        <li>Config code in SitPerk</li>
+        <li><code>Logger</code> import in 4 files</li>
+        <li>4 unused imports in CompanionHandler</li>
+        <li><code>ItemStack</code> import in HorseHandler</li>
+        <li>5 unused imports in BoatListener</li>
+        <li><code>Bisected</code> import in SitPerk</li>
+        <li>Dead variables and trailing whitespace</li>
+    </ul>
+    <span class="label label-why">Why bother?</span>
+    <p>Commented-out code signals "this might be needed" and discourages developers from understanding the current design. Unused imports trigger IDE warnings that train developers to ignore warnings. Clean files make real changes visible in diffs.</p>
+</div>
+
+<hr>
+
+<!-- ============================================================ -->
+<!-- PHASE 2 -->
+<!-- ============================================================ -->
+
+<div class="phase green">
+    <h2>Phase 2: Feature Enhancements</h2>
+    <p>Six improvements to existing perks, ranging from quick fixes to a full perk rewrite.</p>
+</div>
+
+<!-- Feature 1 -->
+<div class="feature">
+    <div class="feature-title">1. Boat Types &mdash; All 10 wood types supported</div>
+    <div class="feature-files">BoatHandler.java</div>
+    <span class="label label-problem">Before</span>
+    <p>6 boat types with wrong names ("redwood", "generic" don't exist in Minecraft).</p>
+    <span class="label label-fix">After</span>
+    <p>All 10 Paper 1.21.4 boat types: <code>oak</code>, <code>acacia</code>, <code>birch</code>, <code>dark_oak</code>, <code>jungle</code>, <code>spruce</code>, <code>mangrove</code>, <code>cherry</code>, <code>bamboo</code>, <code>pale_oak</code>.</p>
+    <span class="label label-impact">Technical note</span>
+    <p><code>Map.of()</code> supports exactly 10 entries (its maximum), which is exactly the count we need. For &gt;10, you'd need <code>Map.ofEntries()</code>. The bamboo entry maps to <code>BambooRaft.class</code> (not BambooBoat) because Paper models bamboo watercraft as rafts, matching Minecraft's actual behavior.</p>
+</div>
+
+<!-- Feature 2 -->
+<div class="feature">
+    <div class="feature-title">2. Wolf Variants &mdash; 1.21.4 Registry API</div>
+    <div class="feature-files">CompanionPerk.java, CompanionHandler.java</div>
+    <span class="label label-problem">Before</span>
+    <p>All dogs spawned as the default (pale) variant.</p>
+    <span class="label label-fix">After</span>
+    <p><code>/perk pet dog Rex red ashen</code> spawns a dog with a specific wolf variant.</p>
+    <span class="label label-why">Why Registry instead of enum</span>
+    <p>In Paper 1.21.4, <code>Wolf.Variant</code> is a <code>Keyed</code> interface, not an enum. Variants are looked up via <code>Registry.WOLF_VARIANT.get(NamespacedKey.minecraft(name))</code>. This is the correct modern Paper pattern &mdash; registries are data-driven and can be extended by datapacks, while enums cannot.</p>
+    <span class="label label-why">Why the signature changed</span>
+    <p><code>spawnDog()</code> now takes a <code>Wolf.Variant</code> parameter. This keeps the spawn logic in the perk class (where it belongs) while letting the handler control which variant to use. The handler parses user input and falls back to a random variant via <code>getRandomWolfVariant()</code>.</p>
+</div>
+
+<!-- Feature 3 -->
+<div class="feature">
+    <div class="feature-title">3. Wizard Light Config Bug</div>
+    <div class="feature-files">WizardLightPerk.java</div>
+    <p class="code-label bad">Before (values swapped):</p>
+    <pre class="code-bad"><code>config.set("maxSpeed", speedFactor);   // WRONG
+config.set("speedFactor", maxSpeed);   // WRONG</code></pre>
+    <p class="code-label good">After:</p>
+    <pre class="code-good"><code>config.set("maxSpeed", maxSpeed);
+config.set("speedFactor", speedFactor);</code></pre>
+    <span class="label label-impact">Impact</span>
+    <p>On first install, the config would have swapped values, making the light orb behave unpredictably (too fast or too slow). Existing servers with manually-tuned configs are not affected since <code>writeDefaultConfig()</code> only runs when the config section doesn't exist.</p>
+</div>
+
+<!-- Feature 4 -->
+<div class="feature">
+    <div class="feature-title">4. Fire Perk Game Mode</div>
+    <div class="feature-files">FireHandler.java</div>
+    <span class="label label-problem">Before</span>
+    <p><code>player.setGameMode(GameMode.SURVIVAL)</code> was called every time a player used <code>/perk fire</code>. This forcibly switched creative/adventure/spectator players to survival &mdash; a destructive side effect that undoes admin mode.</p>
+    <span class="label label-why">Why it existed</span>
+    <p>Probably a workaround for fire resistance not applying in creative. But creative mode already makes players immune to fire damage, so the forced switch was both unnecessary and harmful.</p>
+    <span class="label label-fix">Fix</span>
+    <p>Removed the <code>setGameMode()</code> call and the unused <code>GameMode</code> import.</p>
+</div>
+
+<!-- Feature 5 -->
+<div class="feature">
+    <div class="feature-title">5. Enhanced Name Tag Perk &mdash; Tier system with permissions</div>
+    <div class="feature-files">NameTagPerk.java (rewritten), NameTagHandler.java (new)</div>
+    <p>This is the largest change. The old name tag system applied a single hardcoded yellow color to all donors. The new system supports configurable tiers, symbols, and animation.</p>
+
+    <span class="label label-why">Tier architecture</span>
+    <ul>
+        <li>Config-driven tiers defined in <code>config.yml</code> under <code>perks.name.tiers.*</code></li>
+        <li>Each tier has: <code>color</code> (ChatColor name), <code>prefix</code> (MiniMessage string), <code>suffix</code> (MiniMessage string)</li>
+        <li>Per-tier permission nodes: <code>perks.name.&lt;tier&gt;</code> (e.g., <code>perks.name.gold</code>)</li>
+        <li>Default tier (yellow, no prefix/suffix) is available to all name tag perk users</li>
+    </ul>
+
+    <span class="label label-why">Why Scoreboard Teams</span>
+    <p>Minecraft's overhead name tag color is controlled <em>only</em> through Scoreboard Teams. <code>player.displayName()</code> only affects chat, not the floating name above the player's head. The Teams API's <code>team.prefix(Component)</code> and <code>team.suffix(Component)</code> accept Adventure Components, which is how we render MiniMessage-formatted symbols.</p>
+
+    <span class="label label-why">Why MiniMessage for config</span>
+    <p>MiniMessage (<code>&lt;gold&gt;&#9733; &lt;/gold&gt;</code>) is Paper's modern text formatting standard. It's human-readable in YAML configs, supports all Adventure formatting options, and avoids the deprecated <code>ChatColor</code> + <code>&sect;</code> format codes. Server admins can edit tier prefixes/suffixes without touching Java code.</p>
+
+    <span class="label label-impact">Rainbow animation</span>
+    <p>Uses a <code>BukkitRunnable</code> that cycles through 7 <code>ChatColor</code> values every 10 ticks (0.5 seconds) via <code>team.setColor()</code>. The task self-cancels when no rainbow players are online, avoiding unnecessary tick consumption. It restarts automatically when a player selects the rainbow tier.</p>
+
+    <span class="label label-impact">State management</span>
+    <ul>
+        <li><code>playerTiers: Map&lt;UUID, String&gt;</code> &mdash; tracks which tier each player has selected</li>
+        <li><code>rainbowPlayers: Set&lt;UUID&gt;</code> &mdash; tracks which players need rainbow cycling</li>
+        <li><code>tierTeams: Map&lt;String, Team&gt;</code> &mdash; caches created teams to avoid re-registering</li>
+        <li><code>disable()</code> properly cleans up: removes all players from teams, unregisters teams, clears all state, cancels the rainbow task</li>
+    </ul>
+
+    <span class="label label-impact">Default config tiers</span>
+    <table>
+        <thead>
+            <tr><th>Tier</th><th>Color</th><th>Prefix</th><th>Permission</th></tr>
+        </thead>
+        <tbody>
+            <tr><td>default</td><td>YELLOW</td><td>(none)</td><td><code>perks.name</code> (base perk)</td></tr>
+            <tr><td>gold</td><td>GOLD</td><td>&#9733;</td><td><code>perks.name.gold</code></td></tr>
+            <tr><td>diamond</td><td>AQUA</td><td>&#9670;...&#9670;</td><td><code>perks.name.diamond</code></td></tr>
+            <tr><td>rainbow</td><td>animated</td><td>&#10024;...&#10024;</td><td><code>perks.name.rainbow</code></td></tr>
+        </tbody>
+    </table>
+
+    <span class="label label-fix">NameTagHandler (<code>/perk name [tier|off|info]</code>)</span>
+    <ul>
+        <li>No args or <code>info</code>: Shows current tier and available tiers</li>
+        <li><code>&lt;tier&gt;</code>: Checks permission, applies tier, sends confirmation</li>
+        <li><code>off</code>: Removes name tag entirely</li>
+        <li>Follows the existing handler pattern (<code>extends PerksCommandHandler</code>)</li>
+    </ul>
+</div>
+
+<!-- Feature 6 -->
+<div class="feature">
+    <div class="feature-title">6. Potion Effect Balance &mdash; Configurable amplifiers</div>
+    <div class="feature-files">PotionEffectPerk.java, PerksPlugin.java</div>
+    <span class="label label-problem">Before</span>
+    <p>All three potion perks (speed, jump, ring) had a hardcoded default amplifier of 1 in <code>writeDefaultConfig()</code>. This meant Jump Boost II (amplifier 1) &mdash; barely noticeable &mdash; while Speed II was reasonable.</p>
+    <span class="label label-why">Problem with hardcoded defaults</span>
+    <p>The <code>PotionEffectData</code> constructor reads from config at runtime (<code>PerksPlugin.getPerkInt(name, "amplifier", 1)</code>), but <code>writeDefaultConfig()</code> always wrote <code>1</code> regardless. So the config would always say amplifier 1, and you'd have to manually edit it for every server.</p>
+    <span class="label label-fix">Solution</span>
+    <p>Added a <code>defaultAmplifier</code> field to <code>PotionEffectPerk</code>. Each perk now passes its own sensible default:</p>
+    <table>
+        <thead>
+            <tr><th>Perk</th><th>Amplifier</th><th>Effect</th><th>Rationale</th></tr>
+        </thead>
+        <tbody>
+            <tr><td>Speed</td><td>1</td><td>Speed II</td><td>Noticeable but not game-breaking</td></tr>
+            <tr><td>Jump</td><td>2</td><td>Jump Boost III</td><td>Actually useful for parkour/exploration</td></tr>
+            <tr><td>Ring</td><td>0</td><td>Invisibility I</td><td>Level doesn't matter for invisibility, 0 is semantically correct</td></tr>
+        </tbody>
+    </table>
+    <p>The old single-arg constructor delegates to the new one with <code>defaultAmplifier = 1</code> for backwards compatibility &mdash; existing code that doesn't specify an amplifier still compiles and works identically.</p>
+</div>
+
+<hr>
+
+<!-- ============================================================ -->
+<!-- PHASE 3 -->
+<!-- ============================================================ -->
+
+<div class="phase orange">
+    <h2>Phase 3: In-Game Help System</h2>
+    <p>A new help command with clickable text, permission filtering, and per-perk examples.</p>
+</div>
+
+<div class="feature">
+    <div class="feature-files">HelpHandler.java (new), PerksCommandExecutor.java (modified)</div>
+
+    <span class="label label-problem">The problem</span>
+    <p>The only way to learn perk commands was to read source code or ask another player. <code>/perk</code> with no args showed a raw list with no descriptions. There was no way to discover arguments, valid values, or see examples.</p>
+
+    <span class="label label-why">Why a single <code>/perk help</code> entry point</span>
+    <p>Players already know <code>/perk</code>. Adding <code>/perk help</code> follows the existing subcommand pattern. No new top-level command to register, no new permission to manage.</p>
+
+    <span class="label label-why">Why clickable text (FancyMessage)</span>
+    <p>Minecraft chat supports hover text and click-to-suggest through JSON chat components. PluginUtils already provides <code>FancyMessage</code> for this. Clickable commands mean players don't have to type &mdash; they click a command, it appears in their chat input, and they can modify arguments before sending.</p>
+
+    <span class="label label-why">Permission-filtered display</span>
+    <p>The help menu only shows commands the player has access to. Admin commands appear in a separate section only for admins. This prevents confusion ("why doesn't this command work?") and avoids exposing admin functionality to regular players.</p>
+
+    <span class="label label-why">Dynamic registration</span>
+    <p><code>HelpHandler</code> receives the command map from <code>PerksCommandExecutor</code> &mdash; it doesn't maintain its own list. When a new perk is registered, it automatically appears in help. <code>getShortDescription()</code> and <code>getUsageDescription()</code> are abstract methods on <code>PerksCommandHandler</code>, so every handler is <em>required</em> to provide help text.</p>
+
+    <span class="label label-impact">Example commands per perk</span>
+    <p>The <code>getExamples()</code> switch expression returns clickable example commands for each perk. These demonstrate valid arguments and common usage patterns. New cases are trivial to add.</p>
+</div>
+
+<hr>
+
+<!-- ============================================================ -->
+<!-- PHASE 4 -->
+<!-- ============================================================ -->
+
+<div class="phase purple">
+    <h2>Phase 4: Documentation</h2>
+    <p>All project documentation updated to reflect the current state of the codebase.</p>
+</div>
+
+<div class="issue">
+    <ul>
+        <li><strong>README.md</strong> &mdash; Updated boat types, wolf variants, name tag command/tiers/permissions, potion amplifiers, help command section</li>
+        <li><strong>ROADMAP.md</strong> &mdash; Moved 10 completed items to "Completed" section, added new backlog items (resource pack badges, particle trails, CI, Maven wrapper)</li>
+        <li><strong>Changes.md</strong> &mdash; Full changelog for both the code audit and feature enhancements</li>
+        <li><strong>CLAUDE.md</strong> &mdash; Updated architecture patterns (help system, tab completion, name tag tiers, config defaults), key commands, and code conventions</li>
+    </ul>
+</div>
+
+<hr>
+
+<!-- ============================================================ -->
+<!-- SUMMARY TABLE -->
+<!-- ============================================================ -->
+
+<div class="phase">
+    <h2>Summary of changes by file</h2>
+</div>
+
+<table>
+    <thead>
+        <tr><th>File</th><th>Type</th><th>Change</th></tr>
+    </thead>
+    <tbody>
+        <tr><td><code>CompanionPerk.java</code></td><td><span class="badge badge-fix">Fix</span> <span class="badge badge-feature">Feature</span></td><td>Metadata guard, cleanup, wolf variant parameter</td></tr>
+        <tr><td><code>CompanionHandler.java</code></td><td><span class="badge badge-fix">Fix</span> <span class="badge badge-feature">Feature</span></td><td>Cleanup, wolf variant UI and parsing</td></tr>
+        <tr><td><code>VideoTeamCommand.java</code></td><td><span class="badge badge-fix">Fix</span></td><td>Safe cast with instanceof</td></tr>
+        <tr><td><code>TabComplete.java</code></td><td><span class="badge badge-rewrite">Rewrite</span></td><td>Dynamic command registry, permission filtering</td></tr>
+        <tr><td><code>PotionEffectPerk.java</code></td><td><span class="badge badge-fix">Fix</span> <span class="badge badge-feature">Feature</span></td><td>Removed dead task, configurable amplifiers</td></tr>
+        <tr><td><code>BoatPerk.java</code></td><td><span class="badge badge-fix">Fix</span></td><td>Deprecated API replacement</td></tr>
+        <tr><td><code>BoatHandler.java</code></td><td><span class="badge badge-fix">Fix</span> <span class="badge badge-feature">Feature</span></td><td>Reflection removal, all 10 boat types</td></tr>
+        <tr><td><code>HorsePerk.java</code></td><td><span class="badge badge-fix">Fix</span></td><td>Deprecated API replacement</td></tr>
+        <tr><td><code>JockeyPerk.java</code></td><td><span class="badge badge-fix">Fix</span></td><td>Implemented empty unjockey()</td></tr>
+        <tr><td><code>PerkManager.java</code></td><td><span class="badge badge-fix">Fix</span></td><td>equalsIgnoreCase, unmodifiable set</td></tr>
+        <tr><td><code>SitPerk.java</code></td><td><span class="badge badge-fix">Fix</span></td><td>Atomic remove, debug logging, cleanup</td></tr>
+        <tr><td><code>ParrotHandler.java</code></td><td><span class="badge badge-fix">Fix</span></td><td>Specific catch type</td></tr>
+        <tr><td><code>ParrotPerk.java</code></td><td><span class="badge badge-fix">Fix</span></td><td>Debug logging, unused import</td></tr>
+        <tr><td><code>HttpTextInputHandler.java</code></td><td><span class="badge badge-fix">Fix</span></td><td>URL prefix order</td></tr>
+        <tr><td><code>PerksPlugin.java</code></td><td><span class="badge badge-fix">Fix</span> <span class="badge badge-feature">Feature</span></td><td>Null checks, per-perk amplifiers</td></tr>
+        <tr><td><code>CompassHandler.java</code></td><td><span class="badge badge-fix">Fix</span></td><td>System.out replacement</td></tr>
+        <tr><td><code>BoatListener.java</code></td><td><span class="badge badge-cleanup">Cleanup</span></td><td>Dead code, unused imports</td></tr>
+        <tr><td><code>HorseHandler.java</code></td><td><span class="badge badge-cleanup">Cleanup</span></td><td>Debug lines, unused import</td></tr>
+        <tr><td><code>ItemPerk.java</code></td><td><span class="badge badge-cleanup">Cleanup</span></td><td>Unused import</td></tr>
+        <tr><td><code>WizardLightPerk.java</code></td><td><span class="badge badge-fix">Fix</span></td><td>Swapped config values</td></tr>
+        <tr><td><code>FireHandler.java</code></td><td><span class="badge badge-fix">Fix</span></td><td>Removed forced game mode</td></tr>
+        <tr><td><code>NameTagPerk.java</code></td><td><span class="badge badge-rewrite">Rewrite</span></td><td>Tier-based system, rainbow, MiniMessage</td></tr>
+        <tr><td><code>NameTagHandler.java</code></td><td><span class="badge badge-new">New</span></td><td><code>/perk name</code> command handler</td></tr>
+        <tr><td><code>HelpHandler.java</code></td><td><span class="badge badge-new">New</span></td><td>In-game help system</td></tr>
+        <tr><td><code>PerksCommandExecutor.java</code></td><td><span class="badge badge-feature">Feature</span></td><td>Help handler integration</td></tr>
+    </tbody>
+</table>
+
+</body>
+</html>

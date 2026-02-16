@@ -21,7 +21,10 @@ public class VideoTeamCommand implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender commandSender, Command command, String s, String[] strings) {
-        Player player = (Player) commandSender;
+        if(!(commandSender instanceof Player player)) {
+            commandSender.sendMessage("This command can only be used by players.");
+            return true;
+        }
         if(!player.hasPermission(Permissions.USER_VIDEOTEAM.getPermissionNode())){
             PerksPlugin.getMessageUtil().sendNoPermissionError(player);
             return true;

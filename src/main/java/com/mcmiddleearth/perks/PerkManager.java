@@ -19,6 +19,7 @@ package com.mcmiddleearth.perks;
 import com.mcmiddleearth.perks.perks.Perk;
 import org.bukkit.plugin.PluginManager;
 
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -46,7 +47,7 @@ public class PerkManager {
     
     public static Perk forName(String name) {
         for(Perk perk: perks) {
-            if(perk.getName().toLowerCase().equals(name.toLowerCase())) {
+            if(perk.getName().equalsIgnoreCase(name)) {
                 return perk;
             }
         }
@@ -59,6 +60,6 @@ public class PerkManager {
     }
 
     public static Set<Perk> getPerks() {
-        return perks;
+        return Collections.unmodifiableSet(perks);
     }
 }

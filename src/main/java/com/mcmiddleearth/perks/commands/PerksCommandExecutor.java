@@ -18,11 +18,9 @@ package com.mcmiddleearth.perks.commands;
 
 import com.mcmiddleearth.perks.PerksPlugin;
 import com.mcmiddleearth.perks.permissions.Permissions;
-import com.mcmiddleearth.pluginutil.message.FancyMessage;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 
 import java.util.Arrays;
 import java.util.LinkedHashMap;
@@ -42,6 +40,7 @@ public class PerksCommandExecutor implements CommandExecutor {
         addCommandHandler("info", new EnableHandler(Permissions.ADMIN.getPermissionNode()));
         addCommandHandler("open", new OpenHandler(Permissions.ADMIN.getPermissionNode()));
         addCommandHandler("close", new OpenHandler(Permissions.ADMIN.getPermissionNode()));
+        addCommandHandler("help", new HelpHandler(commands));
     }
     
     @Override
@@ -60,22 +59,7 @@ public class PerksCommandExecutor implements CommandExecutor {
     }
     
     private void sendCommandList(CommandSender cs) {
-        PerksPlugin.getMessageUtil().sendInfoMessage(cs, "Help for Perks plugin: ");
-        for(String command: commands.keySet()) {
-            PerksCommandHandler handler = commands.get(command);
-            if(cs instanceof Player) {
-                new FancyMessage(PerksPlugin.getMessageUtil())
-                        .addFancy(PerksPlugin.getMessageUtil().STRESSED+"/perk "+command
-                                +handler.getShortDescription(command),
-                                "/perk "+command,
-                                PerksPlugin.getMessageUtil()
-                                        .hoverFormat("/perk "+command
-                                                     +handler.getUsageDescription(command),":",true))
-                        .send((Player)cs);
-            } else {
-                PerksPlugin.getMessageUtil().sendInfoMessage(cs, handler.getShortDescription(command));
-            }
-        }
+        commands.get("help").handle(cs, "help");
     }
     
     private void sendSubcommandNotFoundErrorMessage(CommandSender cs) {

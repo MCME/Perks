@@ -61,10 +61,6 @@ public class HorsePerk extends Perk {
         Bukkit.getScheduler().runTaskLater(PerksPlugin.getInstance(),()-> {
             if(horse.getInventory().getSaddle() == null) {
                 horse.getInventory().setSaddle(new ItemStack(Material.SADDLE));
-                /*horse.remove();
-                Bukkit.getScheduler().runTaskLater(PerksPlugin.getInstance(),() -> {
-                    spawn(player, color, style);
-                }, 2);*/
             }
         }, 2);
     }
@@ -82,10 +78,13 @@ public class HorsePerk extends Perk {
     public void checkHorses() {
         for (World w : Bukkit.getServer().getWorlds()) {
             for (Entity e : w.getEntities()) {
-                if (isHorsePerk(e) && (((Vehicle)e).getPassenger()==null
-                                       || !PermissionData.isAllowed((Player)((Vehicle)e).getPassenger(),
-                                                                   this))) {
-                    e.remove();
+                if (isHorsePerk(e)) {
+                    java.util.List<org.bukkit.entity.Entity> passengers = e.getPassengers();
+                    if(passengers.isEmpty()
+                            || !(passengers.get(0) instanceof Player rider)
+                            || !PermissionData.isAllowed(rider, this)) {
+                        e.remove();
+                    }
                 }
             }
         }

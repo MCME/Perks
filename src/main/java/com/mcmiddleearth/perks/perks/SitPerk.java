@@ -23,7 +23,6 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
-import org.bukkit.block.data.Bisected;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.block.data.type.Cake;
 import org.bukkit.block.data.type.Slab;
@@ -96,10 +95,9 @@ public class SitPerk extends Perk {
     }
     
     public static void sitUp(final Player player) {
-        ArmorStand marker = armorStands.get(player);
+        ArmorStand marker = armorStands.remove(player);
         if(marker!=null) {
             marker.remove();
-            armorStands.remove(player);
             player.teleport(player.getLocation().getBlock()
                           .getRelative(BlockFace.UP, 1).getLocation());
         }
@@ -149,29 +147,22 @@ public class SitPerk extends Perk {
     }
     
     private static double getYBlockAdjust(Block clicked) {
-Logger.getGlobal().info("getYAdjust: "+clicked);
         if(clicked.getType().equals(Material.SNOW)) {
-Logger.getGlobal().info("Snow");
             return -1+(1/8.0)*((Snow)clicked.getBlockData()).getLayers();
         }
         if(isHalfBlock(clicked) || isStairBlock(clicked)) {
-Logger.getGlobal().info("Half block");
             return -0.5;
         }
         if(isQuarterBlock(clicked)) {
-Logger.getGlobal().info("Quarter block");
             return -0.68;
         }
         if(isCarpet(clicked)) {
-Logger.getGlobal().info("Carpet");
             return -0.9;
         }
         if(isUnsolid(clicked)) {
-Logger.getGlobal().info("unsolid");
             return -1;
         }
         if(isThreeQuarterBlock(clicked)){
-Logger.getGlobal().info("three quarter block");
             return -0.22;
         }
         return 0;
@@ -236,7 +227,6 @@ Logger.getGlobal().info("three quarter block");
             return true;
         }
         BlockData data = clicked.getBlockData();
-Logger.getGlobal().info("BlockData: "+data+" "+(data instanceof Slab) );
         return ((data instanceof Cake) && (((Cake) data).getBites() < 5))
                 || (data instanceof Slab slab) && (slab.getType().equals(Slab.Type.BOTTOM));
     }
@@ -289,14 +279,8 @@ Logger.getGlobal().info("BlockData: "+data+" "+(data instanceof Slab) );
     }
     
     private static ConfigurationSection getConfigSection(Block clicked) {
-        String data = clicked.getBlockData()
-                            .getAsString();
-                            /*.replace(":", "_")
-                            .replace("[","_")
-                            .replace("]","")
-                            .replace("=","");*/
-        ConfigurationSection section = config.getConfigurationSection(data);
-        return section;
+        String data = clicked.getBlockData().getAsString();
+        return config.getConfigurationSection(data);
     }
     
     private static boolean hasSpecialValue(Block clicked, String key) {

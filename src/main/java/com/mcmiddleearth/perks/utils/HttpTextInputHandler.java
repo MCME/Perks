@@ -41,7 +41,7 @@ public abstract class HttpTextInputHandler {
     
     public HttpTextInputHandler(String url, int timeout) {
         if(!(url.startsWith("https://") || url.startsWith("http://"))) {
-            url = url+"http://";
+            url = "http://"+url;
         }
         httpURL = url;
         httpTimeout = timeout;

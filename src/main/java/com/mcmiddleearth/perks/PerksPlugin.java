@@ -82,15 +82,15 @@ public class PerksPlugin extends JavaPlugin {
         PerkManager.addPerk(new CompassPerk());
         PerkManager.addPerk(new PotionEffectPerk("speed",
                                                  new ItemStack(Material.DIAMOND_BOOTS),
-                                                 "Boots of Speed",
+                                                 "Boots of Speed", 1,
                                                  new PotionEffectPerk.PotionEffectData("speed",PotionEffectType.SPEED,null)));
         PerkManager.addPerk(new PotionEffectPerk("jump",
                                                  new ItemStack(Material.DIAMOND_LEGGINGS),
-                                                 "Leggings of Jumping",
+                                                 "Leggings of Jumping", 2,
                                                  new PotionEffectPerk.PotionEffectData("jump",PotionEffectType.JUMP_BOOST,null)));
         PerkManager.addPerk(new PotionEffectPerk("ring",
                                                  new ItemStack(Material.GOLD_NUGGET),
-                                                 "Ring of Power",
+                                                 "Ring of Power", 0,
                                                  new PotionEffectPerk.PotionEffectData("ring",PotionEffectType.INVISIBILITY,
                                                          Sound.ENTITY_ENDERMAN_TELEPORT, Sound.ENTITY_WITHER_DEATH, Sound.ENTITY_ENDERMAN_STARE),
                                                  new PotionEffectPerk.PotionEffectData("ring",PotionEffectType.NAUSEA,null),
@@ -138,25 +138,36 @@ public class PerksPlugin extends JavaPlugin {
     }
     
     public boolean arePerksEnabled() {
-        return getConfig().getConfigurationSection("settings").getBoolean("enabled");
+        ConfigurationSection settings = getConfig().getConfigurationSection("settings");
+        return settings != null && settings.getBoolean("enabled");
     }
-    
+
     public void enableAllPerks(boolean enable) {
-        getConfig().getConfigurationSection("settings").set("enabled", enable);
-        this.saveConfig();
+        ConfigurationSection settings = getConfig().getConfigurationSection("settings");
+        if(settings != null) {
+            settings.set("enabled", enable);
+            this.saveConfig();
+        }
     }
-    
+
     public boolean isPerkEnabled(Perk perk) {
-        return perk !=null && arePerksEnabled()
-                && getConfig().getConfigurationSection("perks")
-                              .getConfigurationSection(perk.getName())
-                              .getBoolean("enabled");
+        if(perk == null || !arePerksEnabled()) {
+            return false;
+        }
+        ConfigurationSection perksSection = getConfig().getConfigurationSection("perks");
+        if(perksSection == null) {
+            return false;
+        }
+        ConfigurationSection perkSection = perksSection.getConfigurationSection(perk.getName());
+        return perkSection != null && perkSection.getBoolean("enabled");
     }
-    
+
     public void enablePerk(Perk perk, boolean enable) {
-        getConfig().getConfigurationSection("perks")
-                   .getConfigurationSection(perk.getName())
-                   .set("enabled", enable);
+        ConfigurationSection perksSection = getConfig().getConfigurationSection("perks");
+        if(perksSection == null) return;
+        ConfigurationSection perkSection = perksSection.getConfigurationSection(perk.getName());
+        if(perkSection == null) return;
+        perkSection.set("enabled", enable);
         this.saveConfig();
     }
     

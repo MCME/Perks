@@ -1,37 +1,70 @@
 package com.mcmiddleearth.perks.tabCompleter;
 
-import com.mcmiddleearth.perks.PerkManager;
+import com.mcmiddleearth.perks.PerksPlugin;
+import com.mcmiddleearth.perks.commands.PerksCommandHandler;
+import com.mcmiddleearth.perks.perks.Perk;
 import com.mcmiddleearth.perks.permissions.PermissionData;
+import com.mcmiddleearth.perks.permissions.Permissions;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * @author Jubo
  */
 public class TabComplete implements TabCompleter {
 
+    private static final Set<String> ADMIN_COMMANDS = Set.of(
+        "enable", "disable", "info", "open", "close"
+    );
+
     @Override
-    public List<String> onTabComplete(CommandSender commandSender, Command command, String s, String[] strings) {
+    public List<String> onTabComplete(CommandSender commandSender, Command command,
+                                       String s, String[] strings) {
+        if (!(commandSender instanceof Player player)) {
+            return Collections.emptyList();
+        }
+
+        Map<String, PerksCommandHandler> commands =
+            PerksPlugin.getInstance().getPerksExecutor().getCommands();
         List<String> completions = new ArrayList<>();
 
-        if(PermissionData.isAllowed((Player)commandSender, PerkManager.forName("ring"))) completions.add("ring");
-        if(PermissionData.isAllowed((Player)commandSender, PerkManager.forName("light"))) completions.add("light");
-        if(PermissionData.isAllowed((Player)commandSender,PerkManager.forName("boat"))) completions.add("boat");
-        if(PermissionData.isAllowed((Player)commandSender,PerkManager.forName("pet"))) completions.add("pet");
-        if(PermissionData.isAllowed((Player)commandSender,PerkManager.forName("horse"))) completions.add("horse");
-        if(PermissionData.isAllowed((Player)commandSender,PerkManager.forName("firework"))) completions.add("firework");
-        if(PermissionData.isAllowed((Player)commandSender,PerkManager.forName("elytra"))) completions.add("elytra");
-        if(PermissionData.isAllowed((Player)commandSender,PerkManager.forName("parrot"))) completions.add("parrot");
-        if(PermissionData.isAllowed((Player)commandSender,PerkManager.forName("fire"))) completions.add("fire");
-        if(PermissionData.isAllowed((Player)commandSender,PerkManager.forName("compass"))) completions.add("compass");
+        if (strings.length == 1) {
+            String partial = strings[0].toLowerCase();
+            for (String cmdName : commands.keySet()) {
+                if (!cmdName.startsWith(partial)) continue;
+                if (isAllowedForPlayer(player, cmdName, commands.get(cmdName))) {
+                    completions.add(cmdName);
+                }
+            }
+        } else if (strings.length == 2 && strings[0].equalsIgnoreCase("help")) {
+            String partial = strings[1].toLowerCase();
+            for (String cmdName : commands.keySet()) {
+                if (cmdName.equals("help")) continue;
+                if (!cmdName.startsWith(partial)) continue;
+                if (isAllowedForPlayer(player, cmdName, commands.get(cmdName))) {
+                    completions.add(cmdName);
+                }
+            }
+        }
 
-        java.util.Collections.sort(completions);
-
+        Collections.sort(completions);
         return completions;
+    }
+
+    private boolean isAllowedForPlayer(Player player, String cmdName,
+                                        PerksCommandHandler handler) {
+        if (ADMIN_COMMANDS.contains(cmdName)) {
+            return player.hasPermission(Permissions.ADMIN.getPermissionNode());
+        }
+        Perk perk = handler.getPerk();
+        return perk == null || PermissionData.isAllowed(player, perk);
     }
 }
