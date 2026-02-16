@@ -9,16 +9,11 @@ import com.mcmiddleearth.perks.PerkManager;
 import com.mcmiddleearth.perks.PerksPlugin;
 import com.mcmiddleearth.perks.perks.BoatPerk;
 import com.mcmiddleearth.perks.permissions.PermissionData;
-import java.util.logging.Logger;
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
-import org.bukkit.event.entity.EntitySpawnEvent;
 import org.bukkit.event.player.PlayerKickEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.vehicle.VehicleEnterEvent;
@@ -54,9 +49,7 @@ public class BoatListener implements Listener {
     // Remove boat when rider dismounts
     @EventHandler
     public void BoatDismount(VehicleExitEvent event) {
-//Logger.getGlobal().info("dismount1");
         if (BoatPerk.isBoatPerk(event.getVehicle()) && event.getVehicle().getPassengers().size()<=1) {
-//Logger.getGlobal().info("dismount2");
             event.getVehicle().remove();
         }
     }
@@ -95,29 +88,4 @@ public class BoatListener implements Listener {
         }
     }
 
-    // Block spawning of boats (bypassed temporarily by setting spawn=true [as
-    // seen in CommandMethods.giveHorse()])
-    // NEW: Allow spawning by plugins only.
-    
-    /*
-    is not called
-    @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = false)
-    public void boatSpawn(EntitySpawnEvent event) {
-        
-        //Logger.getGlobal().info("EntitySpawn: "+event.getEntityType());
-        if((event.getEntityType().equals(EntityType.BOAT))
-            && ((BoatPerk)PerkManager.forName("boat")).isBoatPlacementAllowed()) {
-            event.setCancelled(true);
-        }
-        /*if(HorsePerk.isHorsePerk(event.getEntity())) {
-            if (HorsePerk.isAllowSpawn()) {
-                event.setCancelled(false);
-            } else {
-                event.setCancelled(true);
-            }
-        }/
-    }*/
-        
-
-    
 }

@@ -85,6 +85,7 @@ public class JockeyPerk extends Perk {
     
     public static void unjockey(Player jockey) {
         if(jockey.isInsideVehicle()) {
+            jockey.leaveVehicle();
         }
     }
     

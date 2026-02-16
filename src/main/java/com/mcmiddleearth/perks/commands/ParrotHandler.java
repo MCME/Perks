@@ -79,7 +79,7 @@ public class ParrotHandler extends PerksCommandHandler {
             try{
                 variant = Variant.valueOf(argument.toUpperCase());
                 continue;
-            } catch(Exception ex) {}
+            } catch(IllegalArgumentException ignored) {}
             switch(argument) {
                 case "left":
                     leftShoulder = true; 
@@ -156,13 +156,4 @@ public class ParrotHandler extends PerksCommandHandler {
     }
     
 }
-
-  
-    
-    
-    
-       
-
-    
-        
 

@@ -18,16 +18,19 @@ package com.mcmiddleearth.perks.commands;
 
 import com.mcmiddleearth.perks.PerksPlugin;
 import com.mcmiddleearth.perks.perks.CompanionPerk;
-import com.mcmiddleearth.perks.perks.ParrotPerk;
 import com.mcmiddleearth.perks.perks.Perk;
 import com.mcmiddleearth.pluginutil.NumericUtil;
 import org.bukkit.ChatColor;
 import org.bukkit.DyeColor;
-import org.bukkit.Location;
-import org.bukkit.World;
+import org.bukkit.NamespacedKey;
+import org.bukkit.Registry;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.*;
-import org.bukkit.entity.Parrot.Variant;
+import org.bukkit.entity.Cat;
+import org.bukkit.entity.Player;
+import org.bukkit.entity.Wolf;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -50,8 +53,10 @@ public class CompanionHandler extends PerksCommandHandler {
         return "cat|dog|dismiss [name] [collar color] [type]: Summons a pet. "
                 +"Possible collar colors are: "+PerksPlugin.getMessageUtil().HIGHLIGHT_STRESSED
                 +"black, blue, brown, cyan, gray, green, light_blue, light_gray, lime, magenta, orange, pink, purple, red, white and yellow"+PerksPlugin.getMessageUtil().HIGHLIGHT
-                +"So far types are implemented for cats only: "+PerksPlugin.getMessageUtil().HIGHLIGHT_STRESSED
-                +"all_black, black, british_shorthair, calico, jellie, persian, ragdoll, red, siamese, tabby and white";
+                +"Cat types: "+PerksPlugin.getMessageUtil().HIGHLIGHT_STRESSED
+                +"all_black, black, british_shorthair, calico, jellie, persian, ragdoll, red, siamese, tabby, white"+PerksPlugin.getMessageUtil().HIGHLIGHT
+                +"Dog variants: "+PerksPlugin.getMessageUtil().HIGHLIGHT_STRESSED
+                +"pale, spotted, snowy, black, ashen, rusty, woods, chestnut, striped";
     }
     
     @Override
@@ -62,8 +67,9 @@ public class CompanionHandler extends PerksCommandHandler {
              
         if(args.length<1 || args[0].equalsIgnoreCase("info")) {
             PerksPlugin.getMessageUtil().sendInfoMessage(cs, "Summon a pet: /perk pet cat|dog|dismiss [name] [collar color] [type] ");
-            PerksPlugin.getMessageUtil().sendInfoMessage(cs, "[collar color] -> "+ChatColor.GREEN+"black, blue, brown, cyan, gray, green, light_blue, light_gray, lime, magenta, orange, pink, purple, red, white, yellow,");
-            PerksPlugin.getMessageUtil().sendInfoMessage(cs, "[type] -> "+ChatColor.GREEN+"all_black, black, british_shorthair, calico, jellie, persian, ragdoll, red, siamese, tabby, white");
+            PerksPlugin.getMessageUtil().sendInfoMessage(cs, "[collar color] -> "+ChatColor.GREEN+"black, blue, brown, cyan, gray, green, light_blue, light_gray, lime, magenta, orange, pink, purple, red, white, yellow");
+            PerksPlugin.getMessageUtil().sendInfoMessage(cs, "[cat type] -> "+ChatColor.GREEN+"all_black, black, british_shorthair, calico, jellie, persian, ragdoll, red, siamese, tabby, white");
+            PerksPlugin.getMessageUtil().sendInfoMessage(cs, "[dog variant] -> "+ChatColor.GREEN+"pale, spotted, snowy, black, ashen, rusty, woods, chestnut, striped");
          
             return;
         }
@@ -72,8 +78,6 @@ public class CompanionHandler extends PerksCommandHandler {
             PerksPlugin.getMessageUtil().sendErrorMessage(cs, "Companions are not supported while flying!");
             return;
         } 
-        Location location = player.getLocation();
-        World world = player.getWorld();
         CompanionPerk.allowSpawn(true);
         String name = player.getName()+"'s pet";
         if(args.length>1) {
@@ -97,11 +101,18 @@ public class CompanionHandler extends PerksCommandHandler {
                 }
             }
         }
+        Wolf.Variant wolfVariant = getRandomWolfVariant();
+        if(args.length>3) {
+            Wolf.Variant parsed = Registry.WOLF_VARIANT.get(NamespacedKey.minecraft(args[3].toLowerCase()));
+            if(parsed != null) {
+                wolfVariant = parsed;
+            }
+        }
         if(args[0].equalsIgnoreCase("cat")) {
             CompanionPerk.spawnCat(player, name, collarColor, catType);
             PerksPlugin.getMessageUtil().sendInfoMessage(player, "Enjoy your cat!");
         } else if(args[0].equalsIgnoreCase("dog")) {
-            CompanionPerk.spawnDog(player, name, collarColor);
+            CompanionPerk.spawnDog(player, name, collarColor, wolfVariant);
             PerksPlugin.getMessageUtil().sendInfoMessage(player, "Enjoy your dog!");
         } else if(args[0].equalsIgnoreCase("dismiss")) {
             if(args.length<2) {
@@ -114,15 +125,11 @@ public class CompanionHandler extends PerksCommandHandler {
         }
         CompanionPerk.allowSpawn(false);
     }
-    
+
+    private Wolf.Variant getRandomWolfVariant() {
+        List<Wolf.Variant> variants = new ArrayList<>();
+        Registry.WOLF_VARIANT.forEach(variants::add);
+        return variants.get(NumericUtil.getRandom(0, variants.size() - 1));
+    }
 }
-
-  
-    
-    
-    
-       
-
-    
-        
 

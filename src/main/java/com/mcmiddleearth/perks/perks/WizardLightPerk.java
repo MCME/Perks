@@ -161,8 +161,8 @@ public class WizardLightPerk extends Perk {
         config.set("teleportDistance", teleportDistance);
         config.set("maxDuration", maxDuration);
         config.set("maxIntensity", maxIntensity);
-        config.set("maxSpeed", speedFactor);
-        config.set("speedFactor", maxSpeed);
+        config.set("maxSpeed", maxSpeed);
+        config.set("speedFactor", speedFactor);
         config.set("item", item.name());
     }
 

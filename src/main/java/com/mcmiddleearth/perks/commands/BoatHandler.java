@@ -25,16 +25,30 @@ import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Boat;
 import org.bukkit.entity.Player;
-import org.bukkit.entity.boat.OakBoat;
+import org.bukkit.entity.boat.*;
+
+import java.util.Map;
 
 
 /**
  *
  * @author Fraspace5, Eriol_Eandur
  */
-@SuppressWarnings("unchecked")
 public class BoatHandler extends PerksCommandHandler {
-    
+
+    private static final Map<String, Class<? extends Boat>> BOAT_TYPES = Map.of(
+        "oak", OakBoat.class,
+        "acacia", AcaciaBoat.class,
+        "birch", BirchBoat.class,
+        "dark_oak", DarkOakBoat.class,
+        "jungle", JungleBoat.class,
+        "spruce", SpruceBoat.class,
+        "mangrove", MangroveBoat.class,
+        "cherry", CherryBoat.class,
+        "bamboo", BambooRaft.class,
+        "pale_oak", PaleOakBoat.class
+    );
+
     public BoatHandler(Perk perk, String... permissionNodes) {
         super(0,true,perk,permissionNodes);
     }
@@ -46,9 +60,9 @@ public class BoatHandler extends PerksCommandHandler {
     
     @Override
     public String getUsageDescription(String cmd) {
-        return "[color] [pattern]: Gives you a boat to navigate. Without arguments it will have a default woodtype [Generic] "
+        return "[woodType]: Gives you a boat to navigate. Without arguments it will be an oak boat. "
                 +"Possible wood types are: "+PerksPlugin.getMessageUtil().HIGHLIGHT_STRESSED
-                +"acacia, birch, dark_oak, generic, jungle, redwood"+PerksPlugin.getMessageUtil().HIGHLIGHT;
+                +"oak, acacia, birch, dark_oak, jungle, spruce, mangrove, cherry, bamboo, pale_oak"+PerksPlugin.getMessageUtil().HIGHLIGHT;
     }
     
     @Override
@@ -60,7 +74,7 @@ public class BoatHandler extends PerksCommandHandler {
         }
         if(args.length>0 && args[0].equalsIgnoreCase("info")) {
             PerksPlugin.getMessageUtil().sendInfoMessage(cs, "Get a boat: /perk boat [woodType] ");
-            PerksPlugin.getMessageUtil().sendInfoMessage(cs, "[woodType] -> "+ChatColor.GREEN+"acacia, birch, dark_oak, generic, jungle, redwood");
+            PerksPlugin.getMessageUtil().sendInfoMessage(cs, "[woodType] -> "+ChatColor.GREEN+"oak, acacia, birch, dark_oak, jungle, spruce, mangrove, cherry, bamboo, pale_oak");
            return;
         }
 
@@ -69,11 +83,10 @@ public class BoatHandler extends PerksCommandHandler {
         World world = player.getWorld();
         Class<? extends Boat> boatClass = OakBoat.class;
         if(args.length>0) {
-            try {
-                boatClass = (Class<? extends Boat>) Class.forName("org.bukkit.entity.boat."
-                        +getBoatType(args)+"Boat");
-            } catch (ClassNotFoundException e) {
-                e.printStackTrace();
+            Class<? extends Boat> resolved = BOAT_TYPES.get(args[0].toLowerCase());
+            if(resolved != null) {
+                boatClass = resolved;
+            } else {
                 PerksPlugin.getMessageUtil().sendErrorMessage(cs, "Boat type not found! Using oak boat.");
             }
         }
@@ -85,14 +98,6 @@ public class BoatHandler extends PerksCommandHandler {
         BoatPerk.allowSpawn(false);
         PerksPlugin.getMessageUtil().sendInfoMessage(player, "Enjoy your boat!");
 
-    }
-
-    private String getBoatType(String[] args) {
-        StringBuilder result = new StringBuilder();
-        for (String arg : args) {
-            result.append(arg.substring(0, 1).toUpperCase()).append(arg.substring(1));
-        }
-        return result.toString();
     }
 
 }

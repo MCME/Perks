@@ -27,7 +27,6 @@ import org.bukkit.entity.*;
 import org.bukkit.metadata.FixedMetadataValue;
 
 import java.util.*;
-import java.util.logging.Logger;
 
 /**
  *
@@ -39,11 +38,6 @@ public class CompanionPerk extends Perk {
 
     private static final String companion_metadata_key = "MCME_Perks_Companion";
 
-    //private static final File onlineFile = new File(PerksPlugin.getInstance().getDataFolder(), "onlineCompanions.dat");
-    //private static final File offlineFile = new File(PerksPlugin.getInstance().getDataFolder(), "offlineCompanions.dat");
-
-    //private static final Map<UUID, List<Data>> companionMap = new HashMap<>();
-
     private static boolean allowSpawn;
 
     private static final String perkName = "pet";
@@ -54,10 +48,10 @@ public class CompanionPerk extends Perk {
         setCommandHandler(new CompanionHandler(this, Permissions.USER.getPermissionNode()),perkName);
     }
 
-    public static void spawnDog(Player owner, String name, DyeColor collarColor) {
+    public static void spawnDog(Player owner, String name, DyeColor collarColor, Wolf.Variant variant) {
         Location location = owner.getLocation();
         Wolf companion = location.getWorld().spawn(location, Wolf.class);
-        //companion.setVariant(variant);
+        companion.setVariant(variant);
         companion.setCollarColor(collarColor);
         initializeCompanion(companion, owner, name);
     }
@@ -78,14 +72,6 @@ public class CompanionPerk extends Perk {
         companion.setMetadata(companion_metadata_key,
                               new FixedMetadataValue(PerksPlugin.getInstance(),
                                                      new Data(owner.getUniqueId(), System.currentTimeMillis())));
-        /*List<Data> companionData;
-        if(!companionMap.containsKey(owner.getUniqueId())) {
-            companionData = new ArrayList<>();
-            companionMap.put(owner.getUniqueId(), companionData);
-        } else {
-            companionData = companionMap.get(owner.getUniqueId());
-        }
-        companionData.add(new Data(owner.getLocation(), Status.ACTIVE));*/
     }
 
     public static void dismissCompanions(Player owner) {
@@ -103,7 +89,6 @@ public class CompanionPerk extends Perk {
                         if(customNameComponent!=null) {
                             customName = PlainTextComponentSerializer.plainText().serialize(customNameComponent);
                         }
-Logger.getGlobal().info("Custom name. "+customName);
                         if(name == null || name.equalsIgnoreCase(customName)) {
                             entity.remove();
                         }
@@ -143,7 +128,6 @@ Logger.getGlobal().info("Custom name. "+customName);
         for (World w : Bukkit.getServer().getWorlds()) {
             for (Entity entity : w.getEntities()) {
                if (isCompanionPerk(entity)) {
-//Logger.getGlobal().info("Parrot? "+e.getCustomName()+" " + e.getVehicle());
                    Data companionData = getCompanionData(entity);
                    if(companionData==null) {
                        entity.remove();
@@ -174,17 +158,6 @@ Logger.getGlobal().info("Custom name. "+customName);
                 entityList.get(i).remove();
             }
         }
-        /*if(companions.containsKey(owner.getUniqueId())) {
-            Entity otherCompanion = companions.get(owner.getUniqueId());
-            Data otherCompanionData = getCompanionData(entity);
-            if(otherCompanionData==null || otherCompanionData.getCreationTime()<companionData.getCreationTime()) {
-                otherCompanion.remove();
-            } else {
-                entity.remove();
-                continue;
-            }
-        }*/
-
     }
         
     public static boolean isCompanionPerk(Entity entity) {
@@ -192,7 +165,11 @@ Logger.getGlobal().info("Custom name. "+customName);
     }
 
     public static Data getCompanionData(Entity entity) {
-        Object metaData = entity.getMetadata(companion_metadata_key).get(0).value();
+        var metadata = entity.getMetadata(companion_metadata_key);
+        if(metadata.isEmpty()) {
+            return null;
+        }
+        Object metaData = metadata.get(0).value();
         if(metaData instanceof Data data) {
             return data;
         } else {
@@ -224,38 +201,5 @@ Logger.getGlobal().info("Custom name. "+customName);
             return creationTime;
         }
     }
-    /*public static enum Status {
-        ACTIVE, SITTING, STORED, UNLOADED, UNLOADED_SITTING;
-    }
-
-    public static class Data {
-        private Location location;
-        private Status status;
-
-        public Data(Location location, Status status) {
-            this.location = location;
-            this.status = status;
-        }
-
-        public Location getLocation() {
-            return location;
-        }
-
-        public void setLocation(Location location) {
-            this.location = location;
-        }
-
-        public Status getStatus() {
-            return status;
-        }
-
-        public void setStatus(Status status) {
-            this.status = status;
-        }
-    }*/
 }
-
-    
-    
-    
 

@@ -29,8 +29,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import java.util.logging.Logger;
-
 /**
  *
  * @author Eriol_Eandur

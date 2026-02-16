@@ -24,7 +24,6 @@ import org.bukkit.*;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Horse;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 
 /**
  *
@@ -92,14 +91,10 @@ public class HorseHandler extends PerksCommandHandler {
             }
         }
         int numberc = NumericUtil.getRandom(0, Horse.Color.values().length - 1);
-//Logger.getGlobal().info("color "+Horse.Style.values().length);
-//Logger.getGlobal().info("Randomc "+numberc);
         if (color == null) {
             color = Horse.Color.values()[numberc];
         }
         int number = NumericUtil.getRandom(0, Horse.Style.values().length - 1);
-//Logger.getGlobal().info("Syles "+Horse.Style.values().length);
-//Logger.getGlobal().info("Randoms "+number);
         if (style == null) {
             style = Horse.Style.values()[number];
         }

@@ -24,7 +24,6 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import com.mcmiddleearth.perks.commands.ParrotHandler;
-import java.util.logging.Logger;
 /**
  *
  * @author Fraspace5
@@ -61,7 +60,6 @@ public class ParrotPerk extends Perk {
         for (World w : Bukkit.getServer().getWorlds()) {
             for (Entity e : w.getEntities()) {
                if (isParrotPerk(e)) {
-Logger.getGlobal().info("Parrot? "+e.getCustomName()+" " + e.getVehicle());
                    if(e.getVehicle()==null
                         || (e.getVehicle() instanceof Player 
                              && !PermissionData.isAllowed((Player)e.getVehicle(),this))) {
@@ -92,8 +90,4 @@ Logger.getGlobal().info("Parrot? "+e.getCustomName()+" " + e.getVehicle());
         checkParrot();
     }
 }
-
-    
-    
-    
 

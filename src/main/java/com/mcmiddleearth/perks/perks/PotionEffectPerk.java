@@ -30,8 +30,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
-import org.bukkit.scheduler.BukkitRunnable;
-
 import java.util.Arrays;
 
 /**
@@ -45,8 +43,13 @@ public class PotionEffectPerk extends Perk {
 
     private final ItemStack item;
     private final PotionEffectData[] effectData;
+    private final int defaultAmplifier;
 
     public PotionEffectPerk(String name, ItemStack item, String itemName, PotionEffectData... effectData) {
+        this(name, item, itemName, 1, effectData);
+    }
+
+    public PotionEffectPerk(String name, ItemStack item, String itemName, int defaultAmplifier, PotionEffectData... effectData) {
         super(name);
         String mat = PerksPlugin.getPerkString(this.getName(),"item",null);
         if(mat==null) {
@@ -58,6 +61,7 @@ public class PotionEffectPerk extends Perk {
             this.itemName = itemName;
         }
         this.effectData = effectData;
+        this.defaultAmplifier = defaultAmplifier;
 
         setListener(new PotionEffectListener(name));
         setCommandHandler(new PotionEffectHandler(this, Permissions.USER.getPermissionNode()),name);
@@ -77,12 +81,6 @@ public class PotionEffectPerk extends Perk {
         for(PotionEffectData data:effectData) {
             player.addPotionEffect(data.getPotionEffect(), true);
 
-            final PotionEffectData dataF = data;
-            new BukkitRunnable() {
-                @Override
-                public void run() {
-                }
-            }.runTaskLater(PerksPlugin.getInstance(),1);
             player.getWorld().playSound(player.getLocation(), data.getWorldSound(),1,1);
             for(Sound sound: data.getPlayerSounds()) {
                 player.playSound(player.getLocation(), sound, 1, 0);
@@ -155,7 +153,7 @@ public class PotionEffectPerk extends Perk {
     public void writeDefaultConfig(ConfigurationSection config) {
         config.set("itemName", itemName);
         config.set("duration", -1);
-        config.set("amplifier", 1);
+        config.set("amplifier", defaultAmplifier);
         config.set("item", item.getType().name());
     }
 

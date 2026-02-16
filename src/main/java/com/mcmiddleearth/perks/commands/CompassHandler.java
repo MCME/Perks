@@ -125,8 +125,8 @@ public class CompassHandler extends PerksCommandHandler {
             perk.unsetCompassDirection(player);
             player.setCompassTarget(player.getWorld().getSpawnLocation());
             PerksPlugin.getMessageUtil().sendInfoMessage(player,"Heading home.");
-        } else { 
-            System.out.println("You can't use this command in the console of the server");
+        } else {
+            cs.sendMessage("This command can only be used by players.");
         }
         
     }

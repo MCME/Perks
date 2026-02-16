@@ -20,7 +20,6 @@ import com.mcmiddleearth.perks.PerksPlugin;
 import com.mcmiddleearth.perks.perks.Perk;
 import com.mcmiddleearth.perks.perks.SetOnFirePerk;
 import com.mcmiddleearth.pluginutil.NumericUtil;
-import org.bukkit.GameMode;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
@@ -57,7 +56,6 @@ public class FireHandler extends PerksCommandHandler {
             }
         }
         Player player = (Player) cs;
-        player.setGameMode(GameMode.SURVIVAL);
         player.addPotionEffect(new PotionEffect(PotionEffectType.FIRE_RESISTANCE,ticks,5));
         player.setFireTicks(ticks);
         PerksPlugin.getMessageUtil().sendInfoMessage(player,"Is your name Denethor?");
